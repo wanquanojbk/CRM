@@ -3,7 +3,10 @@ package com.crm.mapper;
 import java.util.List;
 
 import com.crm.entity.Roles;
+import com.crm.entity.Modules;
 import com.crm.entity.PageNation;
+import com.crm.entity.Permissiontb;
+import com.crm.entity.RolePermissiontb;
 
 public interface RolesMapper {
 	/**
@@ -53,6 +56,33 @@ public interface RolesMapper {
 	 * @return 查询出来的角色
 	 */
 	Roles selectRolesByRolesName(Roles roles);
+	/**
+	 * 
+	 * @param rolesId 根据角色id 删除所有和该模块关联的权限数据
+	 * @return 受影响行数
+	 */
+	Integer deleteAllPermissiontbByRolesIdId(Integer rolesId);
 	
-
+	/**
+	 * 
+	 * @param rolesId 根据角色id 删除所有和该角色的中间表数据
+	 * @return 受影响行数
+	 */
+	Integer deleteAllRolePermissiontbByRolesId(Integer rolesId);
+	
+	/**
+	 * 
+	 * @param permissiontb 插入权限
+	 * @return
+	 */
+	Integer insertPermissiontb(Permissiontb permissiontb);
+	
+	/**
+	 * 
+	 * @param rolePermissiontb 插入权限角色中间表
+	 * @return
+	 */
+	Integer insertRolePermissiontb(RolePermissiontb rolePermissiontb);
+	
+	
 }

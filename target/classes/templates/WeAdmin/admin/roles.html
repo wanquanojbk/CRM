@@ -11,9 +11,44 @@
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
 
 <script type="text/javascript" th:inline="none">
+	var ids = "";
+	var roleId ="";
 	$(function(){
 		init();
 	})
+	function tijiao(){
+		ids="";
+		var checkedNodes = $('#modulesTree').tree('getChecked');	// get checked nodes
+	
+		var indeterminateNodes = $('#modulesTree').tree('getChecked', 'indeterminate');	// get indeterminate nodes
+		if(checkedNodes!=null){
+			for(var i=0;i<checkedNodes.length;i++){
+				ids+=checkedNodes[i].id+",";
+			}
+		}
+		
+		if(indeterminateNodes!=null){
+			for(var i=0;i<indeterminateNodes.length;i++){
+				ids+=indeterminateNodes[i].id+",";
+			}
+		}
+		$.messager.confirm('提示','确认往下进行分配操作么?',function(r){
+		    if (r){
+				$.post("",{
+					ids:ids,
+					roleId:roleId
+				},function(res){
+					if(res){
+						roleId="";
+					}
+					else{
+						
+					}
+				},"json")
+		    }
+		});
+		
+	}
 	function init(){
 		$("#demo").datagrid({
 			url:'/CRM/Roles/rolesPageNation',
@@ -31,6 +66,7 @@
 		})
 	}
 	function fenpei(id){
+		roleId = id;
 		$("#modulesTree").tree({
 			url:'/CRM/Module/selectAllModulesByRolesId',
 			method:'post',
@@ -53,9 +89,9 @@
 			<input type="button" class="easyui-linkbutton" value="搜索" onclick="init()">
 	</div>
 	<table class="easyui-datagrid" id="demo"></table>
-	<div id="fenpeiWindow" class="easyui-window" data-options="modal:true,closed:true">
+	<div style="width: 500px;height: 500px;" id="fenpeiWindow" class="easyui-window" data-options="modal:true,closed:true">
 		<ul id="modulesTree" class="easyui-tree"></ul>
-		<button class="easyui-linkbutton">提交</button>
+		<button class="easyui-linkbutton" onclick="tijiao()">提交</button>
 		<button class="easyui-linkbutton">取消</button>
 	</div>
 	

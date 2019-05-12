@@ -61,5 +61,29 @@
 	<select id="selectRolesByRolesName" parameterType="com.crm.entity.Roles" resultType="com.crm.entity.Roles">
 		select * from roles where roles_Name = #{roles_Name}
 	</select>
-	
+	<delete id="deleteAllPermissiontbByRolesIdId" parameterType="int">
+		DELETE 
+FROM permissiontb WHERE permissiontb_Module IN (
+SELECT modules_Id FROM modules WHERE modules_Id IN (
+SELECT permissiontb_ModuleId FROM permissiontb WHERE permissiontb_Id IN(
+SELECT rolePermissiontb_PermissionId FROM rolepermissiontb WHERE rolePermissiontb_RoleId IN(
+SELECT roles_Id FROM roles WHERE  roles_Id =#{rolesId})))
+)
+	</delete>
+	<delete id="deleteAllRolePermissiontbByRolesId" parameterType="int">
+		DELETE 
+		FROM rolepermissiontb WHERE rolePermissiontb_RoleId =#{roles_Id}
+	</delete>
+	<insert id="insertPermissiontb" parameterType="com.crm.entity.Permissiontb" >
+		insert into permissiontb  (permissiontb_Value,permissiontb_Module,permissiontb_Name,permissiontb_ModuleId)
+		values(#{permissiontb_Value},#{permissiontb_Module},#{permissiontb_Name},#{permissiontb_ModuleId})
+		<selectKey order="AFTER" resultType="int"  keyProperty="permissiontb_Id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<insert id="insertRolePermissiontb" parameterType="com.crm.entity.RolePermissiontb">
+		INSERT INTO 
+		rolepermissiontb (rolePermissiontb_RoleId,rolePermissiontb_PermissionId)
+		values(#{rolePermissiontb_RoleId},#{rolePermissiontb_PermissionId})
+	</insert>
 </mapper>

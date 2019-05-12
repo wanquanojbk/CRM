@@ -9,4 +9,12 @@ public interface RolesService {
 	 * @return 分页对象
 	 */
 	public PageNation rolesStartPage(PageNation pageNation);
+	
+	/**
+	 * 
+	 * @param ids
+	 * @param roles_id
+	 * @return
+	 */
+	public Integer rolesAndModules(String ids,Integer roles_id);
 }
