@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" th:inline="none">
+	var ids="";
+	function tianjia(){
+		$("#roleSelect").combobox({
+			url:'/CRM/Admin/roles',
+			method:'post',
+			valueField:'roles_Id',
+			textField:'roles_Name'
+		})
+		$("#addWindow").window("open");
+	}
+	function add(){
+		$('#addForm').form({
+		    url:'/CRM/Admin/add',
+		    onSubmit: function(){
+				// do some check
+				// return false to prevent submit;
+		    },
+		    success:function(data){
+				if(data){
+					$("#demo").datagrid("reload");
+					$("#addWindow").window("close");
+					$.messager.alert("添加成功");
+				}
+				else {
+					$("#addWindow").window("close");
+					$.messager.alert("添加失败");
+				}
+		    }
+		});
+	}
+		
+	function role(id){
+		
+		$('#role').datagrid({
+		    url:'/CRM/Admin/role',
+		    method:'post',
+		    queryParams:{
+		    	id:id
+		    },
+		    columns:[[
+				{field:'checkbox',checkbox:true},
+				{field:'roles_Id',title:'角色编号',align: 'center'},
+				{field:'roles_Name',title:'角色名称',align: 'center'}
+		    ]]
+		});
+		
+		$('#roles').datagrid({
+		    url:'/CRM/Admin/roles',
+		    method:'post',
+		    columns:[[
+				{field:'checkbox',checkbox:true},
+				{field:'roles_Id',title:'角色编号',align: 'center'},
+				{field:'roles_Name',title:'角色名称',align: 'center'}
+		    ]]
+		});
+		$("#roleWindow").window("open");
+	}
+	
+	function chongzhi(id){
+	
+		$.messager.confirm("提示","确定重置该用户的密码么?",function(r){
+		    if (r){
+		    	  $.post("/CRM/Admin/chongzhiUsers",{
+				   		users_Id:id
+				   	  },function(res){
+				   		  if(res){
+				   			  $("#demo").datagrid("reload");
+				   			  $.messager.alert("提示","重置成功");
+				   		  }
+				   		  else{
+				   			$.messager.alert("提示","重置失败");
+				   		  }
+				   	  },"json")
+		    }
+		});
+	   
+	}
+	/* function edit(id){
+		layer.open({
+			type:2,
+			content:'/SpringBootCRM/Admin/updateUser?id='+id
+		})
+	} */
+	function remove(id){
+		$.messager.confirm('提示','真的删除行么?',function(r){
+		    if (r){
+		    	  $.post("/CRM/Admin/deleteUsers",{
+			   		  id:id
+			   	  },function(res){
+			   		  if(res){
+			   			$("#demo").datagrid("reload");
+			   			$.messager.alert("提示","删除成功");
+			   		  }
+			   		  else{
+			   			$.messager.alert("提示","删除失败");
+			   		  }
+			   	  },"json")
+		    }
+		});
+	}
+	function LockOFF(){
+		ids="";
+		var rows = $("#demo").datagrid("getChecked");
+		$.messager.confirm('Confirm','真的解锁行么?',function(r){
+		    if (r){
+		    	if(rows.length>0){
+		    		 for(var i=0;i<rows.length;i++){
+						  ids+=rows[i].users_Id+",";
+					  }
+					$.post("/CRM/Admin/usersIsLockOFF",{ids:ids},function(res){
+						if(res){
+							$("#demo").datagrid("reload");
+							$.messager.alert("提示","解锁成功");
+						}
+						else{
+							$.messager.alert("提示","解锁失败");
+						}
+					},"json")
+				  }
+		    }
+		});
+	}
+	function LockON(){
+		ids="";
+		var rows = $("#demo").datagrid("getChecked");
+		$.messager.confirm('Confirm','真的锁定行么?',function(r){
+		    if (r){
+		    	if(rows.length>0){
+		    		 for(var i=0;i<rows.length;i++){
+						  ids+=rows[i].users_Id+",";
+					  }
+					$.post("/CRM/Admin/usersIsLockOn",{ids:ids},function(res){
+						if(res){
+							$("#demo").datagrid("reload");
+							$.messager.alert("提示","锁定成功");
+						}
+						else{
+							$.messager.alert("提示","锁定失败");
+						}
+					},"json")
+				  }
+		    }
+		});
+		
+	}
+	/* function add(){
+		layer.open({
+			type:2,
+			content:'/SpringBootCRM/Admin/addUser'
+		})
+	} */
+	function edit(index){
+		var data  = $("#demo").datagrid("getData");
+		var row = data.rows[index];
+		$("#updateForm").form("load",row);
+		$("#updateWindow").window("open");
+	}
+	
+	
+	function shanchu(value,row,index){
+		return "<a href='javascript:void(0);' onclick='remove("+row.users_Id+")'>删除</a>";
+	}
+	function xiugai(value,row,index){
+		return "<a href='javascript:void(0);' onclick='edit("+index+")'>修改</a>";
+	}
+	function chong(value,row,index){
+		return "<a href='javascript:void(0);' onclick='chongzhi("+row.users_Id+")'>重置密码</a>";
+		
+	}
+	function fenpei(value,row,index){
+		return "<a href='javascript:void(0);' onclick='role("+row.users_Id+")'>分配角色</a>";
+	}
+	function suoding(value,row,index){
+		 if(row.users_LsLockout == 1){
+			 return "未锁定";
+		 }
+		 else{
+			 return "已锁定";
+		 }
+	}
+	function gai(){
+		$('#updateForm').form({
+		    url:'/CRM/Admin/update',
+		    onSubmit: function(){
+				// do some check
+				// return false to prevent submit;
+		    },
+		    success:function(data){
+				if(data){
+					$("#demo").datagrid("reload");
+					$("#updateWindow").window("close");
+					$.messager.alert("提示","修改成功");
+				}
+				else {
+					$("#updateWindow").window("close");
+					$.messager.alert("提示","修改失败");
+				}
+		    }
+		});
+	}
+	
+	function init(){
+		$("#demo").datagrid({
+			url:'/CRM/Admin/usersPage',
+			method:'post',
+			pagination:true,
+			toolbar: '#tool',
+			columns:[[
+				{field:'checkbox',align:'center',checkbox:true},
+				{field:'users_Id',title:'用户编号',align:'center'},
+				{field:'suoding',title:'用户锁定',align:'center',formatter:suoding},
+				{field:'users_LoginName',title:'用户姓名',align:'center'},
+				{field:'users_CreateTime',title:'创建时间',align:'center'},
+				{field:'users_ProTectEMail',title:'用户邮箱',align:'center'},
+				{field:'users_ProtectTel',title:'用户手机',align:'center'},
+				{field:'shanchu',title:'删除',align:'center',formatter:shanchu},
+				{field:'chong',title:'重置密码',align:'center',formatter:chong},
+				{field:'xiugai',title:'修改',align:'center',formatter:xiugai},
+				{field:'fenpei',title:'角色分配',align:'center',formatter:fenpei}
+			]],
+			queryParams:{
+				text1:$("#usersName").textbox("getValue"),
+		    	num1:$("#isLocks").val(),
+		    	text2:$("#startDate").datetimebox("getValue"),
+		    	text3:$("#endDate").datetimebox("getValue")
+			}
+		})
+	}
+	$(function(){
+		init();
+	})
+	function testLogin(){
+		
+		var loginName = $("#loginName").val();
+		$.post("/CRM/Admin/testLoginName",{
+			users_LoginName:loginName
+		},function(res){
+			if(res){
+				$("#loginName").val("");
+				$.messager.alert("提示","用户名不能重复");
+			}
+		},"json")
+	}
+	
+	function youwangzuo(){
+		ids="";
+		var rows = $("#role").datagrid("getChecked");
+		$.messager.confirm('提示','确认进行操作么?',function(r){
+		    if (r){
+		    	 if(rows.length>0){
+					  for(var i=0;i<rows.length;i++){
+						  ids+=rows[i].roles_Id+",";
+					  }
+					  $.post("/CRM/Admin/deleteUsersRoles",{
+						  ids:ids
+					  },function(res){
+						  if(res){
+							  $("#roles").datagrid("reload");
+							  $.messager.alert("提示","操作成功")
+						  }
+						  else{
+							  $.messager.alert("提示","操作失败")
+						  }
+					  },"json")
+				  }
+				  else{
+					  $.messager.alert("提示","请选择具体某一行")
+					  layer.close(index);
+				  }
+		    }
+		});
+		
+		
+	
+	}
+	function zuowangyou(){
+		ids="";
+		var rows = $("#roles").datagrid("getChecked");
+		$.messager.confirm('提示','确认进行操作么?',function(r){
+		    if (r){
+		    	 if(rows.length>0){
+					  for(var i=0;i<rows.length;i++){
+						  ids+=rows[i].roles_Id+",";
+					  }
+					  $.post("/CRM/Admin/insertUsersRoles",{
+						  ids:ids
+					  },function(res){
+						  if(res){
+							  $("#role").datagrid("reload");
+							  $.messager.alert("提示","操作成功");
+						  }
+						  else{
+							  $.messager.alert("提示","操作失败");
+						  }
+					  },"json")
+				  }
+				  else{
+					  $.messager.alert("提示","请选择具体某一行");
+				  }
+		    }
+		});
+	}
+	
+	
+</script>
+
+
+
+</head>
+<body>
+	<br/>
+	<div id="tool">
+				      <label >创建时间</label>
+				        <input type="text" name="" placeholder="开始时间"  id="startDate" class="easyui-datetimebox"/>
+				     -
+				        <input type="text" name="" placeholder="结束时间" id="endDate" class="easyui-datetimebox"/>
+	   	 			<select id="isLocks">
+	   	 				<option value="">--请选择--</option>
+	   	 				<option value="1">未锁定</option>
+	   	 				<option value="2">锁定</option>
+	   	 			</select>
+	   	 			<input id="usersName" type="text"  class="easyui-textbox" placeholder="请输入用户名" />
+	   	 			<input  type="button" class="easyui-linkbutton" onclick="init()"  value="搜索">
+	   	 			<input  type="button" class="easyui-linkbutton" onclick="LockON()"  value="批量锁定">
+	   	 			<input  type="button" class="easyui-linkbutton" onclick="LockOFF()"  value="批量解锁">
+	   	 			<input  type="button" class="easyui-linkbutton" onclick="tianjia()"  value="添加" />
+	 		
+	</div>
+	<table id="demo"  class="easyui-datagrid"></table>
+	
+	
+	
+	
+	<!--添加窗口  -->
+	<div class="easyui-window" id="addWindow" data-options="modal:true,closed:true">
+		<form action="javascript:add()"  id="addForm">
+			<table cellpadding="5">
+				<tr>
+					<td>登录名</td>
+					<td><input type="text" id="loginName" onblur="testLogin()" name="users_LoginName"    placeholder="请输入用户名"  class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>密码:</td>
+					<td><input type="password" name="users_Password"     class="easyui-passwordbox"></td>
+				</tr>
+				<tr>
+					<td>角色:</td>
+					<td>
+						<select style="width: 160px;"   id="roleSelect" class="easyui-combobox" name="usersRoles_RoleId" >
+							
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>邮箱:</td>
+					<td><input type="text" name="users_ProTectEMail"    placeholder="请输入邮箱"  data-options="validType:['email']" class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>手机:</td>
+					<td><input type="text" name="users_ProtectTel"    placeholder="请输入手机"  data-options="validType:['email']" class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td><button class="easyui-linkbutton" type="submit" >立即提交</button></td>
+					<td><button type="reset" class="easyui-linkbutton">重置</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	<!--修改窗口  -->
+	<div class="easyui-window" id="updateWindow" data-options="modal:true,closed:true">
+		<form action="javascript:gai()"  id="updateForm">
+			<table cellpadding="5">
+				<tr>
+					<td>用户编号</td>
+					<td><input type="text"    name="users_Id"     class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>登录名</td>
+					<td><input type="text"  readonly="readonly" name="users_LoginName"    placeholder="请输入用户名"  class="easyui-validatebox"></td>
+				</tr>
+			
+				<tr>
+					<td>邮箱:</td>
+					<td><input type="text" name="users_ProTectEMail"     data-options="validType:['email']" class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>手机:</td>
+					<td><input type="text" name="users_ProtectTel"       class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td><button class="easyui-linkbutton" type="submit" >立即提交</button></td>
+					<td><button type="reset" class="easyui-linkbutton">重置</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	<!--分配权限  -->
+	
+	<div class="easyui-window" id="roleWindow" data-options="modal:true,closed:true">
+		<div class="easyui-layout" style="width:600px;height: 400px;">
+			 <div data-options="region:'east',title:'East',split:true" style="width:250px;">
+			 	<table style="width: 200px;" id="role" class="easyui-datagrid"></table>
+			 </div>
+		    <div data-options="region:'west',title:'West',split:true" style="width:250px;">
+		    	<table style="width: 200px;" id="roles" class="easyui-datagrid"></table>
+		    </div>
+		    <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+		    	<button onclick="zuowangyou()" class="easyui-linkbutton">>></button>
+		    	<button onclick="youwangzuo()" class="easyui-linkbutton">&lt;&lt;</button>
+		    </div>
+		</div>
+	</div>
+	
+</body>
+</html>

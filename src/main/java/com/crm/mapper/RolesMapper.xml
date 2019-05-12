@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.mapper.RolesMapper">
+		<select id="selectRolesByUsersId" parameterType="int" resultType="com.crm.entity.Roles">
+		SELECT 
+			* 
+		FROM 
+			roles 
+		WHERE 
+			roles_Id IN ( 
+				SELECT 
+					DISTINCT usersRoles_RoleId
+	  			FROM 
+	  				usersroles 
+	  			WHERE usersRoles_UserId = #{roles_Id} 
+	  			)
+	</select>
+	<select id="selectAllRolesDistinct"  resultType="com.crm.entity.Roles">
+		SELECT 
+			DISTINCT *
+		FROM 
+			roles 
+	</select>
+	<select id="selectAllRoles" parameterType="com.crm.entity.PageNation" resultType="com.crm.entity.Roles">
+		SELECT 
+			DISTINCT *
+		FROM 
+			roles 
+		<where>
+			<if test="text1 !=null and text1!='' ">
+				AND roles_Name = #{text1}
+			</if>
+		</where>
+		limit #{page},#{row}
+	</select>
+	<select id="selectAllRolesCount" parameterType="com.crm.entity.PageNation" resultType="int">
+		SELECT 
+			count(DISTINCT roles_Id)
+		FROM 
+			roles 
+		<where>
+			<if test="text1 !=null and text1!='' ">
+				AND roles_Name = #{text1}
+			</if>
+		</where>
+	</select>
+	<insert id="insertRoles" parameterType="com.crm.entity.Roles">
+		insert into roles (roles_Name)
+		values(#{roles_Name})
+	</insert>
+	<delete id="deleteRoles" parameterType="int">
+		delete from roles 
+		where roles_Id = #{roles_Id}
+	</delete>
+	<update id="updateRoles" parameterType="com.crm.entity.Roles">
+		update roles set roles_Name = #{roles_Name}
+		where roles_Id = #{roles_Id}
+	</update>
+	<select id="selectRolesByRolesName" parameterType="com.crm.entity.Roles" resultType="com.crm.entity.Roles">
+		select * from roles where roles_Name = #{roles_Name}
+	</select>
+	
+</mapper>

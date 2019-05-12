@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>添加用户</title>
+<link rel="stylesheet" href="/SpringBootCRM/layui/css/layui.css">
+<script type="text/javascript" src="/SpringBootCRM/js/jquery-1.8.2.min.js"></script>
+<script src="/SpringBootCRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/SpringBootCRM/layui/layui.js"></script>
+<script type="text/javascript">
+	var form;
+	var layer;
+	$(function(){
+		layui.use(['form','layer'],function(){
+			form = layui.form;
+			layer = layui.layer;
+			form.render();
+			
+		})
+	})
+	function add(){
+		form.on('submit(*)', function(data){
+			alert("s");
+			var url = "/SpringBootCRM/Admin/add";
+			var options = {
+				type: 'POST',
+				url: url,
+				dataType: 'json',
+				success: function(repData) {
+					if(repData) {
+						alert("添加成功");
+						window.parent.location.reload();
+						var index = parent.layer.getFrameIndex(window.name);
+						parent.layer.close(index);
+					} else {
+						alert("添加失败");
+						window.parent.location.reload();
+						var index = parent.layer.getFrameIndex(window.name);
+						parent.layer.close(index);
+					}
+				}
+			}
+			$("#myForm").ajaxSubmit(options);
+		});
+	}
+	function testLogin(){
+		var loginName = $("#loginName").val();
+		$.post("/SpringBootCRM/Admin/testLoginName",{
+			users_LoginName:loginName
+		},function(res){
+			if(res){
+				$("#loginName").val("");
+				layer.alert("用户名不能重复");
+			}
+		},"json")
+	}
+</script>
+</head>
+<body>
+	<form id="myForm" class="layui-form" action="javascript:add()" method="post">
+		<div class="layui-form-item">
+		    <label class="layui-form-label">登录名</label>
+		    <div class="layui-input-block">
+		      <input type="text" id="loginName" onblur="testLogin()" name="users_LoginName" required  lay-verify="required" placeholder="请输入用户名"  class="layui-input">
+		    </div>
+  		</div>
+		<div class="layui-form-item">
+		    <label class="layui-form-label">密码</label>
+		    <div class="layui-input-block">
+		      <input type="text" name="users_Password" required  lay-verify="required" placeholder="请输入密码"  class="layui-input">
+		    </div>
+  		</div>
+		<div class="layui-form-item">
+		    <label class="layui-form-label">角色</label>
+		    <div class="layui-input-block">
+		    	<select  name="usersRoles_RoleId" required  lay-verify="required">
+		    		<option th:each="role:${roles}" th:text="${role.roles_Name}" th:value="${role.roles_Id}"></option>
+		    	</select>
+		     
+		    </div>
+  		</div>
+		<div class="layui-form-item">
+		    <label class="layui-form-label">邮箱</label>
+		    <div class="layui-input-block">
+		      <input type="text" name="users_ProTectEMail" required  lay-verify="email" placeholder="请输入邮箱"  class="layui-input">
+		    </div>
+  		</div>
+		<div class="layui-form-item">
+		    <label class="layui-form-label">手机号码</label>
+		    <div class="layui-input-block">
+		      <input type="text" name="users_ProtectTel" required  lay-verify="phone" placeholder="请输入手机号"  class="layui-input">
+		    </div>
+  		</div>
+		<div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn" lay-submit lay-filter="*" >立即提交</button>
+		      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		    </div>
+  		</div> 
+	</form>
+</body>
+</html>
