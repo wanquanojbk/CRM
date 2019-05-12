@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#tt").tree({
+		url:'/CRM/Module/selectAllModules' ,
+		method:'get',
+		onLoadSuccess:function(node, data){
+			console.log(data);
+		} 
+	})
+})
+</script> 
+</head>
+<body>
+
+	<div  style="width: 500px;height: 500px;">
+		<ul id="tt" style="background-color: red;" data-options=""  class="easyui-tree"></ul>
+	</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+[{
+	"id": 1,
+	"text": "管理员模块",
+	"children": [{
+		"id": 2,
+		"text": "用户管理",
+		"state": "closed",
+		"attributes": {
+			"weight": "2",
+			"url": "/SpringBootCRM/Admin/users"
+		}
+		
+	}, {
+		"id": 3,
+		"text": "模块管理",
+		"state": "closed",
+		"attributes": {
+			"weight": "2",
+			"url": "/SpringBootCRM/Admin/modules"
+		}
+	}, {
+		"id": 4,
+		"text": "角色管理",
+		"state": "closed",
+		"attributes": {
+			"weight": "2",
+			"url": "/SpringBootCRM/Admin/roles"
+		}
+		
+	}]
+	
+}]

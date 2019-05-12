@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.mapper.UsersMapper">
+	<!-- 登录 -->
+	<select id="selectUsers" parameterType="com.crm.entity.Users"
+		resultType="com.crm.entity.Users">
+		SELECT * FROM users WHERE
+		users_LoginName=#{users_LoginName} AND
+		users_Password=#{users_Password}
+	</select>
+	<!-- 重名 -->
+	<select id="selectUsersByUsersName"
+		parameterType="com.crm.entity.Users" resultType="com.crm.entity.Users">
+		SELECT * FROM users
+		WHERE users_LoginName=#{users_LoginName}
+	</select>
+	<!--  -->
+	<update id="updateUsersLockout"
+		parameterType="com.crm.entity.Users">
+		UPDATE users SET
+		users_PsdWrongTime=#{users_PsdWrongTime},users_LsLockout=#{users_LsLockout}
+		WHERE users_Id=#{users_Id}
+	</update>
+	<!--  -->
+	<update id="updateUserPsdWrongTimeSucessByZero"
+		parameterType="com.crm.entity.Users">
+		UPDATE users SET
+		users_PsdWrongTime=0,users_LastLoginTime=#{users_LastLoginTime}
+		WHERE
+		users_Id=#{users_Id}
+	</update>
+	<!--  -->
+	<select id="selectUsersByUsersEmail" parameterType="com.crm.entity.Users" resultType="com.crm.entity.Users">
+		SELECT * FROM users
+		WHERE users_LoginName=#{users_LoginName} AND
+		users_ProTectEMail=#{users_ProTectEMail} AND
+		users_ProtectTel=#{users_ProtectTel}
+	</select>
+	<!-- 重置密码  -->
+	<update id="updateUsersChongZhiPassword" parameterType="com.crm.entity.Users">
+	UPDATE users SET users_Password=#{users_Password} WHERE users_Id=#{users_Id}
+	</update>
+	<!-- 查询不是管理员的用户 -->
+	<select id="selectUsersAndIsNotAdmin" parameterType="com.crm.entity.PageNation" resultType="com.crm.entity.Users">
+					SELECT DISTINCT u.*
+				FROM users u,roles r,usersroles ur WHERE ur.usersRoles_RoleId = r.roles_Id AND ur.usersRoles_UserId = u.users_Id AND r.roles_Name !='管理员'
+		<if test="text1 != null and text1 != '' ">
+			AND  u.users_LoginName like "%"#{text1}"%"
+		</if>
+		<if test="text2 != null and text2 != ''">
+			AND  u.users_CreateTime >= #{text2}
+		</if>
+		<if test="text3 != null and text3 != ''">
+			AND  u.users_CreateTime &lt;= #{text3}
+		</if>
+		<if test="num1 !=null ">
+			AND u.users_LsLockout = #{num1}
+		</if>
+			limit #{page},#{row}
+	</select>
+	<!-- 查询不是管理员的用户的总条数 -->
+	<select id="selectUsersAndIsNotAdminCount" parameterType="com.crm.entity.PageNation" resultType="int">
+	SELECT count(DISTINCT u.users_Id)
+				FROM users u,roles r,usersroles ur WHERE ur.usersRoles_RoleId = r.roles_Id AND ur.usersRoles_UserId = u.users_Id AND r.roles_Name !='管理员'
+		<if test="text1 != null and text1 != '' ">
+			AND  u.users_LoginName like "%"#{text1}"%"
+		</if>
+		<if test="text2 != null and text2 != ''">
+			AND  u.users_CreateTime >= #{text2}
+		</if>
+		<if test="text3 != null and text3 != ''">
+			AND  u.users_CreateTime &lt;= #{text3}
+		</if>
+		<if test="num1 !=null ">
+			AND u.users_LsLockout = #{num1}
+		</if>
+	</select>
+	<!-- 修改用户信息  -->
+	<update id="updateUsersInfoMation" parameterType="com.crm.entity.Users">
+		update users
+		set users_ProTectEMail =#{users_ProTectEMail},
+		users_ProtectTel =#{users_ProtectTel}
+		where users_Id = #{users_Id}
+	</update>
+	<!-- 锁定 -->
+	<update id="updateUsersIsLockOn" parameterType="int">
+		update users
+		set users_LsLockout =  0 where users_Id =#{users_Id}
+	</update>
+	<!-- 解锁 -->
+	<update id="updateUsersIsLockOFF" parameterType="int">
+		update users
+		set users_LsLockout =  1 where users_Id =#{users_Id}
+	</update>
+	<delete id="deleteUsersByUsersId" parameterType="int">
+		delete from users where users_Id = #{users_Id}
+	</delete>
+	<insert id="insertUsers" parameterType="com.crm.entity.Users">
+		insert into users (users_LoginName,users_Password,users_ProTectEMail,users_ProtectTel)
+		values(#{users_LoginName},#{users_Password},#{users_ProTectEMail},#{users_ProtectTel})
+		<selectKey order="AFTER" keyProperty="users_Id" resultType="int">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	<select id="selectUsersByUsersId" parameterType="int" resultType="com.crm.entity.Users">
+		select *
+		from users where users_Id =#{users_Id}
+	</select>
+</mapper>
