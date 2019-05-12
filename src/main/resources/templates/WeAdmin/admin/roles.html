@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+
+<script type="text/javascript" th:inline="none">
+	$(function(){
+		init();
+	})
+	function init(){
+		$("#demo").datagrid({
+			url:'/CRM/Roles/rolesPageNation',
+			method:'post',
+			columns:[[
+				  {field: 'roles_Id', title: '角色编号', sort: true, align: 'center'}
+				  ,{field: 'roles_Name', title: '角色名称', align: 'center'}
+				  ,{field: 'modules', title: '分配模块', formatter:modules}
+			]],
+			pagination:true,
+			queryParams:{
+				text1:$("#text1").val()
+			},
+			toolbar:'#tool'
+		})
+	}
+	function fenpei(id){
+		$("#modulesTree").tree({
+			url:'/CRM/Module/selectAllModulesByRolesId',
+			method:'post',
+			checkbox:true,
+			queryParams:{
+				id:id
+			}
+		})
+		$("#fenpeiWindow").window("open");
+	}
+	function modules(value,row,index){
+		return "<a href='javascript:void(0)' onclick='fenpei("+row.roles_Id+")'>分配模块</a>";
+	}
+</script>
+</head>
+<body>
+	<div id="tool">
+			<input id="text1" width="150" type="text" value="" class="easyui-validatebox" placeholder="请输入角色名">
+			<input  type="button" value="添加" class="easyui-linkbutton"  >
+			<input type="button" class="easyui-linkbutton" value="搜索" onclick="init()">
+	</div>
+	<table class="easyui-datagrid" id="demo"></table>
+	<div id="fenpeiWindow" class="easyui-window" data-options="modal:true,closed:true">
+		<ul id="modulesTree" class="easyui-tree"></ul>
+		<button class="easyui-linkbutton">提交</button>
+		<button class="easyui-linkbutton">取消</button>
+	</div>
+	
+</body>
+</html>

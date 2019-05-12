@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.crm.mapper.UsersRolesMapper">
+ 	<insert id="insertUsersRoles" parameterType="com.crm.entity.UsersRoles">
+ 		insert into usersroles (usersRoles_UserId,usersRoles_RoleId) values(
+ 		 #{usersRoles_UserId},#{usersRoles_RoleId}
+ 		)
+ 	</insert>
+ 	<delete id="deleteUsersRoles" parameterType="com.crm.entity.UsersRoles">
+ 		delete from usersroles where usersRoles_UserId = #{usersRoles_UserId} and usersRoles_RoleId = #{usersRoles_RoleId}
+ 	</delete>
+ </mapper>

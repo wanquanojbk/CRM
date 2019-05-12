@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.crm.mapper.ModulesMapper">
+  <!-- 查出该用户的所有模块 -->
+  <select id="selectByUserId" parameterType="Integer" resultType="com.crm.entity.Modules">
+SELECT * FROM modules WHERE modules_Id IN (
+SELECT permissiontb_ModuleId FROM permissiontb WHERE permissiontb_Id IN(
+SELECT rolePermissiontb_PermissionId FROM rolepermissiontb WHERE rolePermissiontb_RoleId IN(
+SELECT roles_Id FROM roles WHERE  roles_Id  IN( 
+SELECT usersRoles_RoleId FROM usersroles WHERE usersRoles_UserId=#{usersRoles_UserId}))))
+  </select>
+  <!--查出不是顶级模块下面的模块是否有子模块  -->
+  <select id="selectLeafNode" parameterType="com.crm.entity.Modules" resultType="com.crm.entity.Modules">
+  	SELECT * FROM `modules` WHERE modules_Id != 0 AND modules_ParentId = #{modules_Id}
+  </select>
+  <select id="selectAllModules" resultType="com.crm.entity.Modules">
+  		select * from modules 
+  </select>
+  <select id="selectModulesByRoleId" parameterType="int" resultType="com.crm.entity.Modules">
+		SELECT *
+		FROM modules WHERE modules_Id IN (
+		SELECT  pt.permissiontb_ModuleId
+		FROM roles r,permissiontb pt,rolepermissiontb tb WHERE 
+		r.roles_Id = tb.rolePermissiontb_RoleId AND pt.permissiontb_Id = tb.rolePermissiontb_PermissionId AND r.roles_Id = #{roles_Id}
+		)
+	</select>
+  </mapper>

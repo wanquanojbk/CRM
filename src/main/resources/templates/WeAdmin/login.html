@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Login</title>
+<meta name="robots" content="all">
+<meta name="author" content="djcbpl@163.com">
+<meta name="Copyright" content="djcbpl@163.com">
+<meta name="description" content="easyUI主题UI">
+<meta name="keywords" content="">
+<meta name="searchtitle" content="">
+<link rel="Bookmark" href="/CRM/js/assets/default/images/logoIco.ico" />
+<link rel="Shortcut Icon" href="/CRM/js/assets/default/images/logoIco.ico" />
+<link type="text/css" rel="stylesheet" href="/CRM/js/assets/default/login/css/login.css">
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.min.js"></script>   
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>  
+
+</head>
+<body>
+
+<!--头部start-->	
+<div class="login-header">
+	<div id="login-header-nav" class="nobogder"> 
+		<div id="login-header-nav_ctx">
+			<div class="l mt10px">
+				<a href="javascript:;" class="logoicon">logo图标</a>
+				<a href="javascript:;" class="logo_title">logo名称</a>
+				<a class="line"></a>
+				<a href="javascript:;" class="e">logo副标题</a>
+			</div>
+			<div class="reg_topLink">
+				<div class="about-us">
+					<span class="home"></span>
+					<span class="collection"></span>
+					<span class="about"></span>
+					<a href="javascript:;">联系我们</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--头部end-->
+	
+<form id="loginForm"  action="/CRM/login" class="easyui-form" method="post">
+			<span th:utext="${msg}"></span>
+			<input name="users_LoginName" class="easyui-validatebox" data-options="required:true">
+			<input name="users_Password" type="password" class="easyui-validatebox" data-options="required:true">
+			<input  id="" type="submit" class="easyui-linkbutton" value="登录">
+</form>
+<!--底部start-->	
+
+
+<script src="/CRM/js/assets/js/jquery2.1.1.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	
+</script>
+</body>
+</html>
