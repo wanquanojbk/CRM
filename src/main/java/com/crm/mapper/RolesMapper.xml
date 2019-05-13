@@ -32,6 +32,7 @@
 			<if test="text1 !=null and text1!='' ">
 				AND roles_Name = #{text1}
 			</if>
+			 AND roles_Name !='管理员'
 		</where>
 		limit #{page},#{row}
 	</select>
@@ -44,6 +45,7 @@
 			<if test="text1 !=null and text1!='' ">
 				AND roles_Name = #{text1}
 			</if>
+			 AND roles_Name !='管理员'
 		</where>
 	</select>
 	<insert id="insertRoles" parameterType="com.crm.entity.Roles">
@@ -62,12 +64,12 @@
 		select * from roles where roles_Name = #{roles_Name}
 	</select>
 	<delete id="deleteAllPermissiontbByRolesIdId" parameterType="int">
-		DELETE 
-FROM permissiontb WHERE permissiontb_Module IN (
-SELECT modules_Id FROM modules WHERE modules_Id IN (
-SELECT permissiontb_ModuleId FROM permissiontb WHERE permissiontb_Id IN(
-SELECT rolePermissiontb_PermissionId FROM rolepermissiontb WHERE rolePermissiontb_RoleId IN(
-SELECT roles_Id FROM roles WHERE  roles_Id =#{rolesId})))
+DELETE FROM permissiontb 
+WHERE permissiontb_Id IN(
+SELECT rolePermissiontb_PermissionId
+FROM rolepermissiontb WHERE rolePermissiontb_RoleId IN(
+SELECT roles_Id FROM roles WHERE roles_Id = #{roles_Id}
+)
 )
 	</delete>
 	<delete id="deleteAllRolePermissiontbByRolesId" parameterType="int">
