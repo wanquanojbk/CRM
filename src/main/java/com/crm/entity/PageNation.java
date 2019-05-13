@@ -2,6 +2,9 @@ package com.crm.entity;
 
 import java.util.List;
 
+import org.aspectj.weaver.ast.And;
+import org.springframework.stereotype.Component;
+@Component
 public class PageNation {
 
 	private Integer page;
@@ -165,6 +168,14 @@ public class PageNation {
 
 	public void setText6(String text6) {
 		this.text6 = text6;
+	}
+
+	@Override
+	public String toString() {
+		return "PageNation [page=" + page + ", row=" + row + ", total=" + total + ", rows=" + rows + ", num1=" + num1
+				+ ", num2=" + num2 + ", num3=" + num3 + ", num4=" + num4 + ", num5=" + num5 + ", num6=" + num6
+				+ ", text1=" + text1 + ", text2=" + text2 + ", text3=" + text3 + ", text4=" + text4 + ", text5=" + text5
+				+ ", text6=" + text6 + "]";
 	}
 
 	

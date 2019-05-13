@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" th:inline="none">
+	$(function (){
+		init();
+	})
+	function init(){
+		$('#dg').datagrid({    
+		    url:'/CRM/Student/selectStudent',
+		    method:'post',
+		    pagination:true,
+		    toolbar:"#bar",
+		    columns:[[    
+		        {field:'student_Id',title:'学生ID'},    
+		        {field:'student_Name',title:'姓名'},    
+		        {field:'student_Sex',title:'性别'},
+		        {field:'student_Birthday',title:'生日'},
+		        {field:'student_Source',title:'学员来源'},
+		        {field:'student_IdentityNumber',title:'身份证号'},
+		        {field:'student_Email',title:'邮箱'},
+		        {field:'student_Qq',title:'QQ'},
+		        {field:'student_Tel',title:'电话'},
+		        {field:'student_Address',title:'地区'},
+		        {field:'student_Creator',title:'跟进人'},
+		        {field:'student_CreateTime',title:'入学时间'},
+		        {field:'student_UpdateTime',title:'更新时间'},
+		        {field:'student_Remarks',title:'备注'},
+		        {field:'student_ClassId',title:'班级Id'},
+		        {field:'student_Status',title:'缴费状态'},
+		        {field:'student_Amount',title:'缴费金额'},
+		       	{field:'className',title:'班级名称',formatter:className},
+		       	{field:'teacherName',title:'教师名称',formatter:teacherName}
+		    ]],
+		    queryParams:{
+		    	text1:$("#text1").textbox('getValue'),
+		    	text3:$("#text2").textbox('getValue'),
+		    	text3:$("#text3").datetimebox('getValue'),
+		    	text4:$("#text4").datetimebox('getValue'),
+		    	num2:$("#num2").combobox('getValue')
+		    }
+		});  
+	}
+	/* 班级名称 */
+	function className(value,row,index){
+		return row.classes.classes_Name;
+	}
+	
+	function teacherName(value,row,index){
+		return row.classes.users.users_LoginName;
+		
+		// 就是有些路径问题需要注意注意   /CRM/然后写RequestMapping的映射名就行
+		//如果是js文件  /CRM/写static文件夹里面的 文件然后往下引
+		// /CRM/js/.............
+	}
+</script>
+</head>
+<body>
+	<table id="dg"></table>
+	<div id="bar">
+		姓名：<input class="easyui-textbox" id="text1" name="text1"/> 
+		性别：<input class="easyui-textbox" id="text2" name="text2"/> 
+		生日：<input class="easyui-datetimebox" id="text3" name="text3"/> -
+			<input class="easyui-datetimebox" id="text4" name="text4"/> 
+		缴费状态：<select id="num2" class="easyui-combobox" name="num2">   
+			    <option value="">--请选择--</option>   
+			    <option value="0">未缴费</option>   
+			    <option value="1">已缴费</option>   
+				</select>  
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="init()" data-options="iconCls:'icon-search'">查询</a> 
+	</div>
+</body>
+</html>
