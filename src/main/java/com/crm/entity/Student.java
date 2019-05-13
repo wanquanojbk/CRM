@@ -1,8 +1,5 @@
 package com.crm.entity;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Student {
 private Integer student_Id;//编号
 private String student_Name;//姓名
@@ -23,8 +20,6 @@ private Integer student_Status;//缴费状态(默认为0,0:未缴费,1:已缴费
 private Double student_Amount;//缴费金额
 private Integer student_Exit1;//预留1
 private String student_Exit2;//预留2
-private Classes classes;
-
 public Integer getStudent_Id() {
 	return student_Id;
 }
@@ -139,17 +134,11 @@ public String getStudent_Exit2() {
 public void setStudent_Exit2(String student_Exit2) {
 	this.student_Exit2 = student_Exit2;
 }
-public Classes getClasses() {
-	return classes;
-}
-public void setClasses(Classes classes) {
-	this.classes = classes;
-}
 public Student(Integer student_Id, String student_Name, String student_Sex, String student_Birthday,
 		String student_Source, String student_IdentityNumber, String student_Email, String student_Qq,
 		String student_Tel, String student_Address, Integer student_Creator, String student_CreateTime,
 		String student_UpdateTime, String student_Remarks, Integer student_ClassId, Integer student_Status,
-		Double student_Amount, Integer student_Exit1, String student_Exit2, Classes classes) {
+		Double student_Amount, Integer student_Exit1, String student_Exit2) {
 	super();
 	this.student_Id = student_Id;
 	this.student_Name = student_Name;
@@ -170,12 +159,10 @@ public Student(Integer student_Id, String student_Name, String student_Sex, Stri
 	this.student_Amount = student_Amount;
 	this.student_Exit1 = student_Exit1;
 	this.student_Exit2 = student_Exit2;
-	this.classes = classes;
 }
 public Student() {
 	super();
 }
-
 @Override
 public String toString() {
 	return "Student [student_Id=" + student_Id + ", student_Name=" + student_Name + ", student_Sex=" + student_Sex
@@ -185,8 +172,7 @@ public String toString() {
 			+ ", student_Creator=" + student_Creator + ", student_CreateTime=" + student_CreateTime
 			+ ", student_UpdateTime=" + student_UpdateTime + ", student_Remarks=" + student_Remarks
 			+ ", student_ClassId=" + student_ClassId + ", student_Status=" + student_Status + ", student_Amount="
-			+ student_Amount + ", student_Exit1=" + student_Exit1 + ", student_Exit2=" + student_Exit2 + ", classes="
-			+ classes + "]";
+			+ student_Amount + ", student_Exit1=" + student_Exit1 + ", student_Exit2=" + student_Exit2 + "]";
 }
 
 }
