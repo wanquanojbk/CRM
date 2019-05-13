@@ -9,13 +9,64 @@
 <script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
-
 <script type="text/javascript" th:inline="none">
 	var ids = "";
 	var roleId ="";
 	$(function(){
 		init();
 	})
+	function testName2(){
+		$.post("/CRM/Roles/testRolesName",{
+			roles_Name:$("#rolesName2").val()
+		},function(res){
+			if(res){
+				$.messager.alert("提示","角色名不能重复哦");
+				$("#rolesName2").val("");
+			}
+		},"json")
+	}
+	function testName(){
+		$.post("/CRM/Roles/testRolesName",{
+			roles_Name:$("#rolesName").val()
+		},function(res){
+			if(res){
+				$.messager.alert("提示","角色名不能重复哦");
+				$("#rolesName").val("");
+			}
+		},"json")
+	}
+	function add(){
+		$("#add_window").window("open");
+	}
+	function xiugai(){
+		$.post("/CRM/Roles/updateRoles",{
+			roles_Name:$("#rolesName2").val()
+		},function(res){
+			if(res){
+				$("#update_window").window("close");
+				$("#demo").datagrid("reload");
+				$.messager.alert("提示","修改成功");
+			}
+			else{
+				$.messager.alert("提示","修改失败");
+			}
+		},"json")
+	}
+	function tianjia(){
+		$.post("/CRM/Roles/insertRoles",{
+			roles_Name:$("#rolesName").val()
+		},function(res){
+			if(res){
+				$("#add_window").window("close");
+				$("#demo").datagrid("reload");
+				$.messager.alert("提示","添加成功");
+			}
+			else{
+				$.messager.alert("提示","添加失败");
+			}
+		},"json")
+	}
+	
 	function tijiao(){
 		ids="";
 		var checkedNodes = $('#modulesTree').tree('getChecked');	// get checked nodes
@@ -34,15 +85,16 @@
 		}
 		$.messager.confirm('提示','确认往下进行分配操作么?',function(r){
 		    if (r){
-				$.post("",{
+				$.post("/CRM/Roles/rolesAndModules",{
 					ids:ids,
 					roleId:roleId
 				},function(res){
 					if(res){
-						roleId="";
+						$.messager.alert("提示","分配成功");
+						$("#fenpeiWindow").window("close");
 					}
 					else{
-						
+						$.messager.alert("提示","分配成功");
 					}
 				},"json")
 		    }
@@ -54,9 +106,11 @@
 			url:'/CRM/Roles/rolesPageNation',
 			method:'post',
 			columns:[[
+				  {field:'checkbox',checkbox:true},	
 				  {field: 'roles_Id', title: '角色编号', sort: true, align: 'center'}
 				  ,{field: 'roles_Name', title: '角色名称', align: 'center'}
 				  ,{field: 'modules', title: '分配模块', formatter:modules}
+				  ,{field: 'edit', title: '修改', formatter:edit}
 			]],
 			pagination:true,
 			queryParams:{
@@ -77,16 +131,48 @@
 		})
 		$("#fenpeiWindow").window("open");
 	}
+	function edit(value,row,index){
+		return "<a href='javascript:void(0)' onclick='openUpdate("+index+")'>修改</a>"
+	}
+	function openUpdate(index){
+		var data = $("#demo").datagrid("getData");
+		var row = data.rows[index];
+		$("#updateForm").form("load",row);
+		$("#update_window").window("open");
+	}
 	function modules(value,row,index){
 		return "<a href='javascript:void(0)' onclick='fenpei("+row.roles_Id+")'>分配模块</a>";
+	}
+	function remove(){
+		ids="";
+		var rows = $("#demo").datagrid("getChecked");
+		$.messager.confirm('Confirm','真的删除选中角色么?',function(r){
+		    if (r){
+		    	if(rows.length>0){
+		    		 for(var i=0;i<rows.length;i++){
+						  ids+=rows[i].roles_Id+",";
+					  }
+					$.post("/CRM/Roles/deleteRoles",{ids:ids},function(res){
+						if(res){
+							$("#demo").datagrid("reload");
+							$.messager.alert("提示","删除成功");
+						}
+						else{
+							$.messager.alert("提示","删除失败");
+						}
+					},"json")
+				  }
+		    }
+		});
 	}
 </script>
 </head>
 <body>
 	<div id="tool">
 			<input id="text1" width="150" type="text" value="" class="easyui-validatebox" placeholder="请输入角色名">
-			<input  type="button" value="添加" class="easyui-linkbutton"  >
-			<input type="button" class="easyui-linkbutton" value="搜索" onclick="init()">
+			<a href="javascript:void(0)" onclick="add()" class="easyui-linkbutton" data-options="iconCls:'icon-add'"  >添加</a>
+			<a href="javascript:void(0)" onclick="init()" class="easyui-linkbutton" data-options="iconCls:'icon-search'"  >搜索</a>
+			<a href="javascript:void(0)" onclick="remove()" class="easyui-linkbutton" data-options="iconCls:'icon-remove'"  >删除</a>
 	</div>
 	<table class="easyui-datagrid" id="demo"></table>
 	<div style="width: 500px;height: 500px;" id="fenpeiWindow" class="easyui-window" data-options="modal:true,closed:true">
@@ -94,6 +180,20 @@
 		<button class="easyui-linkbutton" onclick="tijiao()">提交</button>
 		<button class="easyui-linkbutton">取消</button>
 	</div>
-	
+	<div style="width: 500px;height: 200px;"  class="easyui-window" id="add_window" data-options="modal:true,closed:true">
+		<input id="rolesName" onblur="testName()" type="text" class="easyui-validatebox" placeholder="请输入角色名称" />
+		<a  href="javascript:void(0)" class="easyui-linkbutton" onclick="tianjia()"  >
+			添加
+		</a>
+	</div>
+	<div style="width: 500px;height: 200px;"  class="easyui-window" id="update_window" data-options="modal:true,closed:true">
+		<form action="" id="updateForm">
+			<input id="rolesName2" onblur="testName2()" name="roles_Name" type="text" class="easyui-validatebox"  />
+			<a  href="javascript:void(0)" class="easyui-linkbutton" onclick="xiugai()"  >
+				修改
+			</a>
+		</form>
+		
+	</div>
 </body>
 </html>

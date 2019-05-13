@@ -23,6 +23,7 @@ private ModulesService modulesService;
 @RequestMapping("/selectModules")
 public @ResponseBody List<Map<String, Object>> selectModules(HttpSession session) {
 	Users users = (Users)session.getAttribute("users");
+	System.out.println(users+"-------------------------------------------------");
 	List<Map<String, Object>> list = modulesService.selectByUserId(users.getUsers_Id());
 	System.out.println("ssssssssssssssssss"+list+"------------------------------");
 	//判断map集合是否为空,并添加key给前台做判断
