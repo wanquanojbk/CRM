@@ -31,5 +31,18 @@ public class StudentServiceImpl implements StudentService {
 		System.out.println(selectStudent);
 		return pageNation;
 	}
+	@Override
+	public List<Student> selectAllCheckedStudent(String ids) {
+		// TODO Auto-generated method stub
+		System.out.println(ids+"-------------------------.............................................");
+		String[] split = ids.split(",");
+		Integer[] array =new Integer[split.length];
+		for(int i=0;i<array.length;i++) {
+			array[i] = Integer.parseInt(split[i]);
+		}
+		List<Student> list = studentMapper.selectAllCheckedStudent(array);
+		return list;
+	}
+	
 
 }

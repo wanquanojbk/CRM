@@ -65,11 +65,11 @@
 			</if>
 			
 			<if test="text3 != '' and text3 != null">
-				AND s.student_Birthday &gt;=#{text3}
+				AND s.student_CreateTime &gt;=#{text3}
 			</if>
 			
 			<if test="text4 != '' and text4 != null">
-				AND s.student_Birthday &lt;=#{text4}
+				AND s.student_CreateTime &lt;=#{text4}
 			</if>
 			
 			<if test="num2 !=null  ">
@@ -104,11 +104,11 @@
 			</if>
 			
 			<if test="text3 != '' and text3 != null">
-				AND s.student_Birthday &gt;=#{text3}
+				AND s.student_CreateTime &gt;=#{text3}
 			</if>
 			
 			<if test="text4 != '' and text4 != null">
-				AND s.student_Birthday &lt;=#{text4}
+				AND s.student_CreateTime &lt;=#{text4}
 			</if>
 			
 			<if test="num2 != null  ">
@@ -125,5 +125,14 @@
 			
 			
 		</where>
+ 	</select>
+ 	<select id="selectAllCheckedStudent"  resultType="Student">
+ 		select *
+ 		from student 
+ 		where student_Id in 
+ 		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+ 			#{item}
+ 		</foreach>
+ 		
  	</select>
   </mapper>

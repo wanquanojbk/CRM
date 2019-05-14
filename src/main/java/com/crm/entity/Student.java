@@ -2,23 +2,42 @@ package com.crm.entity;
 
 import org.springframework.stereotype.Component;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.BaseRowModel;
+
 @Component
-public class Student {
+public class Student extends BaseRowModel {
+@ExcelProperty(value ="学生编号",index=0)
 private Integer student_Id;//编号
+@ExcelProperty(value ="学生姓名",index=1)
 private String student_Name;//姓名
+@ExcelProperty(value ="性别",index=2)
 private String student_Sex;//性别
+@ExcelProperty(value ="出生日期",index=3)
 private String student_Birthday;//出生日期
+@ExcelProperty(value ="学生来源",index=4)
 private String student_Source;//学员来源
+@ExcelProperty(value ="身份证号",index=5)
 private String student_IdentityNumber;//身份证号
+@ExcelProperty(value ="电子邮箱",index=6)
 private String student_Email;//电子邮件
+@ExcelProperty(value ="QQ",index=7)
 private String student_Qq;//qq
+@ExcelProperty(value ="电话",index=8)
 private String student_Tel;//电话
+@ExcelProperty(value ="出生日期",index=9)
 private String student_Address;//地区
+@ExcelProperty(value ="跟进人",index=10)
 private Integer student_Creator;//跟进人
+@ExcelProperty(value ="入学时间",index=11)
 private String student_CreateTime;//入学时间
+@ExcelProperty(value ="更新时间",index=12)
 private String student_UpdateTime;//更新时间
+@ExcelProperty(value ="备注",index=13)
 private String student_Remarks;//备注
+@ExcelProperty(value ="班级ID",index=14)
 private Integer student_ClassId;//班级Id
+@ExcelProperty(value ="缴费状态(0:未缴,1:已缴)",index=15)
 private Integer student_Status;//缴费状态(默认为0,0:未缴费,1:已缴费)
 private Double student_Amount;//缴费金额
 private Integer student_Exit1;//预留1

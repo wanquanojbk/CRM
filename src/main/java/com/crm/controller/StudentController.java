@@ -1,5 +1,9 @@
 package com.crm.controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.crm.Excel.ExcelUtil;
 import com.crm.entity.PageNation;
+import com.crm.entity.Student;
 import com.crm.entity.Users;
 import com.crm.service.StudentService;
 
@@ -36,7 +42,14 @@ public class StudentController {
 		pageNation.setRow(row);
 		Users users = (Users)session.getAttribute("users");
 		pageNation.setNum1(users.getUsers_Id());
-		System.out.println(pageNation+"-----------------------------------------------------------");
 		return studentService.selectStudent(pageNation, session);
 	}
+	
+	@RequestMapping(value = "writeExcel")
+	public void writeExcel(HttpServletResponse response,String ids) throws IOException {
+		List<Student> list = studentService.selectAllCheckedStudent(ids);
+	    String fileName = "第一个表格";
+	    String sheetName = "第一个 sheet";
+	    ExcelUtil.writeExcel(response, list, fileName, sheetName, new Student());
+	    }
 }

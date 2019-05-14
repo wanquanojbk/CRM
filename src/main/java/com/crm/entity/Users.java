@@ -2,8 +2,12 @@ package com.crm.entity;
 
 import java.util.List;
 
-public class Users {
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.BaseRowModel;
+
+public class Users extends BaseRowModel{
 	private Integer users_Id;//用户编号
+	@ExcelProperty(value ="教师姓名",index=16)
 	private String users_LoginName;//用户登录名
 	private String users_Password;//用户登陆密码
 	private Integer users_LsLockout;//是否锁定

@@ -1,7 +1,12 @@
 package com.crm.entity;
+
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.BaseRowModel;
+
 //班级表
-public class Classes {
+public class Classes extends BaseRowModel{
 	private Integer classes_Id;// 编号
+	@ExcelProperty(value ="班级名称",index=15)
 	private String classes_Name;// 班级名称
 	private String classes_CreateTime;// 班级创建时间
 	private String classes_CounselorId;//班级辅导员编号
