@@ -90,5 +90,13 @@ public class RolesServiceImpl  implements RolesService{
 			return true;
 		return false;
 	}
+	@Override
+	public Boolean updateRoles(Roles roles) {
+		// TODO Auto-generated method stub
+		Integer i = rolesMapper.updateRoles(roles);
+		if(i>0)
+			return true;
+		return false;
+	}
 
 }
