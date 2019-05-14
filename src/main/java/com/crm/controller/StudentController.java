@@ -18,7 +18,6 @@ public class StudentController {
 	@Autowired
 	private StudentService studentService;
 	
-
 	//这个方法仅仅做页面跳转使用  因为我们的页面相当于是放在webinf里面所以直接访问
 	@RequestMapping("/myStudent")
 	public String myStudent() {

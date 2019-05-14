@@ -15,3 +15,6 @@
 2019-05-14 09:59:44.929 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2019-05-14 09:59:44.930 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
 2019-05-14 09:59:44.942 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 12 ms
+2019-05-14 10:16:00.386 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
+2019-05-14 10:16:00.388 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-05-14 10:16:00.397 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
