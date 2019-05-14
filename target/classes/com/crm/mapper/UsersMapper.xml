@@ -47,7 +47,7 @@
 					SELECT DISTINCT u.*
 				FROM users u,roles r,usersroles ur WHERE ur.usersRoles_RoleId = r.roles_Id AND ur.usersRoles_UserId = u.users_Id AND r.roles_Name !='管理员'
 		<if test="text1 != null and text1 != '' ">
-			AND  u.users_LoginName like "%"#{text1}"%"
+			AND  u.users_LoginName like CONCAT(CONCAT('%',#{text1}), '%')
 		</if>
 		<if test="text2 != null and text2 != ''">
 			AND  u.users_CreateTime >= #{text2}
@@ -65,7 +65,7 @@
 	SELECT count(DISTINCT u.users_Id)
 				FROM users u,roles r,usersroles ur WHERE ur.usersRoles_RoleId = r.roles_Id AND ur.usersRoles_UserId = u.users_Id AND r.roles_Name !='管理员'
 		<if test="text1 != null and text1 != '' ">
-			AND  u.users_LoginName like "%"#{text1}"%"
+			AND  u.users_LoginName like CONCAT(CONCAT('%',#{text1}), '%')
 		</if>
 		<if test="text2 != null and text2 != ''">
 			AND  u.users_CreateTime >= #{text2}

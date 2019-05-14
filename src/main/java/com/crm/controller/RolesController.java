@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crm.entity.PageNation;
+import com.crm.entity.Roles;
 import com.crm.service.RolesService;
 
 @Controller
@@ -23,4 +24,31 @@ public class RolesController {
 		System.out.println(pageNation+"------------------------");
 		return rolesService.rolesStartPage(pageNation);
 	}
+	@RequestMapping("/rolesAndModules")
+	@ResponseBody
+	public Boolean rolesAndModules(String ids,Integer roleId) {
+		return  rolesService.rolesAndModules(ids, roleId);
+	}
+	@RequestMapping("/testRolesName")
+	@ResponseBody
+	public Boolean testRolesName(Roles roles) {
+		return  rolesService.testRolesName(roles);
+	}
+	@RequestMapping("/insertRoles")
+	@ResponseBody
+	public Boolean insertRoles(Roles roles) {
+		return  rolesService.insertRoles(roles);
+	}
+	@RequestMapping("/deleteRoles")
+	@ResponseBody
+	public Boolean deleteRoles(String ids) {
+		return  rolesService.deleteRoles(ids);
+	}
+	@RequestMapping("/updateRoles")
+	@ResponseBody
+	public Boolean updateRoles(Roles roles) {
+		return  rolesService.updateRoles(roles);
+	}
+	
+	
 }
