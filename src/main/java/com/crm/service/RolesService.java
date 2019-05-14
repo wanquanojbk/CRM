@@ -39,4 +39,11 @@ public interface RolesService {
 	 * @return 结果
 	 */
 	public Boolean deleteRoles(String ids);
+	
+	/**
+	 * 
+	 * @param roles 根据对象修改
+	 * @return
+	 */
+	public Boolean updateRoles(Roles roles);
 }

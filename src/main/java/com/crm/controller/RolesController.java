@@ -44,6 +44,11 @@ public class RolesController {
 	public Boolean deleteRoles(String ids) {
 		return  rolesService.deleteRoles(ids);
 	}
+	@RequestMapping("/updateRoles")
+	@ResponseBody
+	public Boolean updateRoles(Roles roles) {
+		return  rolesService.updateRoles(roles);
+	}
 	
 	
 }
