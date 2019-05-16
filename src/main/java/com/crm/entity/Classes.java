@@ -10,6 +10,9 @@ public class Classes {
 	private String classes_Status;//班级状态
 	private Integer classes_Exit1;//预留1
 	private String classes_Exit2;//预留2
+	private Campus campus;//校区表
+	private Users users;//用户表
+	private Student student;
 
 	public Integer getClasses_Id() {
 		return classes_Id;
@@ -82,6 +85,30 @@ public class Classes {
 	public void setClasses_Exit2(String classes_Exit2) {
 		this.classes_Exit2 = classes_Exit2;
 	}
+	
+	public Campus getCampus() {
+		return campus;
+	}
+
+	public void setCampus(Campus campus) {
+		this.campus = campus;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 
 	public Classes(Integer classes_Id, String classes_Name, String classes_CreateTime, String classes_CounselorId,
 			String classes_SchoolYear, String classes_Campus, String classes_Status, Integer classes_Exit1,
@@ -107,7 +134,8 @@ public class Classes {
 		return "Classes [classes_Id=" + classes_Id + ", classes_Name=" + classes_Name + ", classes_CreateTime="
 				+ classes_CreateTime + ", classes_CounselorId=" + classes_CounselorId + ", classes_SchoolYear="
 				+ classes_SchoolYear + ", classes_Campus=" + classes_Campus + ", classes_Status=" + classes_Status
-				+ ", classes_Exit1=" + classes_Exit1 + ", classes_Exit2=" + classes_Exit2 + "]";
+				+ ", classes_Exit1=" + classes_Exit1 + ", classes_Exit2=" + classes_Exit2 + ", campus=" + campus
+				+ ", users=" + users + ", student=" + student + "]";
 	}
 
 }

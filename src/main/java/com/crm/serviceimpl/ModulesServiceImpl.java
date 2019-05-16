@@ -145,13 +145,11 @@ public List<Map<String,Object>> selectByUserId(Integer users_Id) {
 							haha.put("children", ceshi(list.get(i),dingjilist));
 					}
 					hehe.add(haha);
-					
 						//for(int j=0;j<?;j++) {//这个?放的是除顶层节点的所有需要的节点长度
 							//if(list.get(i).getModules_Id()==?) {这个?是放节点的
 								
 							//}	
 						//}
-						
 				}
 			}
 			return hehe;

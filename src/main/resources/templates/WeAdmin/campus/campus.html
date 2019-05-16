@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>班级管理</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+	$(function(){
+		selectClass();
+		
+	})
+	function selectClass(){
+		$("#stuTab").datagrid({
+			url:"/CRM/Campus/selectClass",
+			method:"POST",
+			pagination:true,
+			singleSelect:true,
+			toolbar:"#toolbar",
+			queryParams:{
+				text1:$("#text1").val(),
+				text2:$("#text2").val(),
+				text3:$("#text3").val(),
+				text4:$("#text4").val()
+			},
+			onLoadSuccess:function () {
+				//数据加载成功后将指定值选中
+				$('#text3').combobox('select', '--请选择--');
+			}
+		})
+		$("#toolFrm").form("clear")
+	};
+	
+	function usersName(value,row,index){
+		return row.users.users_LoginName;
+	}
+	function campusName(value,row,index){
+		return row.campus.campus_Name;
+	}
+	function Studentrs(value,row,index){
+		if(row.student != null){
+			return row.student.student_Exit1;
+		}
+		return 0;
+	}
+	function classes(value,row,index){
+		return "<a href='javascript:void(0)' onclick='selectStudent("+index+")'>查看学生</a> <a href='javascript:void(0)' onclick='UpdateClasses("+index+")'>修改班级</a> <a href='javascript:void(0)' onclick='DeleteClasses("+index+")'>删除班级</a>";
+	}
+	function tianjia(){
+		$("#add2").combobox({
+			url:'/CRM/Campus/selectUsers',
+			method:'post',
+			valueField:'users_Id',
+			textField:'users_LoginName'
+		});
+		$("#addClassesForm").window("open");
+	}
+	function addClasses(){
+		$('#addForm').form({
+		    url:'/CRM/Campus/addClass',
+		    onSubmit: function(){
+		    	
+		    },
+		    success:function(data){
+				if(data){
+					$("#stuTab").datagrid("reload");
+					$("#addClassesForm").window("close");
+					$.messager.alert("提示","添加成功");
+				}
+				else {
+					$("#addClassesForm").window("close");
+					$.messager.alert("提示","添加失败");
+				}
+		    }
+		});
+	}
+	function UpdateClasses(index){
+		//获取当前行对象
+		var arr=$("#stuTab").datagrid("getData")
+		var row=arr.rows[index];
+		//填充表单
+		$("#UpdateForm").form("load",row)
+		
+		$("#Update2").combobox({
+			url:'/CRM/Campus/selectUsers',
+			method:'post',
+			valueField:'users_Id',
+			textField:'users_LoginName'
+		});
+		//数据加载成功后将指定值选中
+		$('#Update2').combobox('select', row.users.users_LoginName);
+		$("#UpdateClassesForm").window("open");
+	}
+	function UpdateClas(){
+		$('#UpdateForm').form({
+		    url:'/CRM/Campus/UpdateClass',
+		    onSubmit: function(){
+		    	
+		    },
+		    success:function(data){
+				if(data){
+					$("#stuTab").datagrid("reload");
+					$("#UpdateClassesForm").window("close");
+					$.messager.alert("提示","修改成功");
+				} else {
+					$("#UpdateClassesForm").window("close");
+					$.messager.alert("提示","修改失败");
+				}
+		    }
+		});
+	}
+	function selectStudent(index){
+		//获取当前行对象
+		var arr=$("#stuTab").datagrid("getData")
+		var row=arr.rows[index];
+		$("#stuTab1").datagrid({
+			url:"/CRM/Campus/ClassSelectStudent",
+			method:"POST",
+			pagination:true,
+			singleSelect:true,
+			queryParams:{
+				num3:row.classes_Id
+			}
+		});
+		$("#selectStudent").window("open");
+	}
+	function DeleteClasses(index){
+		//获取当前行对象
+		var arr=$("#stuTab").datagrid("getData")
+		var row=arr.rows[index];
+		$.post("/CRM/Campus/DeleteClasses",{
+			num1:row.classes_Id
+		},function(res){
+			if(res>0){
+				$("#stuTab").datagrid("reload");
+				$.messager.alert("提示","删除成功");
+			} else {
+				$.messager.alert("提示","删除失败");
+			}
+		},"json")
+	}
+</script>
+</head>
+<body>
+	<table id="stuTab" class="easyui-datagrid" >
+		<thead>
+			<tr>
+				<th data-options="field:'classes_Id',title:'编号'"></th>
+				<th data-options="field:'classes_Name',title:'班级名称'"></th>
+				<th data-options="field:'classes_CreateTime',title:'班级创建时间'"></th>
+				<th data-options="field:'classes.users.users_LoginName',title:'班级辅导员',formatter:usersName"></th>
+				<th data-options="field:'classes_SchoolYear',title:'学年'"></th>
+				<th data-options="field:'classes.campus.campus_Name',title:'学校',formatter:campusName"></th>
+				<th data-options="field:'classes_Status',title:'班级状态'"></th>
+				<th data-options="field:'classes.Student.rs',title:'人数',formatter:Studentrs"></th>
+				<th data-options="field:'classes',title:'操作',formatter:classes"></th>
+			</tr>
+		</thead>
+	</table>
+	<div id="toolbar">
+		<form id="toolFrm" class="easyui-form">
+			 <label for="text1">班级名称:</label>
+        	 <input class="easyui-validatebox" type="text" id="text1"  />   
+			 <label for="text2">班级辅导员:</label>
+        	 <input class="easyui-validatebox" type="text" id="text2"  />
+        	 <label for="text2">学年:</label>
+        	 <select id="text3" class="easyui-combobox" style="width: 100px">
+        	 	<option selected value="">--请选择--</option>
+		   	 	<option value="三年制">三年制</option>
+		   	 	<option value="五年制">五年制</option>
+		   	 </select>
+        	 <label for="text4">班级状态:</label>
+        	 <input class="easyui-validatebox" type="text" id="text4"  />
+        	 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="selectClass()">搜索</a> 
+        	 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="tianjia()">添加班级</a>    
+		</form>
+	</div>
+	<!--添加窗口  -->
+	<div class="easyui-window" id="addClassesForm" data-options="modal:true,closed:true">
+		<form action="javascript:addClasses()"  id="addForm">
+			<table cellpadding="5">
+				<tr>
+					<td>班级名称:</td>
+					<td><input type="text" id="add1" name="text1" placeholder="请输入班级名称"  class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>辅导员:</td>
+					<td>
+						<select id="add2" class="easyui-combobox" name="num1" style="width: 100px">
+		   	 				<option></option>
+		   	 			</select>
+	   	 			</td>
+				</tr>
+				<tr>
+					<td>学年:</td>
+					<td>
+						<select id="add3" name="text3">
+		   	 				<option value="三年制">三年制</option>
+		   	 				<option value="五年制">五年制</option>
+		   	 			</select>
+	   	 			</td>
+				</tr>
+				<tr>
+					<td><button class="easyui-linkbutton" type="submit">提交</button></td>
+					<td><button type="reset" class="easyui-linkbutton">重置</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<!--修改窗口  -->
+	<div class="easyui-window" id="UpdateClassesForm" data-options="modal:true,closed:true">
+		<form action="javascript:UpdateClas()"  id="UpdateForm">
+			<table cellpadding="5">
+				<tr>
+					<td><input type="text" id="classes_Id" name="classes_Id" style="display: none;" class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>班级名称:</td>
+					<td><input type="text" id="Update1" name="classes_Name" placeholder="请输入班级名称"  class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>辅导员:</td>
+					<td>
+						<select id="Update2" class="easyui-combobox" name="classes_CounselorId" style="width: 100px">
+		   	 				<option></option>
+		   	 			</select>
+	   	 			</td>
+				</tr>
+				<tr>
+					<td>学年:</td>
+					<td>
+						<select id="Update3" name="classes_SchoolYear">
+		   	 				<option value="三年制">三年制</option>
+		   	 				<option value="五年制">五年制</option>
+		   	 			</select>
+	   	 			</td>
+				</tr>
+				<tr>
+					<td>班级状态:</td>
+					<td>
+						<select id="Update4" name="classes_Status">
+		   	 				<option value="未满">未满</option>
+		   	 				<option value="已满">已满</option>
+		   	 			</select>
+	   	 			</td>
+				</tr>
+				<tr>
+					<td><button class="easyui-linkbutton" type="submit" >提交</button></td>
+					<td><button type="reset" class="easyui-linkbutton">重置</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div class="easyui-window" id="selectStudent" data-options="modal:true,closed:true" style="width: 1000px;height: 500px">
+		<table id="stuTab1" class="easyui-datagrid" >
+			<thead>
+				<tr>
+					<th data-options="field:'student_Id',title:'编号'"></th>
+					<th data-options="field:'student_Name',title:'姓名'"></th>
+					<th data-options="field:'student_Sex',title:'性别'"></th>
+					<th data-options="field:'student_Birthday',title:'出生日期'"></th>
+					<th data-options="field:'student_Source',title:'学员来源'"></th>
+					<th data-options="field:'student_IdentityNumber',title:'身份证号'"></th>
+					<th data-options="field:'student_Email',title:'电子邮件'"></th>
+					<th data-options="field:'student_Qq',title:'qq'"></th>
+					<th data-options="field:'student_Tel',title:'电话'"></th>
+					<th data-options="field:'student_Address',title:'地区'"></th>
+					<th data-options="field:'student_Creator',title:'跟进人'"></th>
+					<th data-options="field:'student_CreateTime',title:'入学时间'"></th>
+					<th data-options="field:'student_Remarks',title:'备注'"></th>
+					<th data-options="field:'student_Status',title:'缴费状态'"></th>
+					<th data-options="field:'student_Amount',title:'缴费金额'"></th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</body>
+</html>
