@@ -125,7 +125,22 @@ public interface UsersService {
 	 */
 	public Boolean testLoginName(Users users);
 	
-	
+	/**
+	 *  验证码
+	 * @param request
+	 * @param response
+	 */
 	public void code(HttpServletRequest request,HttpServletResponse response);
+	
+	
+	/**
+	 * 前台用户登录成功后修改密码的方法
+	 * @param users_Id
+	 * @param password
+	 * @param twoPassword
+	 * @return
+	 */
+	public int updatePasswordById(Integer users_Id, String password, String twoPassword);
+
 	
 }

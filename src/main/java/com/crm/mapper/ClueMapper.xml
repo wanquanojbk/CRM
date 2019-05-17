@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.mapper.ClueMapper">
+	<resultMap type="com.crm.entity.Clue" id="clue1Map">
+  		<id column="clue_Id" property="clue_Id"/>
+  		<result column="clue_Name" property="clue_Name"/> 
+  		<result column="clue_Sex" property="clue_Sex"/> 
+  		<result column="clue_Age" property="clue_Age"/> 
+  		<result column="clue_Birthday" property="clue_Birthday"/> 
+  		<result column="clue_Education" property="clue_Education"/> 
+  		<result column="clue_Direction" property="clue_Direction"/> 
+  		<result column="clue_Source" property="clue_Source"/> 
+  		<result column="clue_IdentityNumber" property="clue_IdentityNumber"/> 
+  		<result column="clue_Email" property="clue_Email"/> 
+  		<result column="clue_Qq" property="clue_Qq"/> 
+  		<result column="clue_WeChat" property="clue_WeChat"/> 
+  		<result column="clue_Tel" property="clue_Tel"/> 
+  		<result column="clue_Address" property="clue_Address"/> 
+  		<result column="clue_Principal" property="clue_Principal"/> 
+  		<result column="clue_Creator" property="clue_Creator"/> 
+  		<result column="clue_CreateTime" property="clue_CreateTime"/> 
+  		<result column="clue_UpdateTime" property="clue_UpdateTime"/> 
+  		<result column="clue_BginTime" property="clue_BginTime"/> 
+  		<result column="clue_EndTime" property="clue_EndTime"/> 
+  		<result column="clue_Remarks" property="clue_Remarks"/> 
+  		<result column="clue_Status" property="clue_Status"/> 
+  		<result column="clue_Exit1" property="clue_Exit1"/> 
+  		<result column="clue_Exit2" property="clue_Exit2"/> 
+  		<association property="users" javaType="com.crm.entity.Users">
+  			<id column="users_Id" property="users_Id"/>
+  			<result column="users_LoginName" property="users_LoginName"/>
+  			<result column="users_Password" property="users_Password"/>
+  			<result column="users_LsLockout" property="users_LsLockout"/>
+  			<result column="users_LastLoginTime" property="users_LastLoginTime"/>
+  			<result column="users_CreateTime" property="users_CreateTime"/>
+  			<result column="users_PsdWrongTime" property="users_PsdWrongTime"/>
+  			<result column="users_LockTime" property="users_LockTime"/>
+  			<result column="users_ProTectEMail" property="users_ProTectEMail"/>
+  			<result column="users_ProtectTel" property="users_ProtectTel"/>
+  			<result column="users_Exit1" property="users_Exit1"/>
+  			<result column="users_Exit2" property="users_Exit2"/>
+  			<result column="users_CheckInStatus" property="users_CheckInStatus"/>
+  		</association>
+  	</resultMap>
+  	<!-- 多条件分页查询所有 -->
+  	<resultMap type="com.crm.entity.Clue" id="clueMap">
+  		<id column="clue_Id" property="clue_Id"/>
+  		<result column="clue_Name" property="clue_Name"/> 
+  		<result column="clue_Sex" property="clue_Sex"/> 
+  		<result column="clue_Age" property="clue_Age"/> 
+  		<result column="clue_Birthday" property="clue_Birthday"/> 
+  		<result column="clue_Education" property="clue_Education"/> 
+  		<result column="clue_Direction" property="clue_Direction"/> 
+  		<result column="clue_Source" property="clue_Source"/> 
+  		<result column="clue_IdentityNumber" property="clue_IdentityNumber"/> 
+  		<result column="clue_Email" property="clue_Email"/> 
+  		<result column="clue_Qq" property="clue_Qq"/> 
+  		<result column="clue_WeChat" property="clue_WeChat"/> 
+  		<result column="clue_Tel" property="clue_Tel"/> 
+  		<result column="clue_Address" property="clue_Address"/> 
+  		<result column="clue_Principal" property="clue_Principal"/> 
+  		<result column="clue_Creator" property="clue_Creator"/> 
+  		<result column="clue_CreateTime" property="clue_CreateTime"/> 
+  		<result column="clue_UpdateTime" property="clue_UpdateTime"/> 
+  		<result column="clue_BginTime" property="clue_BginTime"/> 
+  		<result column="clue_EndTime" property="clue_EndTime"/> 
+  		<result column="clue_Remarks" property="clue_Remarks"/> 
+  		<result column="clue_Status" property="clue_Status"/> 
+  		<result column="clue_Exit1" property="clue_Exit1"/> 
+  		<result column="clue_Exit2" property="clue_Exit2"/> 
+  		<association property="users" javaType="com.crm.entity.Users">
+  			<id column="users_Id" property="users_Id"/>
+  			<result column="users_LoginName" property="users_LoginName"/>
+  			<result column="users_Password" property="users_Password"/>
+  			<result column="users_LsLockout" property="users_LsLockout"/>
+  			<result column="users_LastLoginTime" property="users_LastLoginTime"/>
+  			<result column="users_CreateTime" property="users_CreateTime"/>
+  			<result column="users_PsdWrongTime" property="users_PsdWrongTime"/>
+  			<result column="users_LockTime" property="users_LockTime"/>
+  			<result column="users_ProTectEMail" property="users_ProTectEMail"/>
+  			<result column="users_ProtectTel" property="users_ProtectTel"/>
+  			<result column="users_Exit1" property="users_Exit1"/>
+  			<result column="r2" property="users_Exit2"/>
+  			<result column="users_CheckInStatus" property="users_CheckInStatus"/>
+  		</association>
+  	</resultMap>
+	<select id="selectAllUnFenPeiClue" parameterType="int" resultType="com.crm.entity.Clue">
+		SELECT *
+			FROM clue WHERE clue_Creator IN (
+				SELECT u.users_Id
+				FROM users u,usersroles ur, roles r 
+			WHERE u.users_Id = ur.usersRoles_UserId AND r.roles_Id = ur.usersRoles_RoleId AND r.roles_Name = '网络咨询师' AND u.users_Exit1 = #{id}
+			) and clue_Status = 0
+		
+	</select>
+	
+	
+	
+	<!-- 多条件查询属于网路咨询师的客户信息 -->
+  	<select id="selectClueAll" parameterType="pageNation" resultMap="clueMap">
+  		SELECT l.*,r.r2
+		FROM (SELECT c.*,u.users_LoginName 
+			  FROM `clue` c INNER JOIN users u  on c.clue_Creator = u.users_Id
+			  and c.clue_Creator = #{num1}
+			  <if test="text1 != null and text1 != '' "><!-- String 姓名模糊查询 -->
+  				and c.clue_Name like CONCAT(CONCAT('%',#{text1}), '%')
+  			</if>
+  			<if test="text2 != null and text2 != '' "><!-- String 电话号码查询 -->
+  				and c.clue_Tel like CONCAT(CONCAT('%',#{text2}), '%')
+  			</if>
+  			<if test="text3 != null and text3 != '' "><!-- String qq查询 -->
+  				and c.clue_Qq = #{text3}
+  			</if>
+  			<if test="text4 != null and text4 != '' "><!-- String 最小创建时间 -->
+  				and c.clue_CreateTime &gt;= #{text4}
+  			</if>
+  			<if test="text5 != null and text5 != '' "><!-- String 最大创建时间 -->
+  				and c.clue_CreateTime &lt;= #{text5}
+  			</if>
+			  ) AS l LEFT JOIN 
+			  	(SELECT  users_Id AS r1,users_LoginName as r2
+			   	FROM  users 
+			   		WHERE users_Id IN (
+						SELECT c.clue_Principal
+						FROM `clue` c INNER JOIN users u on c.clue_Creator = u.users_Id
+							and c.clue_Creator = #{num1} )) as r  on l.clue_Principal = r.r1 
+  							LIMIT #{page},#{row}
+  	</select>
+  	<!-- 多条件查询总数 -->
+  	<select id="selectClueGetTotal" parameterType="pageNation" resultType="int">
+  		SELECT count(*)
+		FROM (SELECT c.*,u.users_LoginName 
+			  FROM `clue` c INNER JOIN users u  on c.clue_Creator = u.users_Id
+			  and c.clue_Creator = #{num1}
+			  <if test="text1 != null and text1 != '' "><!-- String 姓名模糊查询 -->
+  				and c.clue_Name like CONCAT(CONCAT('%',#{text1}), '%')
+  			</if>
+  			<if test="text2 != null and text2 != '' "><!-- String 电话号码查询 -->
+  				and c.clue_Tel like CONCAT(CONCAT('%',#{text2}), '%')
+  			</if>
+  			<if test="text3 != null and text3 != '' "><!-- String qq查询 -->
+  				and c.clue_Qq = #{text3}
+  			</if>
+  			<if test="text4 != null and text4 != '' "><!-- String 最小创建时间 -->
+  				and c.clue_CreateTime &gt;= #{text4}
+  			</if>
+  			<if test="text5 != null and text5 != '' "><!-- String 最大创建时间 -->
+  				and c.clue_CreateTime &lt;= #{text5}
+  			</if>
+			  ) AS l LEFT JOIN 
+			  	(SELECT  users_Id AS r1,users_LoginName as r2
+			   	FROM  users 
+			   		WHERE users_Id IN (
+						SELECT c.clue_Principal
+						FROM `clue` c INNER JOIN users u on c.clue_Creator = u.users_Id
+							and c.clue_Creator = #{num1} )) as r  on l.clue_Principal = r.r1 
+  	</select>
+  	<!-- 添加客户 -->
+  	<insert id="insertClue" parameterType="clue">
+  		INSERT INTO 
+	  		clue(clue_Name,
+	  		clue_Sex,
+	  		clue_Age,
+	  		clue_Birthday,
+	  		clue_Education,
+	  		clue_Direction,
+	  		clue_Source,
+	  		clue_IdentityNumber,
+	  		clue_Email,
+	  		clue_Qq,
+	  		clue_WeChat,
+	  		clue_Tel,
+	  		clue_Address,
+	  		clue_Creator,
+	  		clue_CreateTime,
+	  		clue_Remarks
+	  		) 
+  		VALUES(#{clue_Name},#{clue_Sex},#{clue_Age},#{clue_Birthday},#{clue_Education},#{clue_Direction},
+  			   #{clue_Source},#{clue_IdentityNumber},#{clue_Email},#{clue_Qq},#{clue_WeChat},#{clue_Tel},
+  			   #{clue_Address},#{clue_Creator},#{clue_CreateTime},#{clue_Remarks})
+  	</insert>
+  	
+  	<!-- 多条件分页查询分配给咨询师的客户信息 -->
+  	<select id="selectClueByConsultation" parameterType="pageNation" resultMap="clueMap">
+  		SELECT c.*,u.users_LoginName 
+  		FROM `clue` c INNER JOIN users u 
+  		on c.clue_Creator = u.users_Id
+  		<where>
+  			<if test="text1 != null and text1 != '' "><!-- String 姓名模糊查询 -->
+  				and c.clue_Name like CONCAT(CONCAT('%',#{text1}), '%')
+  			</if>
+  			<if test="text2 != null and text2 != '' "><!-- String 电话号码查询 -->
+  				and c.clue_Tel like CONCAT(CONCAT('%',#{text2}), '%')
+  			</if>
+  			<if test="text3 != null and text3 != '' "><!-- String qq查询 -->
+  				and c.clue_Qq = #{text3}
+  			</if>
+  			<if test="text4 != null and text4 != '' "><!-- String 最小创建时间 -->
+  				and c.clue_CreateTime &gt;= #{text4}
+  			</if>
+  			<if test="text5 != null and text5 != '' "><!-- String 最大创建时间 -->
+  				and c.clue_CreateTime &lt;= #{text5}
+  			</if>
+  			<!-- 限制只能多条件查看自己分配的客户信息 -->
+  			and c.clue_Principal = #{num1} and c.clue_Status = 1
+  		</where>
+  		LIMIT #{page},#{row}
+  	</select>
+  	
+  	<!-- 多条件分页查询分配给咨询师的客户信息的总数 -->
+  	<select id="selectClueByConsultationCount" parameterType="pageNation" resultType="int">
+  		SELECT count(*) 
+  		FROM `clue` c INNER JOIN users u 
+  		on c.clue_Creator = u.users_Id
+  		<where>
+  			<if test="text1 != null and text1 != '' "><!-- String 姓名模糊查询 -->
+  				and c.clue_Name like CONCAT(CONCAT('%',#{text1}), '%')
+  			</if>
+  			<if test="text2 != null and text2 != '' "><!-- String 电话号码查询 -->
+  				and c.clue_Tel like CONCAT(CONCAT('%',#{text2}), '%')
+  			</if>
+  			<if test="text3 != null and text3 != '' "><!-- String qq查询 -->
+  				and c.clue_Qq = #{text3}
+  			</if>
+  			<if test="text4 != null and text4 != '' "><!-- String 最小创建时间 -->
+  				and c.clue_CreateTime &gt;= #{text4}
+  			</if>
+  			<if test="text5 != null and text5 != '' "><!-- String 最大创建时间 -->
+  				and c.clue_CreateTime &lt;= #{text5}
+  			</if>
+  			<!-- 限制只能多条件查看自己分配的客户信息 -->
+  			and c.clue_Principal = #{num1} and c.clue_Status = 1
+  		</where>
+  	</select>
+  	<!-- 根据负责人id查到客户的id值和name值 -->
+  	<select id="selectClueByPrincipalId" parameterType="pageNation" resultType="clue">
+  		SELECT clue_Id,clue_Name FROM clue WHERE clue_Principal = #{num1} and clue_Status != 3
+  	</select>
+  	<!-- 修改状态为完成状态 -->
+  	<update id="updateClueByComplete" parameterType="int">
+  		update clue set clue_Status = 3 where clue_Id = #{id}
+  	</update>
+  	<!-- 修改状态为放弃状态 -->
+  	<update id="updateClueByAbandon" parameterType="int">
+  		update clue set clue_Status = 2 where clue_Id = #{id}
+  	</update>
+  	<!-- 修改客户信息 -->
+  	<update id="updateClueByCustomer" parameterType="clue">
+  		update clue 
+  		<set>
+  			<if test="clue_Name != null and clue_Name != '' ">
+  				clue_Name = #{clue_Name},
+  			</if>
+  			<if test="clue_Sex != null and clue_Sex != '' ">
+  				clue_Sex = #{clue_Sex},
+  			</if>
+  			<if test="clue_Age != null and clue_Age != '' ">
+  				clue_Age = #{clue_Age},
+  			</if>
+  			<if test="clue_Birthday != null and clue_Birthday != '' ">
+  				clue_Birthday = #{clue_Birthday},
+  			</if>
+  			<if test="clue_Education != null and clue_Education != '' ">
+  				clue_Education = #{clue_Education},
+  			</if>
+  			<if test="clue_Direction != null and clue_Direction != '' ">
+  				clue_Direction = #{clue_Direction},
+  			</if>
+  			<if test="clue_Source != null and clue_Source != '' ">
+  				clue_Source = #{clue_Source},
+  			</if>
+  			<if test="clue_IdentityNumber != null and clue_IdentityNumber != '' ">
+  				clue_IdentityNumber = #{clue_IdentityNumber},
+  			</if>
+  			<if test="clue_Email != null and clue_Email != '' ">
+  				clue_Email = #{clue_Email},
+  			</if>
+  			<if test="clue_Qq != null and clue_Qq != '' ">
+  				clue_Qq = #{clue_Qq},
+  			</if>
+  			<if test="clue_WeChat != null and clue_WeChat != '' ">
+  				clue_WeChat = #{clue_WeChat},
+  			</if>
+  			<if test="clue_Tel != null and clue_Tel != '' ">
+  				clue_Tel = #{clue_Tel},
+  			</if>
+  			<if test="clue_Address != null and clue_Address != '' ">
+  				clue_Address = #{clue_Address},
+  			</if>
+  			<if test="clue_Principal != null and clue_Principal != '' ">
+  				clue_Principal = #{clue_Principal},
+  			</if>
+  			<if test="clue_Creator != null and clue_Creator != '' ">
+  				clue_Creator =#{clue_Creator},
+  			</if>
+  			<if test="clue_CreateTime != null and clue_CreateTime != '' ">
+  				clue_CreateTime =#{clue_CreateTime},
+  			</if>
+  			<if test="clue_UpdateTime != null and clue_UpdateTime != '' ">
+  				clue_UpdateTime =#{clue_UpdateTime},
+  			</if>
+  			<if test="clue_BginTime != null and clue_BginTime != '' ">
+  				clue_BginTime =#{clue_BginTime},
+  			</if>
+  			<if test="clue_EndTime != null and clue_EndTime != '' ">
+  				clue_EndTime = #{clue_EndTime},
+  			</if>
+  			<if test="clue_Remarks != null and clue_Remarks != '' ">
+  				clue_Remarks =#{clue_Remarks},
+  			</if>
+  			<if test="clue_Status != null and clue_Status != '' ">
+  				clue_Status =#{clue_Status},
+  			</if>
+  		</set>
+  		<where>
+  			clue_Id = #{clue_Id}
+  		</where>
+  	</update>
+  	<select id="selectClueByComplete" parameterType="pageNation" resultMap="clueMap">
+  		SELECT c.*,u.users_LoginName 
+  		FROM `clue` c INNER JOIN users u 
+  		on c.clue_Creator = u.users_Id
+  		AND c.clue_Principal = #{num1} AND c.clue_Status = 3 limit #{page},#{row}
+  	</select>
+  	<select id="selectClueByCompleteCount" parameterType="pageNation" resultType="int">
+  		SELECT count(*)
+  		FROM `clue` c INNER JOIN users u 
+  		on c.clue_Creator = u.users_Id
+  	WHERE clue_Principal = #{num1} AND clue_Status = 3
+  	</select>
+	
+</mapper>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.crm.mapper.FollowUpMapper">
+ 	<!-- 映射跟踪信息表和学生表 -->
+  	<resultMap type="com.crm.entity.FollowUp" id="followUpMap">
+  		<!-- 一个学生可以有多条跟踪信息吧，多条跟踪信息对应一个学生 ，多维护一 -->
+  		<id column="followUp_id" property="followUp_id"/>
+  		<result column="follwUp_Text" property="follwUp_Text"/>
+  		<result column="follwUp_Type" property="follwUp_Type"/>
+  		<result column="follwUp_Time" property="follwUp_Time"/>
+  		<result column="follwUp_FirstVisitTime" property="follwUp_FirstVisitTime"/>
+  		<result column="follwUp_Door" property="follwUp_Door"/>
+  		<result column="follwUp_DoorTime" property="follwUp_DoorTime"/>
+  		<result column="follwUp_ReturnVisit" property="follwUp_ReturnVisit"/>
+  		<result column="follwUp_ReturnVisitTim" property="follwUp_ReturnVisitTim"/>
+  		<result column="follwUp_ReturnVisitSituation" property="follwUp_ReturnVisitSituation"/>
+  		<result column="follwUp_Principal" property="follwUp_Principal"/>
+  		<result column="follwUp_EndTim" property="follwUp_EndTim"/>
+  		<result column="follwUp_ClueId" property="follwUp_ClueId"/>
+  		<result column="follwUp_Conclusion" property="follwUp_Conclusion"/>
+  		<result column="follwUp_Exit1" property="follwUp_Exit1"/>
+  		<result column="follwUp_Exit2" property="follwUp_Exit2"/>
+  		<association property="clue" javaType="com.crm.entity.Clue">
+  			<id column="clue_Id" property="clue_Id"/>
+	  		<result column="clue_Name" property="clue_Name"/> 
+	  		<result column="clue_Sex" property="clue_Sex"/> 
+	  		<result column="clue_Age" property="clue_Age"/> 
+	  		<result column="clue_Birthday" property="clue_Birthday"/> 
+	  		<result column="clue_Education" property="clue_Education"/> 
+	  		<result column="clue_Direction" property="clue_Direction"/> 
+	  		<result column="clue_Source" property="clue_Source"/> 
+	  		<result column="clue_IdentityNumber" property="clue_IdentityNumber"/> 
+	  		<result column="clue_Email" property="clue_Email"/> 
+	  		<result column="clue_Qq" property="clue_Qq"/> 
+	  		<result column="clue_WeChat" property="clue_WeChat"/> 
+	  		<result column="clue_Tel" property="clue_Tel"/> 
+	  		<result column="clue_Address" property="clue_Address"/> 
+	  		<result column="clue_Principal" property="clue_Principal"/> 
+	  		<result column="clue_Creator" property="clue_Creator"/> 
+	  		<result column="clue_CreateTime" property="clue_CreateTime"/> 
+	  		<result column="clue_UpdateTime" property="clue_UpdateTime"/> 
+	  		<result column="clue_BginTime" property="clue_BginTime"/> 
+	  		<result column="clue_EndTime" property="clue_EndTime"/> 
+	  		<result column="clue_Remarks" property="clue_Remarks"/> 
+	  		<result column="clue_Status" property="clue_Status"/> 
+	  		<result column="clue_Exit1" property="clue_Exit1"/> 
+	  		<result column="clue_Exit2" property="clue_Exit2"/> 
+  		</association>
+  	</resultMap>
+  	<!-- 多条件分页查询所有 -->
+  	<select id="selectFollowUpAll" parameterType="pageNation" resultMap="followUpMap">
+  		<!-- 查询跟踪表和客户表 -->
+  		SELECT * FROM followup f, clue c
+  		<where>
+  			<if test="text1 != null and text1 != '' "><!-- 客户姓名查询(String) -->
+  				AND c.clue_Name like CONCAT(CONCAT('%',#{text1}), '%')
+  			</if>
+  			<if test="text2 != null and text2 != '' "><!-- 是否回访查询（String） -->
+  				AND f.follwUp_ReturnVisit = #{text2}
+  			</if>
+  			<if test="text3 != null and text3 != '' and text4 != null and text4 != '' "><!-- 结束时间（String） -->
+  				AND f.${text3} &gt;= #{text4}
+  			</if>
+  			<if test="text3 != null and text3 != '' and text5 != null and text5 != '' ">
+  				AND f.${text3} &lt;= #{text5}
+  			</if>
+  			AND f.follwUp_ClueId = c.clue_Id <!-- 主外键关联 -->
+  			AND c.clue_Principal = #{num1}<!-- 判定是不是自己的 -->
+  		</where>
+  		limit #{page},#{row}
+  	</select>
+  	<!-- 多条件查询总数 -->
+  	<select id="selectFollowUpCount" parameterType="pageNation" resultType="int">
+  		<!-- 查询跟踪表和客户表 -->
+  		SELECT count(*) FROM followup f, clue c
+  		<where>
+  			<if test="text1 != null and text1 != '' "><!-- 客户姓名查询(String) -->
+  				AND c.clue_Name like CONCAT(CONCAT('%',#{text1}), '%')
+  			</if>
+  			<if test="text2 != null and text2 != '' "><!-- 是否回访查询（String） -->
+  				AND f.follwUp_ReturnVisit &gt;= #{text2}
+  			</if>
+  			<if test="text3 != null and text3 != '' and text4 != null and text4 != '' "><!-- 结束时间（String） -->
+  				AND f.${text3} &gt;= #{text4}
+  			</if>
+  			<if test="text3 != null and text3 != '' and text5 != null and text5 != '' ">
+  				AND f.${text3} &lt;= #{text5}
+  			</if>
+  			AND f.follwUp_ClueId = c.clue_Id <!-- 主外键关联 -->
+  			AND c.clue_Principal = #{num1}<!-- 判定是不是自己的 -->
+  		</where>
+  	</select>
+  	<!-- 添加跟踪信息 -->
+  	<insert id="insertFollowUp" parameterType="followUp">
+  		INSERT INTO 
+		followup(follwUp_Text,
+		follwUp_Type,
+		follwUp_Time,
+		<if test="follwUp_FirstVisitTime != null and follwUp_FirstVisitTime != '' ">
+		follwUp_FirstVisitTime,
+		</if>
+		follwUp_Door,
+		<if test="follwUp_DoorTime != null and follwUp_DoorTime !='' ">
+			follwUp_DoorTime,
+		</if>
+		follwUp_ReturnVisit,
+		<if test="follwUp_ReturnVisitTim != null and follwUp_ReturnVisitTim != '' ">
+		follwUp_ReturnVisitTim,
+		</if>
+		follwUp_ReturnVisitSituation,
+		follwUp_Principal,
+		follwUp_EndTim,
+		follwUp_ClueId,
+		follwUp_Conclusion) 
+		VALUES(#{follwUp_Text},#{follwUp_Type},#{follwUp_Time},<if test="follwUp_FirstVisitTime != null and follwUp_FirstVisitTime != '' ">#{follwUp_FirstVisitTime},</if>#{follwUp_Door},<if test="follwUp_DoorTime != null and follwUp_DoorTime != '' ">#{follwUp_DoorTime},</if>#{follwUp_ReturnVisit},<if test="follwUp_ReturnVisit != null and follwUp_ReturnVisit != '' ">#{follwUp_ReturnVisitTim},</if>#{follwUp_ReturnVisitSituation},#{follwUp_Principal},#{follwUp_EndTim},#{follwUp_ClueId},#{follwUp_Conclusion})
+  	</insert>
+  	<update id="updFollowUp" parameterType="followUp">
+  		update followup 
+  		<set>
+  			<if test="follwUp_Text != null and follwUp_Text != '' ">
+  				follwUp_Text = #{follwUp_Text},
+  			</if>
+  			<if test="follwUp_Type != null and follwUp_Type != '' ">
+  				follwUp_Type = #{follwUp_Type},
+  			</if>
+  			<if test="follwUp_Time != null and follwUp_Time != '' ">
+  				follwUp_Time = #{follwUp_Time},
+  			</if>
+  			<if test="follwUp_FirstVisitTime != null and follwUp_FirstVisitTime != '' ">
+  				follwUp_FirstVisitTime = #{follwUp_FirstVisitTime},
+  			</if>
+  			<if test="follwUp_Door != null and follwUp_Door != '' ">
+  				follwUp_Door = #{follwUp_Door},
+  			</if>
+  			<if test="follwUp_DoorTime != null and follwUp_DoorTime != '' ">
+  				follwUp_DoorTime = #{follwUp_DoorTime},
+  			</if>
+  			<if test="follwUp_ReturnVisit != null and follwUp_ReturnVisit != '' ">
+  				follwUp_ReturnVisit = #{follwUp_ReturnVisit},
+  			</if>
+  			<if test="follwUp_ReturnVisitTim != null and follwUp_ReturnVisitTim != '' ">
+  				follwUp_ReturnVisitTim = #{follwUp_ReturnVisitTim},
+  			</if>
+  			<if test="follwUp_Principal != null and follwUp_Principal != '' ">
+  				follwUp_Principal = #{follwUp_Principal},
+  			</if>
+  			<if test="follwUp_EndTim != null and follwUp_EndTim != '' ">
+  				follwUp_EndTim = #{follwUp_EndTim},
+  			</if>
+  			<if test="follwUp_ClueId != null and follwUp_ClueId != '' ">
+  				follwUp_ClueId = #{follwUp_ClueId},
+  			</if>
+  			<if test="follwUp_Conclusion != null and follwUp_Conclusion != '' ">
+  				follwUp_Conclusion = #{follwUp_Conclusion},
+  			</if>
+  		</set>
+  		<where>
+  			followUp_id = #{followUp_id}
+  		</where>
+  	</update>
+  </mapper>

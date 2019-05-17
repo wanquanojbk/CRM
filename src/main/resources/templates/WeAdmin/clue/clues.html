@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" th:inline="none">
+	$(function(){
+		 dongtai();
+		init();
+	})
+	function users(value,row,index){
+		return row.users.users_LoginName;
+	}
+	function genzong(value,row,index){
+		return row.users.users_Exit2;
+	}
+	function init(){
+		$('#dg').datagrid({    
+		    url:'getAll',    
+		    method:"post",
+		    pagination:true,
+		    singleSelect:true,
+		    toolbar:"#headTool",
+		    columns:[[    
+		        {field:'clue_Name',title:'姓名',width:100},    
+		        {field:'clue_Sex',title:'性别',width:100},    
+		        {field:'clue_Age',title:'年龄',width:100},
+		        {field:'clue_Birthday',title:'出生日期',width:100},
+		        {field:'clue_Education',title:'学历',width:100},
+		        {field:'clue_Direction',title:'课程方向',width:100},
+		        {field:'clue_Source',title:'来源',width:100},
+		        {field:'clue_IdentityNumber',title:'身份证号',width:100,hidden:true},
+		        {field:'clue_Email',title:'电子邮箱',width:100},
+		        {field:'clue_Qq',title:'QQ号',width:100},
+		        {field:'clue_WeChat',title:'微信号',width:100},
+		        {field:'clue_Tel',title:'电话',width:100},
+		        {field:'clue_Address',title:'地区',width:100},
+		        {field:'users',title:'创建人',width:100,formatter:users},
+		        {field:'genzong',title:'负责人',width:100,formatter:genzong},
+		        {field:'clue_CreateTime',title:'创建时间',width:100},
+		         /*{field:'clue_UpdateTime',title:'更新时间',width:100},
+		        {field:'clue_BginTime',title:'线索开始时间',width:100},
+		        {field:'clue_EndTime',title:'线索结束时间',width:100}, */
+		        {field:'clue_Remarks',title:'备注',width:100},
+		        /* {field:'clue_Status',title:'状态',width:100}, */
+		        {field:'caozuo',title:'操作',width:100,formatter:caozuo}
+		    ]],
+		    queryParams:{
+		    	text1:$("#name").val(),
+		    	text2:$("#telephone").val(),
+		    	text3:$("#qq").val(),
+		    	text4:$("#min").datebox("getValue"),
+		    	text5:$("#max").datebox("getValue")
+		    }
+		});
+	}
+	function dongtai(){
+		var createGridHeaderContextMenu = function(e, field) {
+			e.preventDefault();
+			var grid = $(this);/* grid本身 */
+			var headerContextMenu = this.headerContextMenu;/* grid上的列头菜单对象 */
+			var okCls = 'tree-checkbox1';// 选中
+			var emptyCls = 'tree-checkbox0';// 取消
+			if (!headerContextMenu) {//如果不是列头对象不触发
+				var tmenu = $('<div style="width:100px;"></div>').appendTo('body');
+				var fields = grid.datagrid('getColumnFields');
+				for (var i = 0; i < fields.length; i++) {
+					var fildOption = grid.datagrid('getColumnOption', fields[i]);
+					if (!fildOption.hidden) {
+						$('<div iconCls="' + okCls + '" field="' + fields[i] + '"/>')
+								.html(fildOption.title).appendTo(tmenu);
+					} else {
+						$('<div iconCls="' + emptyCls + '" field="' + fields[i] + '"/>')
+								.html(fildOption.title).appendTo(tmenu);
+					}
+				}
+				headerContextMenu = this.headerContextMenu = tmenu.menu({
+					onClick : function(item) {
+						var field = $(item.target).attr('field');
+						if (item.iconCls == okCls) {
+							grid.datagrid('hideColumn', field);
+							$(this).menu('setIcon', {
+								target : item.target,
+								iconCls : emptyCls
+							});
+						} else {
+							grid.datagrid('showColumn', field);
+							$(this).menu('setIcon', {
+								target : item.target,
+								iconCls : okCls
+							});
+						}
+					}
+				});
+			}
+			headerContextMenu.menu('show', {
+				left : e.pageX,
+				top : e.pageY
+			});
+		};
+		$.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+		$.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+	}
+	function caozuo(value,row,index){
+		return "<a href='javascript:void(0)' onclick='chakan("+index+")'>查看详情</a>"
+	}
+	function chakan(index){
+		 var data = $("#dg").datagrid("getData");
+        var row = data.rows[index];
+        //添加数据到表单里
+        $("#").form("load",row); 
+        $("#").window("open");   //打开窗口。 
+	}
+	function open_window1(){
+		$("#addclue_dialog").window("open");
+	}
+	
+	function open_window2(){
+		$("#cc").combobox({
+			url:'/CRM/Dynamic/selectUsersAll',
+			method:'post',
+			valueField:'users_Id',
+			textField:'users_LoginName'
+		});
+		//add_dynamic
+		$("#addDynamic_window").window("open");
+	}
+	function add_Customer(){
+		var add_Name = $("#add_Name").val();
+		var add_Sex = $("#add_Sex").val();
+		var add_Age = $("#add_Age").val();
+		var add_Birthday = $("#add_Birthday").val();
+		var add_Education = $("#add_Education").val();
+		var add_Direction = $("#add_Direction").val();
+		var add_Source = $("#add_Source").val();
+		var add_IdentityNumber = $("#add_IdentityNumber").val();
+		var add_Email = $("#add_Email").val();
+		var add_Qq = $("#add_Qq").val();
+		var add_WeChat = $("#add_WeChat").val();
+		var add_Tel = $("#add_Tel").val();
+		var add_Address = $("#add_Address").val();
+		var add_Remarks = $("#add_Remarks").val();
+		$.post('addClue',{
+			clue_Name:add_Name,
+			clue_Sex:add_Sex,
+			clue_Age:add_Age,
+			clue_Birthday:add_Birthday,
+			clue_Education:add_Education,
+			clue_Direction:add_Direction,
+			clue_Source:add_Source,
+			clue_IdentityNumber:add_IdentityNumber,
+			clue_Email:add_Email,
+			clue_Qq:add_Qq,
+			clue_WeChat:add_WeChat,
+			clue_Tel:add_Tel,
+			clue_Address:add_Address,
+			clue_Remarks:add_Remarks
+		},function(res){
+			if(res>0){
+				alert("添加成功");
+			}else{
+				alert("添加失败");
+			}
+		},"json")
+	}
+	function add_dynamic(){
+		var neirong = $("#neirong").val();
+		var jieshou = $("#cc").combobox("getValue");
+		$.post('/CRM/Dynamic/addDynamic',{
+			dynamic_Recipients:jieshou,
+			dynamic_Text:neirong
+		},function(res){
+			if(res>0){
+				alert("发送成功");
+			}else{
+				alert("发送失败");
+			}
+		},"json")
+	}
+	function clear_Customer(){//取消按钮
+		$("#addclue_dialog").window("close");
+	}
+	function clear_dynamic(){
+		$("#addDynamic_window").window("close");
+	}
+	function show(){
+		alert("动态显示");
+	}
+</script>
+</head>
+<body>
+<table id="dg"></table>
+<div id="headTool">
+	<div>   
+        <label for="name">姓名:</label>   
+        <input id="name" class="easyui-validatebox" type="text"/>   
+    
+        <label for="name">电话号码:</label>   
+        <input id="telephone" class="easyui-validatebox" type="text"/>   
+      
+        <label for="name">QQ查询:</label>   
+        <input id="qq" class="easyui-validatebox" type="text"/>   
+       
+        <label for="name">创建时间:</label>   
+        <input id="min" class="easyui-datebox" type="text"/>-
+        <input id="max" class="easyui-datebox" type="text"/>   
+    </div>
+    <a type="button" href="javascript:void(0)" onclick="init()" class="easyui-linkbutton">搜索</a>
+    <a type="button" href="javascript:void(0)" onclick="open_window1()" class="easyui-linkbutton">添加客户</a>
+    <a type="button" href="javascript:void(0)" onclick="show()" class="easyui-linkbutton">动态设置</a>
+    <a type="button" href="javascript:void(0)" onclick="open_window2()" class="easyui-linkbutton">添加动态</a>
+</div>
+ <div id="addclue_dialog" class="easyui-dialog" title="新增客户信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
+				text:'保存',
+				handler:function(){
+					add_Customer();
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+					clear_Customer();
+				}
+			}]" style="width:500px;height:300px;padding:10px;">
+         <form id="addclueForm">
+                <table cellpadding="5">
+                    <tr>
+                        <td>姓名:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Name"></input></td>
+                    </tr>
+                    <tr>
+                        <td>性别:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Sex"></input></td>
+                    </tr>
+                    <tr>
+                        <td>年龄:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Age"></input></td>
+                    </tr>
+                    <tr>
+                        <td>出生日期:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Birthday"></input></td>
+                    </tr>
+                    <tr>
+                        <td>学历:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Education"></input></td>
+                    </tr>
+                    <tr>
+                        <td>课程方向:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Direction"></input></td>
+                    </tr>
+                    <tr>
+                        <td>来源渠道:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Source"></input></td>
+                    </tr>
+                    <tr>
+                        <td>身份证号:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_IdentityNumber"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Email" data-options="validType:'email'"></input></td>
+                    </tr>
+                    <tr>
+                        <td>QQ号:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Qq"></input></td>
+                    </tr>
+                    <tr>
+                        <td>微信号:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_WeChat"></input></td>
+                    </tr>
+                    <tr>
+                        <td>手机号:</td>
+                        <td><input type="text" class="easyui-numberbox" id="add_Tel"></td>
+                    </tr>  
+                    <tr>
+                        <td>地区:</td>
+                        <td><input type="text" class="easyui-textbox" id="add_Address"></td>
+                    </tr>  
+                    <tr>
+                        <td>备注:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Remarks"></input></td>
+                    </tr>
+                </table>
+         </form>
+    </div> 
+    <div id="addDynamic_window" class="easyui-dialog" title="添加动态" data-options="modal:true,closed:true,iconCls:'icon-add'" style="width:500px;height:300px;padding:10px;">
+         <form id="addDynamicForm">
+                <table cellpadding="5">
+                    <tr>
+                        <td>内容:</td>
+                        <td><input class="easyui-textbox" type="text" id="neirong" ></input></td>
+                    </tr>
+                    <tr>
+                        <td>接收人:</td>
+                        <td><select id="cc" class="easyui-combobox" name="dept" style="width:200px;" >   
+							    <option></option>   
+							</select> 
+                    	</tr>
+                </table>
+         </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" type="button" onclick="add_dynamic()">发送</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear_dynamic()">取消</a>        
+            </div>
+    </div>
+	</body>
+</html>

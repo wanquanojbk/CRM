@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.crm.mapper.DynamicMapper">
+  <!-- 添加动态信息 -->
+  	<insert id="insertDynamic" parameterType="dynamic">
+  		INSERT INTO dynamic(dynamic_Text,dynamic_Creator,dynamic_Recipients,dynamic_CreateTime) 
+  		VALUES(#{dynamic_Text},#{dynamic_Creator},#{dynamic_Recipients},#{dynamic_CreateTime})
+  	</insert>
+  </mapper>

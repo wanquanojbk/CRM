@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#allTree").tree({
+			url:'/CRM/Module/selectAllModules',
+			method:'post',
+			onContextMenu: function(e, node){
+				e.preventDefault();
+				// 查找节点
+				$('#allTree').tree('select', node.target);
+				// 显示快捷菜单
+				$('#mm').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+				});
+			}
+		})
+	})
+	function edit(){
+		var node = $("#allTree").tree("getSelected");
+		console.log(node);
+		if(node!=null){
+			if(node.attributes!=null){
+				$("#id").val(node.id);
+				$("#parent").val(node.attributes.parent);
+				$("#url").val(node.attributes.url)
+				$("#name").val(node.text);
+				$("#weight").val(node.attributes.weight);
+			}
+			$("#updateForm").form("load",node);
+			$("#updateWindow").window("open");
+		}
+	}
+	function append(){
+		var node = $("#allTree").tree("getSelected");
+		if(node!=null){
+			$("#parentId").val(node.id);
+			$("#addWindow").window("open");
+		}
+	}
+	function xiugai(){
+		$('#updateForm').form({
+		    url:'/CRM/Module/updateModule',
+		    onSubmit: function(){
+				// do some check
+				// return false to prevent submit;
+		    },
+		    success:function(data){
+				if(data){
+					$("#allTree").tree("reload");
+					$("#updateWindow").window("close");
+					$.messager.alert("提示","修改成功");
+				}
+				else {
+					$.messager.alert("提示","修改失败");
+				}
+		    }
+		});
+	}
+	function add(){
+		$('#addForm').form({
+		    url:'/CRM/Module/addModule',
+		    onSubmit: function(){
+				// do some check
+				// return false to prevent submit;
+		    },
+		    success:function(data){
+				if(data){
+					$("#allTree").tree("reload");
+					$("#addWindow").window("close");
+					$.messager.alert("提示","添加成功");
+				}
+				else {
+					$.messager.alert("提示","添加失败");
+				}
+		    }
+		});
+	}
+	function remove (){
+		var node = $("#allTree").tree("getSelected");
+		if(node!=null){
+			$.messager.confirm('确认','确定删除么?',function(r){
+			    if (r){
+					$.post("/CRM/Module/deleteModule",{
+						id:node.id
+					},function(res){
+						if(res){
+							$.messager.alert("提示","删除成功");
+						}
+						else{
+							$.messager.alert("提示","删除失败");
+						}	
+					})
+			    }
+			});
+		}
+	}
+</script>
+</head>
+<body>
+	<div id="mm" class="easyui-menu" style="width:120px;">
+		<div onclick="append()" data-options="iconCls:'icon-add'">追加</div>
+		<div onclick="edit()" data-options="iconCls:'icon-edit'">修改</div>
+		<div onclick="remove()" data-options="iconCls:'icon-remove'">移除</div>
+	</div>
+	<div id="updateWindow" style="width: 500px;height: 300px;" class="easyui-window" data-options="closed:true,modol:true">
+		<form  id="updateForm" action="javascript:xiugai()" >
+			节点名称:<input readonly="readonly"  id="id"  type="text" name="modules_Id"/>
+			节点名称:<input id="name"  type="text" name="modules_Name"/>
+			路径:<input id="url" name="modules_Path"  type="text" />
+			权重:<input id="weight" name="modules_Weight"  type="text" />
+			父id:<input id="parent" name="modules_ParentId"  type="text" />
+			<input type="submit" value="提交">
+		</form>
+	</div>
+	<div id="addWindow" style="width: 500px;height: 300px;"  class="easyui-window" data-options="closed:true,modol:true">
+		<form action="javascript:add()" id="addForm" >
+			节点名称:<input  type="text" name="modules_Name"/>
+			路径:<input  type="text"  name="modules_Path"/>
+			ParentId:<input readonly="readonly" id="parentId"  type="text" name="modules_ParentId"/>
+			<input type="submit" value="提交">
+		</form>
+	</div>
+	<ul id="allTree"></ul>
+</body>
+</html>

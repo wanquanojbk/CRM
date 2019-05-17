@@ -39,4 +39,30 @@ List<Modules> selectModulesByRoleId(Integer RolesId);
 
 Modules selectModules(Integer modulesId);
 
+/**
+ * 
+ * @param modules 添加模块
+ * @return
+ */
+Integer insertModules(Modules modules);
+/**
+ * 
+ * @param modules 模块
+ * @return
+ */
+Integer deleteModules(Modules modules);
+
+/**
+ * 
+ * @param modules 修改模块
+ * @return
+ */
+Integer updateModules(Modules modules);
+
+/**
+ * 
+ * @param modules 查询模块根据模块
+ * @return
+ */
+Modules selectModulesByModuleName(Modules modules);
 }

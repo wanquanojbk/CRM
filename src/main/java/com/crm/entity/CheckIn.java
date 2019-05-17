@@ -1,5 +1,8 @@
 package com.crm.entity;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CheckIn {
 private Integer checkIn_Id;//编号
 private Integer checkIn_UserId;//用户编号
@@ -10,6 +13,16 @@ private String checkIn_WorkingHours;//上班时间存成字符串例如：9:00�
 private Integer checkIn_Late;//是否迟到（默认为0,0:已迟到,1:未迟到)
 private Integer checkIn_Exit1;//预留1
 private String checkIn_Exit2;//预留2
+
+private Users users;
+
+
+public Users getUsers() {
+	return users;
+}
+public void setUsers(Users users) {
+	this.users = users;
+}
 public Integer getCheckIn_Id() {
 	return checkIn_Id;
 }

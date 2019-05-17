@@ -26,4 +26,25 @@ SELECT usersRoles_RoleId FROM usersroles WHERE usersRoles_UserId=#{usersRoles_Us
 		r.roles_Id = tb.rolePermissiontb_RoleId AND pt.permissiontb_Id = tb.rolePermissiontb_PermissionId AND r.roles_Id = #{roles_Id}
 		)
 	</select>
+	<insert id="insertModules" parameterType="com.crm.entity.Modules">
+		insert into 
+		modules (modules_Name,modules_Path,modules_ParentId)
+		values(#{modules_Name},#{modules_Path},#{modules_ParentId})
+	</insert>
+	<delete id="deleteModules" parameterType="com.crm.entity.Modules">
+		delete from modules where modules_Id = #{modules_Id}
+	</delete>
+	<update id="updateModules" parameterType="com.crm.entity.Modules">
+		update modules
+		set modules_Name = #{modules_Name},
+		modules_Path=#{modules_Path},
+		modules_ParentId=#{modules_ParentId}
+		where modules_Id = #{modules_Id}
+	</update>
+	<select id="selectModulesByModuleName" resultType="com.crm.entity.Modules" parameterType="com.crm.entity.Modules">
+		select *
+		from modules 
+		where modules_ParentId = #{modules_ParentId} 
+		AND modules_Name = #{modules_Name}
+	</select>
   </mapper>

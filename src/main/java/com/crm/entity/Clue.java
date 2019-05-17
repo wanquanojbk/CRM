@@ -1,18 +1,27 @@
 package com.crm.entity;
+
+
+import org.springframework.stereotype.Controller;
+
 //线索表
+@Controller
 public class Clue {
 private Integer clue_Id;//编号
 private String clue_Name;//姓名
 private String clue_Sex;//性别
+private Integer clue_Age;//年龄
 private String clue_Birthday;//出生日期
+private String clue_Education;//学历
+private String clue_Direction;//课程方向
 private String clue_Source;//线索来源
 private String clue_IdentityNumber;//身份证号
-private String clue_Email;//电子邮件
+private String clue_Email;//电子邮箱
 private String clue_Qq;//QQ
+private String clue_WeChat;//微信号
 private String clue_Tel;//电话
 private String clue_Address;//地区
 private Integer clue_Principal;//负责人(咨询师)
-private String clue_Creator;//创建人(网络咨询师)
+private Integer clue_Creator;//创建人(网络咨询师)
 private String clue_CreateTime;//创建时间
 private String clue_UpdateTime;//更新时间
 private String clue_BginTime;//线索开始时间
@@ -21,6 +30,15 @@ private String clue_Remarks;//备注
 private Integer clue_Status;//状态(默认为0,0:未分配1:正在跟进,2:已放弃,3:已成为学员)
 private Integer clue_Exit1;//预留1
 private String clue_Exit2;//预留2
+
+private Users users;	//维护用户的字段
+
+public Users getUsers() {
+	return users;
+}
+public void setUsers(Users users) {
+	this.users = users;
+}
 public Integer getClue_Id() {
 	return clue_Id;
 }
@@ -39,11 +57,29 @@ public String getClue_Sex() {
 public void setClue_Sex(String clue_Sex) {
 	this.clue_Sex = clue_Sex;
 }
+public Integer getClue_Age() {
+	return clue_Age;
+}
+public void setClue_Age(Integer clue_Age) {
+	this.clue_Age = clue_Age;
+}
 public String getClue_Birthday() {
 	return clue_Birthday;
 }
 public void setClue_Birthday(String clue_Birthday) {
 	this.clue_Birthday = clue_Birthday;
+}
+public String getClue_Education() {
+	return clue_Education;
+}
+public void setClue_Education(String clue_Education) {
+	this.clue_Education = clue_Education;
+}
+public String getClue_Direction() {
+	return clue_Direction;
+}
+public void setClue_Direction(String clue_Direction) {
+	this.clue_Direction = clue_Direction;
 }
 public String getClue_Source() {
 	return clue_Source;
@@ -69,6 +105,12 @@ public String getClue_Qq() {
 public void setClue_Qq(String clue_Qq) {
 	this.clue_Qq = clue_Qq;
 }
+public String getClue_WeChat() {
+	return clue_WeChat;
+}
+public void setClue_WeChat(String clue_WeChat) {
+	this.clue_WeChat = clue_WeChat;
+}
 public String getClue_Tel() {
 	return clue_Tel;
 }
@@ -87,10 +129,10 @@ public Integer getClue_Principal() {
 public void setClue_Principal(Integer clue_Principal) {
 	this.clue_Principal = clue_Principal;
 }
-public String getClue_Creator() {
+public Integer getClue_Creator() {
 	return clue_Creator;
 }
-public void setClue_Creator(String clue_Creator) {
+public void setClue_Creator(Integer clue_Creator) {
 	this.clue_Creator = clue_Creator;
 }
 public String getClue_CreateTime() {
@@ -141,21 +183,27 @@ public String getClue_Exit2() {
 public void setClue_Exit2(String clue_Exit2) {
 	this.clue_Exit2 = clue_Exit2;
 }
-
-public Clue(Integer clue_Id, String clue_Name, String clue_Sex, String clue_Birthday, String clue_Source,
-		String clue_IdentityNumber, String clue_Email, String clue_Qq, String clue_Tel, String clue_Address,
-		Integer clue_Principal, String clue_Creator, String clue_CreateTime, String clue_UpdateTime,
-		String clue_BginTime, String clue_EndTime, String clue_Remarks, Integer clue_Status, Integer clue_Exit1,
-		String clue_Exit2) {
+public Clue() {
+	super();
+}
+public Clue(Integer clue_Id, String clue_Name, String clue_Sex, Integer clue_Age, String clue_Birthday,
+		String clue_Education, String clue_Direction, String clue_Source, String clue_IdentityNumber, String clue_Email,
+		String clue_Qq, String clue_WeChat, String clue_Tel, String clue_Address, Integer clue_Principal,
+		Integer clue_Creator, String clue_CreateTime, String clue_UpdateTime, String clue_BginTime, String clue_EndTime,
+		String clue_Remarks, Integer clue_Status, Integer clue_Exit1, String clue_Exit2) {
 	super();
 	this.clue_Id = clue_Id;
 	this.clue_Name = clue_Name;
 	this.clue_Sex = clue_Sex;
+	this.clue_Age = clue_Age;
 	this.clue_Birthday = clue_Birthday;
+	this.clue_Education = clue_Education;
+	this.clue_Direction = clue_Direction;
 	this.clue_Source = clue_Source;
 	this.clue_IdentityNumber = clue_IdentityNumber;
 	this.clue_Email = clue_Email;
 	this.clue_Qq = clue_Qq;
+	this.clue_WeChat = clue_WeChat;
 	this.clue_Tel = clue_Tel;
 	this.clue_Address = clue_Address;
 	this.clue_Principal = clue_Principal;
@@ -169,19 +217,17 @@ public Clue(Integer clue_Id, String clue_Name, String clue_Sex, String clue_Birt
 	this.clue_Exit1 = clue_Exit1;
 	this.clue_Exit2 = clue_Exit2;
 }
-
-public Clue() {
-	super();
-}
 @Override
 public String toString() {
-	return "Clue [clue_Id=" + clue_Id + ", clue_Name=" + clue_Name + ", clue_Sex=" + clue_Sex + ", clue_Birthday="
-			+ clue_Birthday + ", clue_Source=" + clue_Source + ", clue_IdentityNumber=" + clue_IdentityNumber
-			+ ", clue_Email=" + clue_Email + ", clue_Qq=" + clue_Qq + ", clue_Tel=" + clue_Tel + ", clue_Address="
-			+ clue_Address + ", clue_Principal=" + clue_Principal + ", clue_Creator=" + clue_Creator
-			+ ", clue_CreateTime=" + clue_CreateTime + ", clue_UpdateTime=" + clue_UpdateTime + ", clue_BginTime="
-			+ clue_BginTime + ", clue_EndTime=" + clue_EndTime + ", clue_Remarks=" + clue_Remarks + ", clue_Status="
-			+ clue_Status + ", clue_Exit1=" + clue_Exit1 + ", clue_Exit2=" + clue_Exit2 + "]";
+	return "Clue [clue_Id=" + clue_Id + ", clue_Name=" + clue_Name + ", clue_Sex=" + clue_Sex + ", clue_Age=" + clue_Age
+			+ ", clue_Birthday=" + clue_Birthday + ", clue_Education=" + clue_Education + ", clue_Direction="
+			+ clue_Direction + ", clue_Source=" + clue_Source + ", clue_IdentityNumber=" + clue_IdentityNumber
+			+ ", clue_Email=" + clue_Email + ", clue_Qq=" + clue_Qq + ", clue_WeChat=" + clue_WeChat + ", clue_Tel="
+			+ clue_Tel + ", clue_Address=" + clue_Address + ", clue_Principal=" + clue_Principal + ", clue_Creator="
+			+ clue_Creator + ", clue_CreateTime=" + clue_CreateTime + ", clue_UpdateTime=" + clue_UpdateTime
+			+ ", clue_BginTime=" + clue_BginTime + ", clue_EndTime=" + clue_EndTime + ", clue_Remarks=" + clue_Remarks
+			+ ", clue_Status=" + clue_Status + ", clue_Exit1=" + clue_Exit1 + ", clue_Exit2=" + clue_Exit2 + ", users="
+			+ users + "]";
 }
 
 }

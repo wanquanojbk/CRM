@@ -1,6 +1,7 @@
 package com.crm.interceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -15,16 +16,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		// addPathPatterns("/**") 表示拦截所有的请求，
 		// excludePathPatterns("/login", "/register") 表示除了登陆与注册之外，因为登陆注册不需要登陆也可以访问
-		System.out.println("我来拦截规则了");
-		registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login","/js/**");
-
+		 System.out.println("我来拦截规则了");
+		 InterceptorRegistration loginRegistry = registry.addInterceptor(loginInterceptor);
+		 loginRegistry.addPathPatterns("/**");
+		 loginRegistry.excludePathPatterns("/login"); //判断登录页面
+		 //loginRegistry.excludePathPatterns("/loginout"); //退出登录的映射
+		 loginRegistry.excludePathPatterns("/code");  //验证码 
+		 loginRegistry.excludePathPatterns("/js/**");//静态资源所有
 	}
 //	配置静态资源文件夹,放行的东西
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-		registry.addResourceHandler("/templates/**").addResourceLocations("classpath:/templates/");
-		registry.addResourceHandler("/static/").addResourceLocations("classpath:/static/**");
-		registry.addResourceHandler("/templates/").addResourceLocations("classpath:/templates/**");
+		registry.addResourceHandler("/js/").addResourceLocations("classpath:/js/**");
 	}
 }

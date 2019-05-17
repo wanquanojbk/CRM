@@ -3,6 +3,27 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crm.mapper.UsersMapper">
+	<resultMap type="com.crm.entity.Users" id="userMap">
+		<id property="users_Id" column="users_Id"/>
+		<result property="users_LoginName" column="users_LoginName"/>
+		<result property="users_Password" column="users_Password"/>
+		<result property="users_LsLockout" column="users_LsLockout"/>
+		<result property="users_LastLoginTime" column="users_LastLoginTime"/>
+		<result property="users_CreateTime" column="users_CreateTime"/>
+		<result property="users_PsdWrongTime" column="users_PsdWrongTime"/>
+		<result property="users_LockTime" column="users_LockTime"/>
+		<result property="users_ProTectEMail" column="users_ProTectEMail"/>
+		<result property="users_ProtectTel" column="users_ProtectTel"/>
+		<result property="users_Exit1" column="users_Exit1"/>
+		<result property="users_Exit2" column="users_Exit2"/>
+		<result property="users_CheckInStatus" column="users_CheckInStatus"/>
+		<collection property="roles" ofType="com.crm.entity.Roles">
+			<id property="roles_Id" column="roles_Id"/>
+			<result property="roles_Name" column="roles_Name"/>
+			<result property="roles_Exit1" column="roles_Exit1"/>
+			<result property="roles_Exit2" column="roles_Exit2"/>
+		</collection>
+	</resultMap>
 	<!-- 登录 -->
 	<select id="selectUsers" parameterType="com.crm.entity.Users"
 		resultType="com.crm.entity.Users">
@@ -107,5 +128,64 @@
 	<select id="selectUsersByUsersId" parameterType="int" resultType="com.crm.entity.Users">
 		select *
 		from users where users_Id =#{users_Id}
+	</select>
+	<!--已签到的手底下员工  -->
+	<select	id="selectCheckedUsers" parameterType="int" resultType="com.crm.entity.Users">
+		select
+			*
+		from
+			users where users_CheckInStatus = 2 
+			AND  users_Exit1 = #{users_Id}
+	</select>
+	<select id="selectUsersByMySelf" parameterType="com.crm.entity.PageNation" resultMap="userMap">
+		select
+			u.*,r.*
+		from
+			users   u,roles r,usersroles ur
+		where  
+			u.users_Id = ur.usersRoles_UserId AND r.roles_Id = ur.usersRoles_Id AND u.users_Exit1 = #{num6}
+			limit #{page},#{row}
+	</select>
+	<select id="selectUsersByMySelfCount" parameterType="com.crm.entity.PageNation" resultType="int">
+			select
+				count(1)
+		from
+			users   u,roles r,usersroles ur
+		where  
+			u.users_Id = ur.usersRoles_UserId AND r.roles_Id = ur.usersRoles_Id AND u.users_Exit1 = #{num6}
+	</select>
+	<update id="updateUesrsCheckById" parameterType="int">
+		update 
+			users
+		set 
+			users_CheckInStatus = 2 
+		where 
+			users_Id = #{users_Id}
+	</update>
+	<update id="updateUsersCheckedById" parameterType="int">
+		update 
+			users
+		set 
+			users_CheckInStatus = 3
+		where 
+			users_Id = #{users_Id}
+	</update>
+	
+	<select id="selectCheckedZiXunShi" parameterType="int" resultType="com.crm.entity.Users">
+		SELECT u.*
+			FROM users u,usersroles ur,roles r WHERE u.users_Id = ur.usersRoles_UserId AND r.roles_Id = ur.usersRoles_Id AND r.roles_Name ='咨询师'
+		AND u.users_Exit1 = 7 AND u.users_CheckInStatus = 2
+	</select>
+	
+	<select id="getOneUsersById" parameterType="int" resultType="com.crm.entity.Users">
+		SELECT * FROM users WHERE users_Id=#{id}
+	</select>
+	
+	
+		<!-- 查询是咨询师角色的用户 -->
+	<select id="selectUsersAll" resultType="users" >
+			SELECT users_Id,users_LoginName 
+			FROM users u, usersroles ul, roles r WHERE u.users_Id = ul.usersRoles_UserId AND ul.usersRoles_RoleId = r.roles_Id AND r.roles_Id = 2
+
 	</select>
 </mapper>

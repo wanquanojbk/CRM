@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.crm.mapper.CampusMapper">
+  	<resultMap type="com.crm.entity.Classes" id="ClassesMap">
+		<id column="classes_Id" property="classes_Id"/>
+		<result column="classes_Name" property="classes_Name"/>
+		<result column="classes_CreateTime" property="classes_CreateTime"/>
+		<result column="classes_CounselorId" property="classes_CounselorId"/>
+		<result column="classes_SchoolYear" property="classes_SchoolYear"/>
+		<result column="classes_Campus" property="classes_Campus"/>
+		<result column="classes_Status" property="classes_Status"/>
+		<result column="classes_Exit1" property="classes_Exit1"/>
+		<result column="classes_Exit2" property="classes_Exit2"/>
+		<association property="campus" javaType="Campus">
+			<id column="campus_Id" property="campus_Id"/>
+			<result column="campus_Name" property="campus_Name"/>
+			<result column="campus_CreateTime" property="campus_CreateTime"/>
+			<result column="campus_DeanId" property="campus_DeanId"/>
+			<result column="campus_Status" property="campus_Status"/>
+			<result column="campus_Exit1" property="campus_Exit1"/>
+			<result column="campus_Exit2" property="campus_Exit2"/>
+		</association>
+		<association property="users" javaType="Users">
+			<id column="users_Id" property="users_Id"/>
+			<result column="users_LoginName" property="users_LoginName"/>
+			<result column="users_Password" property="users_Password"/>
+			<result column="users_LsLockout" property="users_LsLockout"/>
+			<result column="users_LastLoginTime" property="users_LastLoginTime"/>
+			<result column="users_CreateTime" property="users_CreateTime"/>
+			<result column="users_PsdWrongTime" property="users_PsdWrongTime"/>
+			<result column="users_LockTime" property="users_LockTime"/>
+			<result column="users_ProTectEMail" property="users_ProTectEMail"/>
+			<result column="users_ProtectTel" property="users_ProtectTel"/>
+			<result column="users_CheckInStatus" property="users_CheckInStatus"/>
+			<result column="users_Exit1" property="users_Exit1"/>
+			<result column="users_Exit2" property="users_Exit2"/>
+		</association>
+		<association property="student" javaType="Student">
+			<id column="student_Id" property="student_Id"/>
+			<result column="student_Name" property="student_Name"/>
+			<result column="student_Sex" property="student_Sex"/>
+			<result column="student_Birthday" property="student_Birthday"/>
+			<result column="student_Source" property="student_Source"/>
+			<result column="student_IdentityNumber" property="student_IdentityNumber"/>
+			<result column="student_Email" property="student_Email"/>
+			<result column="student_Qq" property="student_Qq"/>
+			<result column="student_Tel" property="student_Tel"/>
+			<result column="student_Address" property="student_Address"/>
+			<result column="student_Creator" property="student_Creator"/>
+			<result column="student_CreateTime" property="student_CreateTime"/>
+			<result column="student_UpdateTime" property="student_UpdateTime"/>
+			<result column="student_Remarks" property="student_Remarks"/>
+			<result column="student_ClassId" property="student_ClassId"/>
+			<result column="student_Status" property="student_Status"/>
+			<result column="student_Amount" property="student_Amount"/>
+			<result column="rs" property="student_Exit1"/>
+			<result column="student_Exit2" property="student_Exit2"/>
+		</association>
+	</resultMap>
+  	<!-- 查询班级 -->
+  	<select id="selectClasses" parameterType="com.crm.entity.PageNation" resultMap="ClassesMap">
+  		SELECT * FROM classes c LEFT JOIN (SELECT student_ClassId,count(1) 'rs' FROM student GROUP BY  student_ClassId) st on  c.classes_Id=st.student_ClassId,campus ca,users u
+  		<where>
+  			<if test="text1 != null and text1 != '' ">
+				AND  c.classes_Name like CONCAT(CONCAT('%',#{text1}), '%')
+			</if>
+			<if test="text2 != null and text2 != '' ">
+				AND  u.users_LoginName like CONCAT(CONCAT('%',#{text2}), '%')
+			</if>
+			<if test="text3 != null and text3 != '' ">
+				AND  c.classes_SchoolYear like CONCAT(CONCAT('%',#{text3}), '%')
+			</if>
+			<if test="text4 != null and text4 != '' ">
+				AND  c.classes_Status like CONCAT(CONCAT('%',#{text4}), '%')
+			</if>
+  			AND c.classes_CounselorId=u.users_Id
+  			AND c.classes_Campus=ca.campus_Id
+  		</where>
+  		limit #{page},#{row}
+  	</select>
+  	<!-- 查询班级总数 -->
+  	<select id="countClasses" parameterType="com.crm.entity.PageNation" resultType="int">
+  		SELECT count(1) FROM classes c,campus ca,users u
+  		<where>
+  			<if test="text1 != null and text1 != '' ">
+				AND  c.classes_Name like CONCAT(CONCAT('%',#{text1}), '%')
+			</if>
+			<if test="text2 != null and text2 != '' ">
+				AND  u.users_LoginName like CONCAT(CONCAT('%',#{text2}), '%')
+			</if>
+			<if test="text3 != null and text3 != '' ">
+				AND  c.classes_SchoolYear like CONCAT(CONCAT('%',#{text3}), '%')
+			</if>
+			<if test="text4 != null and text4 != '' ">
+				AND  c.classes_Status like CONCAT(CONCAT('%',#{text4}), '%')
+			</if>
+  			AND c.classes_CounselorId=u.users_Id
+  			AND c.classes_Campus=ca.campus_Id
+  		</where>
+  	</select>
+  	<!-- 添加班级 -->
+  	<insert id="addClasses" parameterType="com.crm.entity.PageNation">
+  		INSERT INTO classes(classes_Name,classes_CreateTime,classes_CounselorId,classes_SchoolYear,classes_Campus,classes_Status) 
+		VALUES (#{text1},NOW(),#{num1},#{text3},1,'可用');
+  	</insert>
+  	<!-- 修改班级 -->
+  	<update id="UpdateClasses" parameterType="com.crm.entity.Classes">
+  		UPDATE classes 
+  		<set>
+  			<if test="classes_Name != null and classes_Name != ''">
+  				classes_Name = #{classes_Name},
+  			</if>
+  			<if test="classes_Name != null and classes_Name != ''">
+  				classes_CounselorId = #{classes_CounselorId},
+  			</if>
+  			<if test="classes_Name != null and classes_Name != ''">
+  				classes_SchoolYear = #{classes_SchoolYear},
+  			</if>
+  			<if test="classes_Name != null and classes_Name != ''">
+  				classes_Status = #{classes_Status},
+  			</if>
+  		</set>
+  		<where>
+  			classes_Id = #{classes_Id}
+  		</where> 
+  	</update>
+  	<!-- 删除班级 -->
+  	<delete id="DeleteClasses" parameterType="com.crm.entity.PageNation">
+  		DELETE FROM classes 
+  		<where>
+  			classes_Id = #{num1} 
+  			AND (SELECT count(1) 
+  				 FROM student 
+  				 WHERE student_ClassId = #{num1})&lt;1
+  		</where> 
+  	</delete>
+  	<!-- 查询辅导员 -->
+  	<select id="selectUsers" parameterType="com.crm.entity.PageNation" resultType="com.crm.entity.Users">
+  		SELECT * FROM Users u,UsersRoles ur
+  		<where>
+  			 u.users_Id=ur.usersRoles_UserId 
+  			 AND usersRoles_RoleId=4
+  		</where>
+  		<if test="row != null and row != ''">
+  			limit #{page},#{row}
+  		</if>
+  	</select>
+  	<!-- 查询辅导员总数 -->
+  	<select id="countUsers" parameterType="com.crm.entity.PageNation" resultType="int">
+  		SELECT count(1) FROM Users u,UsersRoles ur
+  		<where>
+  			 u.users_Id=ur.usersRoles_UserId 
+  			 AND usersRoles_RoleId=4
+  		</where>
+  	</select>
+  	<!-- 查询学生 -->
+  	<select id="selectStudent" parameterType="com.crm.entity.PageNation" resultType="com.crm.entity.Student">
+  		SELECT * FROM Student 
+  		<where>
+  			<if test="num3 != null and num3 != '' ">
+				AND student_ClassId = #{num3}
+			</if>
+  		</where>
+  		<if test="row != null and row != ''">
+  			limit #{page},#{row}
+  		</if>
+  	</select>
+  	<!-- 查询学生总数 -->
+  	<select id="countStudent" parameterType="com.crm.entity.PageNation" resultType="int">
+  		SELECT count(1) FROM Student
+  		<where>
+  			<if test="num3 != null and num3 != '' ">
+				AND student_ClassId = #{num3}
+			</if>
+  		</where>
+  	</select>
+  </mapper>

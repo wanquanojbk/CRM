@@ -1,25 +1,49 @@
 package com.crm.entity;
 
-public class Student {
+import org.springframework.stereotype.Component;
+
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.BaseRowModel;
+
+@Component
+public class Student extends BaseRowModel {
+@ExcelProperty(value ="学生编号",index=0)
 private Integer student_Id;//编号
+@ExcelProperty(value ="学生姓名",index=1)
 private String student_Name;//姓名
+@ExcelProperty(value ="性别",index=2)
 private String student_Sex;//性别
+@ExcelProperty(value ="出生日期",index=3)
 private String student_Birthday;//出生日期
+@ExcelProperty(value ="学生来源",index=4)
 private String student_Source;//学员来源
+@ExcelProperty(value ="身份证号",index=5)
 private String student_IdentityNumber;//身份证号
+@ExcelProperty(value ="电子邮箱",index=6)
 private String student_Email;//电子邮件
+@ExcelProperty(value ="QQ",index=7)
 private String student_Qq;//qq
+@ExcelProperty(value ="电话",index=8)
 private String student_Tel;//电话
+@ExcelProperty(value ="地区",index=9)
 private String student_Address;//地区
+@ExcelProperty(value ="跟进人",index=10)
 private Integer student_Creator;//跟进人
+@ExcelProperty(value ="入学时间",index=11)
 private String student_CreateTime;//入学时间
+@ExcelProperty(value ="更新时间",index=12)
 private String student_UpdateTime;//更新时间
+@ExcelProperty(value ="备注",index=13)
 private String student_Remarks;//备注
+@ExcelProperty(value ="班级ID",index=14)
 private Integer student_ClassId;//班级Id
+@ExcelProperty(value ="缴费状态(0:未缴,1:已缴)",index=15)
 private Integer student_Status;//缴费状态(默认为0,0:未缴费,1:已缴费)
 private Double student_Amount;//缴费金额
 private Integer student_Exit1;//预留1
 private String student_Exit2;//预留2
+private Classes classes;
+
 public Integer getStudent_Id() {
 	return student_Id;
 }
@@ -134,11 +158,17 @@ public String getStudent_Exit2() {
 public void setStudent_Exit2(String student_Exit2) {
 	this.student_Exit2 = student_Exit2;
 }
+public Classes getClasses() {
+	return classes;
+}
+public void setClasses(Classes classes) {
+	this.classes = classes;
+}
 public Student(Integer student_Id, String student_Name, String student_Sex, String student_Birthday,
 		String student_Source, String student_IdentityNumber, String student_Email, String student_Qq,
 		String student_Tel, String student_Address, Integer student_Creator, String student_CreateTime,
 		String student_UpdateTime, String student_Remarks, Integer student_ClassId, Integer student_Status,
-		Double student_Amount, Integer student_Exit1, String student_Exit2) {
+		Double student_Amount, Integer student_Exit1, String student_Exit2, Classes classes) {
 	super();
 	this.student_Id = student_Id;
 	this.student_Name = student_Name;
@@ -159,10 +189,12 @@ public Student(Integer student_Id, String student_Name, String student_Sex, Stri
 	this.student_Amount = student_Amount;
 	this.student_Exit1 = student_Exit1;
 	this.student_Exit2 = student_Exit2;
+	this.classes = classes;
 }
 public Student() {
 	super();
 }
+
 @Override
 public String toString() {
 	return "Student [student_Id=" + student_Id + ", student_Name=" + student_Name + ", student_Sex=" + student_Sex
@@ -172,7 +204,8 @@ public String toString() {
 			+ ", student_Creator=" + student_Creator + ", student_CreateTime=" + student_CreateTime
 			+ ", student_UpdateTime=" + student_UpdateTime + ", student_Remarks=" + student_Remarks
 			+ ", student_ClassId=" + student_ClassId + ", student_Status=" + student_Status + ", student_Amount="
-			+ student_Amount + ", student_Exit1=" + student_Exit1 + ", student_Exit2=" + student_Exit2 + "]";
+			+ student_Amount + ", student_Exit1=" + student_Exit1 + ", student_Exit2=" + student_Exit2 + ", classes="
+			+ classes + "]";
 }
 
 }

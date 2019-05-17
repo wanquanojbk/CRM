@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" th:inline="none">
+	$(function(){
+		init();
+	})
+	function init(){
+		$("#dg").datagrid({
+			url:'/CRM/Manager/shoudong',
+			method:'post',
+			 columns:[[    
+				 	{checkbox:true,field:'checkbox'},
+			        {field:'clue_Name',title:'姓名',width:100},    
+			        {field:'clue_Sex',title:'性别',width:100},    
+			        {field:'clue_Age',title:'年龄',width:100},
+			        {field:'clue_Birthday',title:'出生日期',width:100},
+			        {field:'clue_Education',title:'学历',width:100},
+			        {field:'clue_Direction',title:'课程方向',width:100},
+			        {field:'clue_Source',title:'来源',width:100},
+			        {field:'clue_IdentityNumber',title:'身份证号',width:100},
+			        {field:'clue_Email',title:'电子邮箱',width:100},
+			        {field:'clue_Qq',title:'QQ号',width:100},
+			        {field:'clue_WeChat',title:'微信号',width:100},
+			        {field:'clue_Tel',title:'电话',width:100},
+			        {field:'clue_Address',title:'地区',width:100},
+			//		{field:'users',title:'创建人',width:100,formatter:users},
+			        //{field:'genzong',title:'创建人',width:100,formatter:genzong},
+			        {field:'clue_CreateTime',title:'创建时间',width:100},
+			         /*{field:'clue_UpdateTime',title:'更新时间',width:100},
+			        {field:'clue_BginTime',title:'线索开始时间',width:100},
+			        {field:'clue_EndTime',title:'线索结束时间',width:100}, */
+			        {field:'clue_Remarks',title:'备注',width:100},
+			        /* {field:'clue_Status',title:'状态',width:100}, */
+			        //{field:'caozuo',title:'操作',width:100,formatter:caozuo}
+			    ]],toolbar:'#tool'
+		
+		})
+	}
+</script>
+</head>
+<body>
+	<div id="tool" >
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-tip'">分配</a>
+	</div>
+	<div id="fenPeiWindow" data-options="modal:true,closed:true" >
+		
+	</div>
+	<table id="dg" class="easyui-datagrid" ></table>
+</body>
+</html>

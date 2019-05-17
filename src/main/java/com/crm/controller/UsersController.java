@@ -23,22 +23,34 @@ import com.crm.util.Result;
 public class UsersController {
 	@Autowired
 	private UsersService usersService;
+	
+	@RequestMapping("jumpLogin")
+	public String jumpLogin() {
+		return "WeAdmin/lo_gin";
+	}
+	
+	
 	@RequestMapping("login")
 	public String login(Users users, Model model, HttpServletRequest request,HttpServletResponse response,String yanzhengma,Integer miandenglu) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
 		String mima = users.getUsers_Password();
 		Result result = usersService.selectUsers(users,request);
 		String piccode = (String)request.getSession().getAttribute("piccode");
-		
-		if (result.getSuccess()) {
+		  if(piccode==null||"".equals(piccode)) {
+				return "WeAdmin/lo_gin";
+			}
+		 else if (result.getSuccess()) {  //判断是信息正常  //判断是验证码没有输入
 			if (result.getIsLockout() == 1) {
+				
 				if(!piccode.equals(yanzhengma.toLowerCase())) {
-					model.addAttribute("msg", "验证码错误");
-					request.getSession().removeAttribute("users");
-					return "WeAdmin/lo_gin";
+						model.addAttribute("msg", "验证码错误");
+						request.getSession().removeAttribute("users");
+						return "WeAdmin/lo_gin";
 				}
+			
 				else {
 					if(miandenglu!=null) {
+						request.getSession().setAttribute("users", result.getUsers());
 						Cookie username = new Cookie("cookie", users.getUsers_LoginName());
 						username.setMaxAge(60*60*24*7);
 						Cookie password = new Cookie("cookie2", mima);
@@ -46,9 +58,11 @@ public class UsersController {
 						response.addCookie(username);
 						response.addCookie(password);
 						model.addAttribute("users", result.getUsers());
+						request.getSession().setAttribute("password", mima);
 						return "WeAdmin/main";
 					}
 					else {
+						request.getSession().setAttribute("password", mima);
 						model.addAttribute("users", result.getUsers());
 						return "WeAdmin/main";
 					}
@@ -60,7 +74,9 @@ public class UsersController {
 					return "WeAdmin/lo_gin";
 			}
 
-		} else {
+		} 
+		
+		else {
 			model.addAttribute("msg", result.getMsg());
 			return "WeAdmin/lo_gin";
 		}
@@ -71,7 +87,6 @@ public class UsersController {
 	@RequestMapping("welcome")
 	public String welcome() {
 		return "WeAdmin/pages/welcome";
-
 	}
 
 	// 供前台layui拿到index页面
@@ -169,4 +184,47 @@ public class UsersController {
 	public void code(HttpServletRequest request,HttpServletResponse response) {
 		usersService.code(request, response);
 	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * 用户前台登录过后点击修改密码按钮后进行修改的密码方法
+	 * @param request
+	 * @param users_Id
+	 * @param password
+	 * @param twoPassword
+	 * @return 0代表旧密码错误,1代表修改失败,2成功
+	 */
+	@RequestMapping("updatePasswordById")
+	@ResponseBody
+	public int updatePasswordById(HttpServletRequest request, String password, String twoPassword) {
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		System.out.println(password+"-----------------");
+		Users users = (Users) session.getAttribute("users");
+		
+		return usersService.updatePasswordById(users.getUsers_Id(), password, twoPassword);
+	}
+	
+	
+	
+	
+	/**
+	 * 前台用户点击退出时清空session的方法
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("logOut2")
+	public String logOut2(HttpServletRequest request, HttpServletResponse response,Model model) {
+		HttpSession session = request.getSession();
+		session.removeAttribute("users");
+		model.addAttribute("msg", "欢迎您的登录");
+		return "WeAdmin/lo_gin";
+	}
+	
 }

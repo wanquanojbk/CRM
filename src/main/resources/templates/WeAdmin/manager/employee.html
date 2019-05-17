@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>员工页面</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" th:inline="none">
+	$(function(){
+		init();
+	})
+	function juese(value,row,index){
+		var a ="<select>"
+		for(var i=0;i<row.users.roles.length;i++){
+			a+="<option>"+row.users.roles[i].roles_Name+"</option>"
+		}
+		a+="</select>";
+		return a ;
+	}
+	function tuiqian(){
+		$("#tuiqianTab").datagrid({
+			url:'/CRM/Manager/checkEmployee',
+			method:'post',
+			columns:[[
+				{field:'checkbox',align:'center',checkbox:true},
+				{field:'users_Id',title:'用户编号',align:'center'},
+				{field:'users_LoginName',title:'员工姓名',align:'center'}
+			]]
+		})
+		$("#tuiqianWindow").window("open");
+	}
+	function shoudong(){
+		var ids="";
+		var rows = $("#tuiqianTab").datagrid("getSelections");
+		if(rows.length ==0||rows==null){
+			$.messager.alert("提示","请选择具体一个员工在进行操作");
+			return;
+		}
+		
+		else{
+			for(var i=0;i<rows.length;i++){
+				ids+=rows[i].users_Id+",";
+			}
+			$.messager.confirm('提示','确认进行退签操作么?',function(r){
+			    if (r){
+					$.post("/CRM/Manager/startChecked",{
+						ids:ids
+					},function(res){
+						if(res){
+							$("#tuiqianWindow").window("close");
+							$.messager.alert("提示","退签成功");
+							$("#demo").datagrid("reload");
+						}
+						else{
+							$.messager.alert("提示","退签失败");
+						}
+					},"json")
+			    }
+			});
+		}
+	}
+	function qiandao(value,row,index){
+		if(row.checkIn_Status==1){
+			return "未签到";
+		}
+		if(row.checkIn_Status==2){
+			return "已签到";
+		}
+		if(row.checkIn_Status==3){
+			return "已签退";
+		}
+	}
+	function xingming(value,row,index){
+		return row.users.users_LoginName;
+	}
+	function init(){
+		$("#demo").datagrid({
+			url:'/CRM/Manager/allEmployee',
+			method:'post',
+			columns:[[
+				{field:'checkbox',align:'center',checkbox:true},
+				{field:'checkIn_Id',title:'签到记录',align:'center'},
+				{field:'checkIn_Time',title:'签到时间',align:'center'},
+				{field:'checkIn_EndTime',title:'退签时间',align:'center'},
+				{field:'qiandao',title:'员工当天签到状态',align:'center',formatter:qiandao},
+				{field:'juese',title:'员工职位',align:'center',formatter:juese},
+				{field:'xingming',title:'员工姓名',align:'center',formatter:xingming},
+			]],
+			pagination:true,
+			queryParams:{
+				text1:$("#usersName").val(),
+		    	num1:$("#isLocks").val(),
+		    	text2:$("#startDate").datetimebox("getValue"),
+		    	text3:$("#endDate").datetimebox("getValue")
+			},
+			toolbar:'#tool'
+		})
+	}
+</script>
+</head>
+<body>
+		<div id="tool">
+				      <label >创建时间</label>
+				        <input type="text" name="" placeholder="开始时间"  id="startDate" class="easyui-datetimebox"/>
+				     -
+				        <input type="text" name="" placeholder="结束时间" id="endDate" class="easyui-datetimebox"/>
+	   	 			<select id="isLocks">
+	   	 				<option value="">--签到状态--</option>
+	   	 				<option value="1">未签到</option>
+	   	 				<option value="2">已签到</option>
+	   	 				<option value="3">已签退</option>
+	   	 			</select>
+	   	 			<input id="usersName" type="text"  class="easyui-validatebox" placeholder="请输入员工名" />
+	   	 			<input  type="button" class="easyui-linkbutton" onclick="init()"  value="搜索">
+	   	 			<input  type="button" class="easyui-linkbutton" onclick="tuiqian()"  value="手动退签">
+		</div>
+	<table id="demo" class="easyui-datagrid"></table>
+	<div id="tuiqianWindow" class="easyui-window" data-options="modal:true,closed:true">
+		<button onclick="shoudong()">签到</button>
+		<table id="tuiqianTab" class="easyui-datagrid"></table>
+	</div>
+</body>
+</html>

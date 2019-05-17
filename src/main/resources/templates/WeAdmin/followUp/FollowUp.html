@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" th:inline="none">
+var a ;
+$(function(){
+	init();
+})
+function caozuo(value,row,index){
+	return "<a href='javascript:void(0);' onclick='upd_opd("+index+")'>修改</a>";
+}
+function upd_opd(index){
+	a = index;
+	var data = $("#dg").datagrid("getData");
+	var row = data.rows[index];
+		$("#mubiao1").combobox({
+			url:'/CRM/Consultant/getClue',
+			method:'post',
+			valueField:'clue_Id',
+			textField:'clue_Name'
+		})
+		$("#upd1_clueForm").form('load',row);
+		$("#upd1_FollowUp_dialog").window("open");
+	
+}
+function init(){
+	$('#dg').datagrid({    
+	    url:'getAll',    
+	    method:"post",
+	    pagination:true,
+	    singleSelect:true,
+	    toolbar:"#headTool",
+	    columns:[[    
+	        {field:'name',title:'姓名',width:100,formatter:name},    
+	        {field:'follwUp_Text',title:'跟进内容',width:100},    
+	        {field:'follwUp_Type',title:'跟进方式',width:100},    
+	        {field:'follwUp_FirstVisitTime',title:'首访时间',width:100},
+	        {field:'follwUp_Time',title:'创建时间',width:100},
+	        {field:'follwUp_Door',title:'是否上门',width:100},
+	        {field:'follwUp_DoorTime',title:'上门时间',width:100},
+	        {field:'follwUp_ReturnVisit',title:'是否回访',width:100},
+	        {field:'follwUp_DoorTime',title:'回访时间',width:100},
+	        {field:'follwUp_ReturnVisitSituation',title:'回访情况',width:100,hidden:true},
+	        {field:'follwUp_EndTim',title:'结束时间',width:100},
+	        {field:'follwUp_Conclusion',title:'结论',width:100},
+	        {field:'caozuo',title:'操作',width:100,formatter:caozuo}
+	    ]],
+	    queryParams:{
+	    	text1:$("#name").val(),
+	    	text2:$("#ReturnVisit").combobox("getValue"),
+	    	text3:$("#dataTim").combobox("getValue"),
+	    	text4:$("#min").datebox("getValue"),
+	    	text5:$("#max").datebox("getValue")
+	    }
+	});
+}
+function upd1_Customer(){
+	//获取id值
+	var data = $("#dg").datagrid("getData");
+	var row = data.rows[a];
+	var followUp_id = row.followUp_id;
+	//根据nam拿值
+	var add_Text = $("#follwUp_Text").textbox("getValue");
+	var add_Type = $("#follwUp_Type").textbox("getValue");
+	var add_FirstVisitTime = $("#follwUp_FirstVisitTime").datetimebox("getValue");
+	var add_Door = $("#follwUp_Door").combobox("getValue");
+	var add_DoorTime = $("#follwUp_DoorTime").datetimebox("getValue");
+	var add_ReturnVisit = $("#follwUp_ReturnVisit").combobox("getValue");
+	var add_ReturnVisitTim = $("#follwUp_ReturnVisitTim").datetimebox("getValue");
+	var add_ReturnVisitSituation = $("#follwUp_ReturnVisitSituation").textbox("getValue");
+	var add_EndTim = $("#follwUp_EndTim").datetimebox("getValue");
+	var add_ClueId = $("#mubiao1").combobox("getValue");
+	var add_Conclusion = $("#follwUp_Conclusion").textbox("getValue");
+	//-------------------------------------------------------------------------------------------------------
+	$.post("updFollowUp",{
+		followUp_id:followUp_id,
+		follwUp_Text:add_Text,
+		follwUp_Type:add_Type,
+		follwUp_FirstVisitTime:add_FirstVisitTime,
+		follwUp_Door:add_Door,
+		follwUp_DoorTime:add_DoorTime,
+		follwUp_ReturnVisit:add_ReturnVisit,
+		follwUp_ReturnVisitTim:add_ReturnVisitTim,
+		follwUp_ReturnVisitSituation:add_ReturnVisitSituation,
+		follwUp_EndTim:add_EndTim,
+		follwUp_ClueId:add_ClueId,
+		follwUp_Conclusion:add_Conclusion
+	},function(res){
+		if(res>0){
+			alert("修改成功");	
+		}else{
+			alert("修改失败");
+		}
+	},"json")
+}
+function name(value,row,index){
+	return row.clue.clue_Name;
+}
+function open_window1(){
+	$("#add_ClueId").combobox({
+		url:'/CRM/Consultant/getClue',
+		method:'post',
+		valueField:'clue_Id',
+		textField:'clue_Name'
+	});
+	$("#addFollowUp_dialog").window("open");
+}
+function add_Customer(){
+	var add_Text = $("#add_Text").textbox("getValue");
+	var add_Type = $("#add_Type").textbox("getValue");
+	var add_FirstVisitTime = $("#add_FirstVisitTime").datetimebox("getValue");
+	var add_Door = $("#add_Door").combobox("getValue");
+	var add_DoorTime = $("#add_DoorTime").datetimebox("getValue");
+	var add_ReturnVisit = $("#add_ReturnVisit").combobox("getValue");
+	var add_ReturnVisitTim = $("#add_ReturnVisitTim").datetimebox("getValue");
+	var add_ReturnVisitSituation = $("#add_ReturnVisitSituation").textbox("getValue");
+	var add_EndTim = $("#add_EndTim").datetimebox("getValue");
+	var add_ClueId = $("#add_ClueId").combobox("getValue");
+	var add_Conclusion = $("#add_Conclusion").textbox("getValue");
+	$.post("addFollowUp",{
+		follwUp_Text:add_Text,
+		follwUp_Type:add_Type,
+		follwUp_FirstVisitTime:add_FirstVisitTime,
+		follwUp_Door:add_Door,
+		follwUp_DoorTime:add_DoorTime,
+		follwUp_ReturnVisit:add_ReturnVisit,
+		follwUp_ReturnVisitTim:add_ReturnVisitTim,
+		follwUp_ReturnVisitSituation:add_ReturnVisitSituation,
+		follwUp_EndTim:add_EndTim,
+		follwUp_ClueId:add_ClueId,
+		follwUp_Conclusion:add_Conclusion
+	},function(res){
+		if(res>0){
+			alert("添加成功");
+		}else{
+			alert("添加失败");
+		}
+	},"json")
+}
+</script>
+</head>
+<body>
+<table id="dg"></table>
+<div id="headTool">
+	<div>   
+		<!-- 学生姓名：跟踪开始时间，跟踪结束时间，上门时间，首次回访时间，是否回访 -->
+        <label for="name">姓名:</label>   
+        <input id="name" class="easyui-validatebox" type="text"/>   
+        <label for="name">是否回访:</label>   
+        <select id="ReturnVisit" class="easyui-combobox" style="width:100px;" > 
+        						<option value="">--请选择--</option>  
+							    <option value="是">是</option>   
+							    <option value="否">否</option>   
+							</select>
+        <label for="name">时间:</label>   
+        <select id="dataTim" class="easyui-combobox">
+        	<option value="">--请选择--</option>
+        	<option value="follwUp_Time">创建时间</option>
+        	<option value="follwUp_DoorTime">上门时间</option>
+        	<option value="follwUp_FirstVisitTime">回访时间</option>
+        	<option value="follwUp_EndTim">跟踪结束时间</option>
+        </select>  
+        <label for="name">开始时间:</label>   
+        <input id="min" class="easyui-datebox" type="text"/>
+        <label for="name">结束时间:</label>
+        <input id="max" class="easyui-datebox" type="text"/>
+        
+    </div>
+    <a type="button" href="javascript:void(0)" onclick="init()" class="easyui-linkbutton">搜索</a>
+    <a type="button" href="javascript:void(0)" onclick="open_window1()" class="easyui-linkbutton">添加跟踪</a>
+</div>
+<div id="addFollowUp_dialog" class="easyui-dialog" title="新增客户信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
+				text:'保存',
+				handler:function(){
+					add_Customer();
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+					clear_Customer();
+				}
+			}]" style="width:500px;height:300px;padding:10px;">
+         <form id="addclueForm">
+                <table cellpadding="5">
+                    <tr>
+                        <td>跟进内容:</td>
+                        <td><input id="add_Text" class="easyui-textbox" data-options="multiline:true" style="height:60px"></input></td>
+                    </tr>
+                    <tr>
+                        <td>跟进方式:</td>
+                        <td><input class="easyui-textbox" type="text" id="add_Type"></input></td>
+                    </tr>
+                    <tr>
+                        <td>首访时间:</td>
+                        <td><input class="easyui-datetimebox"  type="text" id="add_FirstVisitTime"></input></td>
+                    </tr>
+                    <tr>
+                        <td>是否上门:</td>
+                        <td><select id="add_Door" class="easyui-combobox" style="width:200px;" >   
+							    <option value="">--请选择--</option>
+							    <option value="是">是</option>   
+							    <option value="否">否</option>   
+							</select></td>
+                    </tr>
+                    <tr>
+                        <td>上门时间:</td>
+                        <td><input class="easyui-datetimebox" type="text" id="add_DoorTime"></input></td>
+                    </tr>
+                    <tr>
+                        <td>是否回访:</td>
+                        <td><select id="add_ReturnVisit" class="easyui-combobox" style="width:200px;" >   
+							    <option value="">--请选择--</option>
+							    <option value="是">是</option>   
+							    <option value="否">否</option>   
+							</select></td>
+                    </tr>
+                    <tr>
+                        <td>回访时间:</td>
+                        <td><input class="easyui-datetimebox" type="text" id="add_ReturnVisitTim"></input></td>
+                    </tr>
+                    <tr>
+                        <td>回访情况:</td>
+                        <td><input id="add_ReturnVisitSituation" class="easyui-textbox" data-options="multiline:true" style="height:60px"></input></td>
+                    </tr>
+                    <tr>
+                        <td>结束时间:</td>
+                        <td><input class="easyui-datetimebox" type="text" id="add_EndTim"></input></td>
+                    </tr>
+                    <tr>
+                        <td>目标客户:</td>
+                        <td>
+                        	<select id="add_ClueId" class="easyui-combobox" style="width:200px;" >   
+							    <option></option>   
+							</select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>结论:</td>
+                        <td><input id="add_Conclusion" class="easyui-textbox" data-options="multiline:true" style="height:60px"></input></td>
+                    </tr>
+                </table>
+         </form>
+    </div> 
+<div id="upd1_FollowUp_dialog" class="easyui-dialog" title="修改客户信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
+				text:'保存',
+				handler:function(){
+					upd1_Customer();
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+					clear_Customer();
+				}
+			}]" style="width:500px;height:300px;padding:10px;">
+         <form id="upd1_clueForm">
+                <table cellpadding="5">
+                    <tr>
+                        <td>跟进内容:</td>
+                        <td><input id="follwUp_Text" name="follwUp_Text" class="easyui-textbox" data-options="multiline:true" style="height:60px"></input></td>
+                    </tr>
+                    <tr>
+                        <td>跟进方式:</td>
+                        <td><input id="follwUp_Type" class="easyui-textbox" type="text" name="follwUp_Type"></input></td>
+                    </tr>
+                    <tr>
+                        <td>首访时间:</td>
+                        <td><input id="follwUp_FirstVisitTime" class="easyui-datetimebox"  type="text" name="follwUp_FirstVisitTime"></input></td>
+                    </tr>
+                    <tr>
+                        <td>是否上门:</td>
+                        <td><select id="follwUp_Door" name="follwUp_Door" class="easyui-combobox" style="width:200px;" >   
+							    <option value="">--请选择--</option>
+							    <option value="是">是</option>   
+							    <option value="否">否</option>   
+							</select></td>
+                    </tr>
+                    <tr>
+                        <td>上门时间:</td>
+                        <td><input id="follwUp_DoorTime" class="easyui-datetimebox" type="text" name="follwUp_DoorTime"></input></td>
+                    </tr>
+                    <tr>
+                        <td>是否回访:</td>
+                        <td><select id="follwUp_ReturnVisit" name="follwUp_ReturnVisit" class="easyui-combobox" style="width:200px;" >   
+							    <option value="">--请选择--</option>
+							    <option value="是">是</option>   
+							    <option value="否">否</option>   
+							</select></td>
+                    </tr>
+                    <tr>
+                        <td>回访时间:</td>
+                        <td><input id="follwUp_ReturnVisitTim" class="easyui-datetimebox" type="text" name="follwUp_ReturnVisitTim"></input></td>
+                    </tr>
+                    <tr>
+                        <td>回访情况:</td>
+                        <td><input id="follwUp_ReturnVisitSituation" name="follwUp_ReturnVisitSituation" class="easyui-textbox" data-options="multiline:true" style="height:60px"></input></td>
+                    </tr>
+                    <tr>
+                        <td>结束时间:</td>
+                        <td><input id="follwUp_EndTim" class="easyui-datetimebox" type="text" name="follwUp_EndTim"></input></td>
+                    </tr>
+                    <tr>
+                        <td>目标客户:</td>
+                        <td>
+                        	<select id="mubiao1" name="follwUp_ClueId" class="easyui-combobox" style="width:200px;" >   
+							    <option></option>   
+							</select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>结论:</td>
+                        <td><input id="follwUp_Conclusion" name="follwUp_Conclusion" class="easyui-textbox" data-options="multiline:true" style="height:60px"></input></td>
+                    </tr>
+                </table>
+         </form>
+    </div> 
+</body>
+</html>

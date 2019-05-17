@@ -407,6 +407,39 @@ public class UsersServiceImpl implements UsersService {
 	 * rolesMapper.selectRolesByUsersId(users.getUsers_Id());
 	 * model.addAttribute("role",role); return model; }
 	 */
-	
+	@Override
+	public int updatePasswordById(Integer users_Id, String password, String twoPassword) {
+		// TODO Auto-generated method stub
+		Users users=usersMapper.getOneUsersById(users_Id);
+		try {
+			//把老密码加密和数据库内的密文对比
+			String passwordNew = PasswordEncrypt.encodeByMd5(password);
+			//如果相等进行修改
+			if(users.getUsers_Password().equals(passwordNew)) {
+				//把新密码加密,进行修改
+				String passwordNew2 = PasswordEncrypt.encodeByMd5(twoPassword);
+				Users newUsers=new Users();
+				newUsers.setUsers_Id(users_Id);
+				newUsers.setUsers_Password(passwordNew2);
+				int num=usersMapper.updateUsersChongZhiPassword(newUsers);
+				if(num>0) {
+					return 2;
+				}
+				else {
+					return 1;
+				}
+			}
+			else {
+				return 0;//代表旧的密码不对
+			}
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 1;//修改失败
+	}
 	
 }

@@ -29,13 +29,13 @@ public @ResponseBody List<Map<String, Object>> selectModules(HttpSession session
 	//判断map集合是否为空,并添加key给前台做判断
 	return list;
 }
-//@RequestMapping("/selectAllModules")
-//public @ResponseBody List<Map<String, Object>> selectAllModules() {
-//	
-//	List<Map<String, Object>> list=modulesService.selectAllModules();
-//	//判断map集合是否为空,并添加key给前台做判断
-//	return list;
-//}
+@RequestMapping("/selectAllModules")
+public @ResponseBody List<Map<String, Object>> selectAllModules() {
+	
+	List<Map<String, Object>> list=modulesService.selectAllModules();
+	//判断map集合是否为空,并添加key给前台做判断
+	return list;
+}
 @RequestMapping("/selectAllModulesByRolesId")
 public @ResponseBody List<Map<String, Object>> selectAllModulesByRolesId(Integer id) {
 	
@@ -44,8 +44,23 @@ public @ResponseBody List<Map<String, Object>> selectAllModulesByRolesId(Integer
 	return list;
 }
 	
-@RequestMapping("/modules")
+	@RequestMapping("/modules")
 	public String modules() {
-		return "WeAdmin/NewFile";
+		return "WeAdmin/admin/modules";
+	}
+	@RequestMapping("/addModule")
+	@ResponseBody
+	public Boolean addModule(Modules modules) {
+		return modulesService.insertModules(modules);
+	}
+	@RequestMapping("/updateModule")
+	@ResponseBody
+	public Boolean updateModule(Modules modules) {
+		return modulesService.updateModules(modules);
+	}
+	@RequestMapping("/deleteModule")
+	@ResponseBody
+	public Boolean deleteModuleModule(Modules modules) {
+		return modulesService.deleteModules(modules);
 	}
 }

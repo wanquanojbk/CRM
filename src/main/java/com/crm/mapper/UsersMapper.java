@@ -104,5 +104,64 @@ public interface UsersMapper {
 	 */
 	public Users selectUsersByUsersId(Integer usersId);
 	
+	/**
+	 * 
+	 * @param usersId 查询出来该经理下面查询出来的手底下咨询师,网络咨询师并且已经签到
+	 * @return
+	 */
+	public List<Users> selectCheckedUsers(Integer usersId);
+	
+	/**
+	 * 
+	 * @param usersId 查询出来自己手底下所有员工的信息
+	 * @return
+	 */
+	public List<Users> selectUsersByMySelf(PageNation pageNation);
+	
+	
+	/**
+	 * 
+	 * @param usersId 查询出来自己手底下所有员工的总数
+	 * @return
+	 */
+	public Integer selectUsersByMySelfCount(PageNation pageNation);
+	
+	/**
+	 * 
+	 * @param usersId 签到方法 用户自己可以点
+	 * @return
+	 */
+	public Integer updateUesrsCheckById(Integer usersId);
+	
+	/**
+	 * 
+	 * @param usersId 手动退签方法,但是用户自己点不了
+	 * @return
+	 */
+	public Integer updateUsersCheckedById(Integer usersId);
+	
+	/**
+	 * 
+	 * @param usersId 查询该经理下面所有签到的咨询师
+	 * @return
+	 */
+	public List<Users> selectCheckedZiXunShi(Integer usersId);
+	
+	
+	/**
+	 * 通过用户Id查询单条信息
+	 * 
+	 * @param Integer
+	 * @return
+	 */
+	public Users getOneUsersById(Integer id);
+	
+	
+	/**
+	 * 查询所有用户
+	 * @return
+	 */
+	public List<Users> selectUsersAll();
+
 	
 }

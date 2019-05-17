@@ -12,6 +12,7 @@
 		<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
 		<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
 		<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+		
 		<!--
 			主页面:
 				1 引入EasyUI插件
@@ -60,6 +61,19 @@
 		<!--声明js代码域-->
 		<script type="text/javascript">
 			/*网页js功能*/
+			function checkin(){
+				$.post("/CRM/CheckIn/startCheck",{
+					
+				},function(res){
+					if(res){
+						$.messager.alert("提示","签到成功");
+						$("#qiandao").text("已签到").removeAttr("onclick");
+					}
+					else{
+						$.messager.alert("提示","签到失败");
+					}
+				},"json")
+			}
 			$(function() {
 				//退出功能
 				$("#n_title_out").click(function() {
@@ -67,7 +81,7 @@
 						$.messager.confirm("确认对话框", "你真的要退出吗？", function(r) {
 							//退出
 							if (r) {
-								window.location.href = "01_login.html";
+								window.location.href = "/CRM/logOut2";
 							}
 						})
 					})
@@ -78,6 +92,11 @@
 					})
 			//确认修改密码
 				$("#btnCon").click(function() {
+					
+					var password=$('#yuanshi').val();
+				    var twoPassword=$('#xianzai').val();
+
+					
 					//校验原有密码
 					if ($(":password:eq(0)").val() == "") {
 						$.messager.alert("原有密码", "原有密码不能为空！", "warning");
@@ -94,12 +113,35 @@
 						//关闭密码窗口
 						$("#div_pwd").window("close");
 						//$.messager.alert("密码修改","密码修改成功！","info");
-						$.messager.show({
+						
+							$.messager.confirm('提示','确认修改密码?',function(r){
+								    if (r){
+								    	  $.post('/CRM/updatePasswordById',{
+								    	    	 password:password,
+								    	    	 twoPassword:twoPassword
+								    	     },function (res){
+								    	    	 if(res==0){
+								    	    		 $.messager.alert('提示','账户密码输入错误');
+								    	    	 }
+								    	    	 if(res==1){
+								    	    		 $.messager.alert('提示','修改失败');
+								    	    	 }
+								    	    	 if(res==2){
+								    	    		 $.messager.alert('提示','修改成功');
+								    	    		 parent.location.href = "/CRM/logOut2";
+								    	    	 }
+								    	    	 
+								    	     },'json');
+
+								    }
+							});
+						
+						/* $.messager.show({
 							title: '密码修改',
 							msg: '密码修改成功，新密码为:'+$(":password:eq(2)").val(),
 							timeout: 3000,
 							showType: 'slide'
-						});
+						}); */
 					}
 				})
 			//取消密码修改
@@ -165,9 +207,12 @@
 				</center>
 			</span>
 			<span id="n_title" style="float: right;">
-				欢迎 admin登录&nbsp;&nbsp;&nbsp;
+				欢迎<span th:text="${session.users.users_LoginName}"></span>登录&nbsp;&nbsp;&nbsp;
+				<button id="qiandao"  th:if="${session.users.users_CheckInStatus ==1}"  class="easyui-linkbutton" onclick="checkin()">签到</button>
+				<button th:if="${session.users.users_CheckInStatus >1}" class="easyui-linkbutton" >已签到</button>
 				<a id="n_title_pwd" href="javascript:void(0)">修改密码</a>|
 				<a id="n_title_out" href="javascript:void(0)">退出</a>
+				
 			</span>
 		</div>
 		<!--布局：南-->
@@ -196,7 +241,7 @@
 				<tr>
 					<td>原有密码:</td>
 					<td>
-						<input type="password" />
+						<input id="yuanshi" type="password" th:value="${session.password}" />
 					</td>
 				</tr>
 				<tr>
@@ -208,7 +253,7 @@
 				<tr>
 					<td>确认密码:</td>
 					<td>
-						<input type="password" />
+						<input id="xianzai" type="password" />
 					</td>
 				</tr>
 				<tr>

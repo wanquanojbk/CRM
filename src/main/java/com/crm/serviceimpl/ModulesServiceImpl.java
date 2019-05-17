@@ -114,7 +114,28 @@ public List<Map<String,Object>> selectByUserId(Integer users_Id) {
 //	}
 	
 	
-	
+		public List<Map<String,Object>> all(Modules modules){
+			List<Modules> list = modulesMapper.selectLeafNode(modules);//查该模块下下面的子模块
+			List<Map<String,Object>> hehe = new ArrayList<Map<String,Object>> ();
+			Map<String,Object> haha =null;
+			if(list!=null) {
+				for(int i=0;i<list.size();i++) {
+					haha = new HashMap<String, Object>();
+					haha.put("id",list.get(i).getModules_Id());
+					haha.put("text", list.get(i).getModules_Name());
+					Map<String,Object> attributes = new HashMap<String, Object>();
+					attributes.put("parent", list.get(i).getModules_ParentId());
+					attributes.put("url", list.get(i).getModules_Path());
+					attributes.put("weight", list.get(i).getModules_Weight());
+					haha.put("attributes", attributes);
+					if(!modulesMapper.selectLeafNode(list.get(i)).toString().equals("[]")) {
+							haha.put("children", all(list.get(i)));
+					}
+					hehe.add(haha);
+				}
+			}
+			return hehe;
+		}
 	
 	
 	
@@ -182,5 +203,55 @@ public List<Map<String,Object>> selectByUserId(Integer users_Id) {
 		
 		return a;	
 		
+	}
+	@Override
+	public Boolean insertModules(Modules modules) {
+		// TODO Auto-generated method stub
+		Integer i = modulesMapper.insertModules(modules);
+		if(i>0)
+			return true;
+		return false;
+	}
+	@Override
+	public Boolean deleteModules(Modules modules) {
+		// TODO Auto-generated method stub
+		Integer i = modulesMapper.deleteModules(modules);
+		if(i>0)
+			return true;
+		return false;
+	}
+	@Override
+	public Boolean updateModules(Modules modules) {
+		Integer i = modulesMapper.updateModules(modules);
+		if(i>0)
+			return true;
+		return false;
+	}
+	@Override
+	public Boolean selectModulesByModuleName(Modules modules) {
+		// TODO Auto-generated method stub
+		Modules module = modulesMapper.selectModulesByModuleName(modules);
+		if(module!=null)
+			return true;
+		return false;
+	}
+	@Override
+	public List<Map<String, Object>> selectAllModules() {
+		List<Modules> list = modulesMapper.selectAllModules();
+		List<Map<String,Object>> a = new ArrayList<Map<String,Object>>();
+		for(int i=0;i<list.size();i++) {
+			//说明是顶层节点
+			Map<String,Object> map = new HashMap<String, Object>();
+			if(list.get(i).getModules_ParentId()==0) {
+				//把顶层节点往里面放 查出该节点下面的子节点
+				map.put("id",list.get(i).getModules_Id());
+				map.put("text", list.get(i).getModules_Name());
+				map.put("children", all(list.get(i)));
+			}
+			if(list.get(i).getModules_ParentId()==0) {
+				a.add(map);
+			}
+		}	
+		return a;
 	}
 }

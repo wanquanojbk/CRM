@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.mapper.CheckInMapper">
+	<resultMap type="com.crm.entity.CheckIn" id="checkInMap">
+		<id column="checkIn_Id" property="checkIn_Id"/>
+		<result column="checkIn_UserId" property="checkIn_UserId"/>
+		<result column="checkIn_Time" property="checkIn_Time"/>
+		<result column="checkIn_EndTime" property="checkIn_EndTime"/>
+		<result column="checkIn_Status" property="checkIn_Status"/>
+		<result column="checkIn_WorkingHours" property="checkIn_WorkingHours"/>
+		<result column="checkIn_Late" property="checkIn_Late"/>
+		<result column="checkIn_Exit1" property="checkIn_Exit1"/>
+		<result column="checkIn_Exit2" property="checkIn_Exit2"/>
+		<association property="users" javaType="com.crm.entity.Users">
+  			<id column="users_Id" property="users_Id"/>
+  			<result column="users_LoginName" property="users_LoginName"/>
+  			<result column="users_Password" property="users_Password"/>
+  			<result column="users_LsLockout" property="users_LsLockout"/>
+  			<result column="users_LastLoginTime" property="users_LastLoginTime"/>
+  			<result column="users_CreateTime" property="users_CreateTime"/>
+  			<result column="users_PsdWrongTime" property="users_PsdWrongTime"/>
+  			<result column="users_LockTime" property="users_LockTime"/>
+  			<result column="users_ProTectEMail" property="users_ProTectEMail"/>
+  			<result column="users_ProtectTel" property="users_ProtectTel"/>
+  			<result column="users_Exit1" property="users_Exit1"/>
+  			<result column="users_Exit2" property="users_Exit2"/>
+  			<result column="users_CheckInStatus" property="users_CheckInStatus"/>
+  			<collection property="roles" ofType="com.crm.entity.Roles">
+				<id property="roles_Id" column="roles_Id"/>
+				<result property="roles_Name" column="roles_Name"/>
+				<result property="roles_Exit1" column="roles_Exit1"/>
+				<result property="roles_Exit2" column="roles_Exit2"/>
+			</collection>
+  		</association>
+	</resultMap>
+	<update id="updateCheckedById" parameterType="com.crm.entity.CheckIn" >
+		update
+			checkin
+		set
+			checkIn_EndTime = NOW(),
+			checkIn_Status = 3
+		where
+			checkIn_Id in(
+				SELECT 
+					checkIn_Id
+				FROM(
+					select 
+						checkIn_Id 
+					FROM 
+						checkin 
+					WHERE 
+						checkIn_UserId = #{checkIn_UserId} order by checkIn_Id desc limit 1
+			) t
+			
+			)	
+	</update>
+	<insert id="insertCheck" parameterType="com.crm.entity.CheckIn">
+		insert into 
+			checkin
+			(checkIn_UserId,checkIn_Time,checkIn_Status,checkIn_WorkingHours) 
+		values
+			(#{checkIn_UserId},NOW(),#{checkIn_Status},#{checkIn_WorkingHours})
+		
+	</insert>
+	<select id="selectCheck" parameterType="com.crm.entity.PageNation" resultMap="checkInMap">
+		SELECT DISTINCT u.users_Id AS A,u.*,c.*,r.*
+		FROM users u,roles r,usersroles ur, checkin c     
+		<where>
+			<if test="text1 !=null and text1 !='' ">
+				AND u.users_LoginName  like CONCAT(CONCAT('%',#{text1}),'%')
+			</if>
+			<if test="num1 !=null">
+				AND c.checkIn_Status = #{num1}
+			</if>
+			<if test="text2 !=null and text2 !=''">
+				AND c.checkIn_Time = #{text2}
+			</if>
+			<if test="text3 !=null and text3 !='' ">
+				AND c.checkIn_EndTime = #{text3}
+			</if>
+			AND u.users_Id = ur.usersRoles_UserId  
+			AND r.roles_Id = ur.usersRoles_RoleId
+			AND c.checkIn_UserId = u.users_Id
+			AND u.users_Exit1 = #{num6}
+		</where>
+		 limit #{page},#{row}
+	</select>
+	<select id="selectCheckCount" parameterType="com.crm.entity.PageNation" resultType="int" >
+		SELECT  count(DISTINCT u.users_Id)
+		FROM users u,roles r,usersroles ur, checkin c     
+		<where>
+			<if test="text1 !=null and text1 !='' ">
+				AND u.users_LoginName  like CONCAT(CONCAT('%',#{text1}),'%')
+			</if>
+			<if test="num1 !=null">
+				AND c.checkIn_Status = #{num1}
+			</if>
+			<if test="text2 !=null and text2 !=''">
+				AND c.checkIn_Time = #{text2}
+			</if>
+			<if test="text3 !=null and text3 !='' ">
+				AND c.checkIn_EndTime = #{text3}
+			</if>
+			AND u.users_Id = ur.usersRoles_UserId  
+			AND r.roles_Id = ur.usersRoles_RoleId
+			AND c.checkIn_UserId = u.users_Id
+			AND u.users_Exit1 = #{num6}
+		</where>
+	</select>
+</mapper>
