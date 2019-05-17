@@ -186,6 +186,5 @@
 	<select id="selectUsersAll" resultType="users" >
 			SELECT users_Id,users_LoginName 
 			FROM users u, usersroles ul, roles r WHERE u.users_Id = ul.usersRoles_UserId AND ul.usersRoles_RoleId = r.roles_Id AND r.roles_Id = 2
-
 	</select>
 </mapper>
