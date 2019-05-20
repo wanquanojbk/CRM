@@ -34,13 +34,24 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<Student> selectAllCheckedStudent(String ids) {
 		// TODO Auto-generated method stub
-		System.out.println(ids+"-------------------------.............................................");
+		//System.out.println(ids+"-------------------------.............................................");
 		String[] split = ids.split(",");
+		//System.out.println(split+"-------------------------");
 		Integer[] array =new Integer[split.length];
 		for(int i=0;i<array.length;i++) {
+			System.out.println(split[i]);
 			array[i] = Integer.parseInt(split[i]);
 		}
 		List<Student> list = studentMapper.selectAllCheckedStudent(array);
+		return list;
+	}
+ 	@Override
+	public List<Student> slectAll(HttpSession session) {
+		// TODO Auto-generated method stub
+		//因为查询的学生要是自己的  所以传入的是自己的用户id 那么 登录完之后有session 
+		//从session拿到属于自己的用户信息 
+		Users users =(Users) session.getAttribute("users");
+		List<Student> list = studentMapper.selectAll(users.getUsers_Id());
 		return list;
 	}
 	

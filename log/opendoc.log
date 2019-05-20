@@ -1,477 +1,80 @@
-2019-05-14 10:27:59.327 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-2JUJOIJ with PID 7268 (D:\githubFiles\CRM\target\classes started by LiJunXiao in D:\githubFiles\CRM)
-2019-05-14 10:27:59.333 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 10:28:00.982 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 10:28:00.999 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 10:28:01.011 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 10:28:01.012 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 10:28:01.146 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 10:28:01.146 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1739 ms
-2019-05-14 10:28:01.320 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 10:28:01.617 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 10:28:02.240 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 10:28:02.616 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 10:28:02.646 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 10:28:02.651 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 3.575 seconds (JVM running for 4.984)
-2019-05-14 10:28:06.819 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 10:28:06.820 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 10:28:06.831 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 11 ms
-2019-05-14 10:55:34.239 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 8520 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 10:55:34.244 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 10:55:35.283 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 10:55:35.294 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 10:55:35.302 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 10:55:35.302 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 10:55:35.419 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 10:55:35.419 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1108 ms
-2019-05-14 10:55:35.496 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 10:55:35.836 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 10:55:36.259 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 10:55:36.549 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 10:55:36.565 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 10:55:36.568 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.541 seconds (JVM running for 3.526)
-2019-05-14 10:55:40.931 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 10:55:40.932 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 10:55:40.943 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 11 ms
-2019-05-14 17:21:38.596 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 17:21:38.628 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 17:21:38.645 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 17:21:48.774 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 3280 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 17:21:48.778 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 17:21:50.007 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 17:21:50.019 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 17:21:50.027 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 17:21:50.028 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 17:21:50.147 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 17:21:50.147 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1330 ms
-2019-05-14 17:21:50.221 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 17:21:50.484 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 17:21:50.916 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 17:21:51.222 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 17:21:51.241 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 17:21:51.244 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.69 seconds (JVM running for 3.708)
-2019-05-14 17:22:11.605 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 17:22:11.605 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 17:22:11.613 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 8 ms
-2019-05-14 17:23:06.253 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 17:23:06.255 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 17:23:06.260 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 17:23:13.933 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 1076 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 17:23:13.948 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 17:23:15.145 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 17:23:15.159 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 17:23:15.168 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 17:23:15.168 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 17:23:15.310 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 17:23:15.311 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1305 ms
-2019-05-14 17:23:15.385 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 17:23:15.684 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 17:23:16.156 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 17:23:16.494 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 17:23:16.512 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 17:23:16.515 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.831 seconds (JVM running for 4.001)
-2019-05-14 17:23:21.371 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 17:23:21.372 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 17:23:21.378 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 6 ms
-2019-05-14 17:45:30.910 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 17:45:30.912 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 17:45:30.915 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 17:45:42.986 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 4416 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 17:45:42.999 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 17:45:44.036 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 17:45:44.048 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 17:45:44.057 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 17:45:44.058 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 17:45:44.179 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 17:45:44.179 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1116 ms
-2019-05-14 17:45:44.324 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 17:45:44.528 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 17:45:44.979 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 17:45:45.267 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 17:45:45.284 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 17:45:45.287 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.518 seconds (JVM running for 3.518)
-2019-05-14 17:45:55.390 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 17:45:55.390 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 17:45:55.396 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 6 ms
-2019-05-14 17:50:34.785 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 17:50:34.787 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 17:50:34.791 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:12:49.942 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 13336 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:12:49.955 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:12:50.986 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:12:50.997 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:12:51.006 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:12:51.006 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:12:51.125 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:12:51.126 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1117 ms
-2019-05-14 18:12:51.275 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:12:51.477 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:12:51.940 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:12:52.231 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:12:52.248 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:12:52.251 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.569 seconds (JVM running for 3.626)
-2019-05-14 18:12:58.524 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:12:58.524 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:12:58.531 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 7 ms
-2019-05-14 18:14:22.315 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:14:22.319 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:14:22.322 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:14:30.830 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 2288 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:14:30.842 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:14:31.886 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:14:31.898 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:14:31.907 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:14:31.908 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:14:32.030 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:14:32.031 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1132 ms
-2019-05-14 18:14:32.177 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:14:32.379 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:14:32.843 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:14:33.151 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:14:33.170 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:14:33.173 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.562 seconds (JVM running for 3.606)
-2019-05-14 18:14:52.888 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:14:52.888 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:14:52.896 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 8 ms
-2019-05-14 18:16:52.149 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:16:52.157 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:16:52.161 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:17:00.246 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 11964 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:17:00.258 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:17:01.335 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:17:01.347 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:17:01.358 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:17:01.358 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:17:01.485 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:17:01.485 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1166 ms
-2019-05-14 18:17:01.563 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:17:01.855 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:17:02.287 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:17:02.585 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:17:02.602 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:17:02.604 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.581 seconds (JVM running for 3.598)
-2019-05-14 18:17:06.909 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:17:06.909 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:17:06.918 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 8 ms
-2019-05-14 18:20:30.215 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:20:30.218 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:20:30.222 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:20:38.333 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 8228 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:20:38.345 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:20:39.401 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:20:39.413 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:20:39.421 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:20:39.421 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:20:39.543 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:20:39.543 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1141 ms
-2019-05-14 18:20:39.688 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:20:39.901 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:20:40.352 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:20:40.641 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:20:40.659 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:20:40.661 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.548 seconds (JVM running for 3.557)
-2019-05-14 18:20:44.149 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:20:44.150 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:20:44.156 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 6 ms
-2019-05-14 18:22:32.102 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:22:32.106 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:22:32.109 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:22:38.967 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 5728 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:22:38.984 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:22:40.044 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:22:40.056 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:22:40.065 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:22:40.066 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:22:40.187 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:22:40.187 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1140 ms
-2019-05-14 18:22:40.340 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:22:40.556 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:22:41.010 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:22:41.307 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:22:41.325 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:22:41.327 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.593 seconds (JVM running for 3.66)
-2019-05-14 18:22:43.925 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:22:43.925 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:22:43.934 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 9 ms
-2019-05-14 18:31:15.579 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:31:15.583 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:31:15.588 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:31:23.616 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 5260 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:31:23.629 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:31:24.673 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:31:24.685 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:31:24.693 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:31:24.694 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:31:24.813 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:31:24.813 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1127 ms
-2019-05-14 18:31:24.968 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:31:25.179 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:31:25.640 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:31:25.935 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:31:25.952 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:31:25.955 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.565 seconds (JVM running for 3.583)
-2019-05-14 18:31:29.501 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:31:29.501 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:31:29.509 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 8 ms
-2019-05-14 18:35:16.428 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:35:16.431 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:35:16.434 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:35:23.355 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 9964 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:35:23.359 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:35:24.399 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:35:24.411 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:35:24.420 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:35:24.420 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:35:24.544 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:35:24.544 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1120 ms
-2019-05-14 18:35:24.672 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:35:24.878 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:35:25.330 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:35:25.621 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:35:25.638 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:35:25.640 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.501 seconds (JVM running for 3.581)
-2019-05-14 18:35:29.396 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:35:29.396 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:35:29.405 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 8 ms
-2019-05-14 18:36:28.048 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:36:28.051 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:36:28.054 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:36:35.744 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 588 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:36:35.757 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:36:36.790 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:36:36.802 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:36:36.810 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:36:36.811 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:36:36.932 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:36:36.932 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1122 ms
-2019-05-14 18:36:37.082 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:36:37.286 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:36:37.743 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:36:38.036 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:36:38.054 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:36:38.058 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.529 seconds (JVM running for 3.533)
-2019-05-14 18:36:42.200 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:36:42.201 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:36:42.211 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 10 ms
-2019-05-14 18:37:40.586 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:37:40.588 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:37:40.592 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:37:47.892 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 9604 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:37:47.905 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:37:48.947 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:37:48.960 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:37:48.969 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:37:48.970 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:37:49.096 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:37:49.097 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1138 ms
-2019-05-14 18:37:49.250 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:37:49.459 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:37:49.917 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:37:50.216 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:37:50.232 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:37:50.235 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.56 seconds (JVM running for 3.575)
-2019-05-14 18:37:52.783 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:37:52.783 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:37:52.795 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 12 ms
-2019-05-14 18:40:54.142 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:40:54.145 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:40:54.148 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:41:02.005 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 5196 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:41:02.009 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:41:03.058 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:41:03.069 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:41:03.078 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:41:03.079 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:41:03.199 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:41:03.200 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1129 ms
-2019-05-14 18:41:03.328 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:41:03.536 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:41:03.991 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:41:04.291 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:41:04.308 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:41:04.311 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.524 seconds (JVM running for 3.517)
-2019-05-14 18:41:07.897 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:41:07.898 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:41:07.908 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 10 ms
-2019-05-14 18:42:24.953 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:42:24.956 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:42:24.959 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:42:33.542 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 1108 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:42:33.555 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:42:34.593 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:42:34.604 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:42:34.614 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:42:34.614 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:42:34.736 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:42:34.736 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1126 ms
-2019-05-14 18:42:34.888 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:42:35.096 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:42:35.547 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:42:35.839 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:42:35.856 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:42:35.859 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.534 seconds (JVM running for 3.545)
-2019-05-14 18:42:40.597 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:42:40.597 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:42:40.606 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 9 ms
-2019-05-14 18:43:56.440 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:43:56.443 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:43:56.446 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:44:03.383 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 10556 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:44:03.395 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:44:04.424 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:44:04.436 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:44:04.445 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:44:04.446 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:44:04.569 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:44:04.569 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1120 ms
-2019-05-14 18:44:04.714 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:44:04.920 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:44:05.378 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:44:05.672 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:44:05.690 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:44:05.693 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.527 seconds (JVM running for 3.525)
-2019-05-14 18:44:10.379 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:44:10.379 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:44:10.388 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 9 ms
-2019-05-14 18:46:18.954 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:46:18.957 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:46:18.961 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:46:44.101 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 8132 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:46:44.113 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:46:45.149 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:46:45.159 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:46:45.169 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:46:45.170 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:46:45.291 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:46:45.291 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1125 ms
-2019-05-14 18:46:45.471 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:46:45.677 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:46:46.126 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:46:46.416 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:46:46.433 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:46:46.436 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.55 seconds (JVM running for 3.601)
-2019-05-14 18:46:49.607 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:46:49.607 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:46:49.615 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 7 ms
-2019-05-14 18:47:58.316 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:47:58.318 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:47:58.322 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:48:06.181 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 9224 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:48:06.185 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:48:07.314 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:48:07.325 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:48:07.334 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:48:07.335 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:48:07.458 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:48:07.458 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1211 ms
-2019-05-14 18:48:07.608 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:48:07.814 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:48:08.274 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:48:08.576 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:48:08.593 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:48:08.595 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.631 seconds (JVM running for 3.639)
-2019-05-14 18:48:11.077 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:48:11.078 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:48:11.088 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 10 ms
-2019-05-14 18:55:17.894 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:55:17.896 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:55:17.899 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 18:55:25.324 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 12580 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 18:55:25.337 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 18:55:26.370 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 18:55:26.382 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:55:26.390 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 18:55:26.390 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 18:55:26.510 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 18:55:26.510 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1121 ms
-2019-05-14 18:55:26.668 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 18:55:26.872 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 18:55:27.344 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:55:27.644 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 18:55:27.662 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 18:55:27.665 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.575 seconds (JVM running for 3.619)
-2019-05-14 18:55:34.607 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 18:55:34.607 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 18:55:34.620 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 13 ms
-2019-05-14 18:57:35.764 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 18:57:35.766 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 18:57:35.769 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 21:15:44.572 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 13960 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 21:15:44.598 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 21:15:46.789 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 21:15:46.818 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 21:15:46.839 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 21:15:46.841 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 21:15:47.085 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 21:15:47.086 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2364 ms
-2019-05-14 21:15:47.388 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 21:15:47.779 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 21:15:48.656 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 21:15:49.222 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 21:15:49.255 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 21:15:49.260 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 5.124 seconds (JVM running for 7.151)
-2019-05-14 21:16:12.787 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 21:16:12.788 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 21:16:12.806 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 18 ms
-2019-05-14 21:32:49.452 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 21:32:49.459 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 21:32:49.476 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 21:33:04.390 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 5472 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 21:33:04.411 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 21:33:06.388 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 21:33:06.409 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 21:33:06.426 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 21:33:06.427 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 21:33:06.664 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 21:33:06.665 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2150 ms
-2019-05-14 21:33:06.996 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 21:33:07.516 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 21:33:08.391 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 21:33:08.949 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 21:33:08.980 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 21:33:08.986 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 5.016 seconds (JVM running for 6.981)
-2019-05-14 21:33:19.962 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 21:33:19.963 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 21:33:19.980 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 16 ms
-2019-05-14 21:49:47.768 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 21:49:47.768 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 21:49:47.827 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 21:50:00.221 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 5940 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 21:50:00.243 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 21:50:02.228 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 21:50:02.246 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 21:50:02.261 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 21:50:02.268 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 21:50:02.487 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 21:50:02.487 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2144 ms
-2019-05-14 21:50:02.790 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 21:50:03.188 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 21:50:04.047 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 21:50:04.601 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 21:50:04.635 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 21:50:04.639 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 4.846 seconds (JVM running for 6.841)
-2019-05-14 21:50:08.533 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 21:50:08.537 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 21:50:08.555 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 17 ms
-2019-05-14 21:59:14.603 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 21:59:14.607 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 21:59:14.620 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
-2019-05-14 21:59:29.115 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 2012 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
-2019-05-14 21:59:29.139 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
-2019-05-14 21:59:31.144 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
-2019-05-14 21:59:31.167 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
-2019-05-14 21:59:31.182 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
-2019-05-14 21:59:31.184 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
-2019-05-14 21:59:31.421 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
-2019-05-14 21:59:31.421 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2179 ms
-2019-05-14 21:59:31.800 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
-2019-05-14 21:59:32.245 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
-2019-05-14 21:59:33.176 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
-2019-05-14 21:59:33.737 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
-2019-05-14 21:59:33.773 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
-2019-05-14 21:59:33.784 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 5.136 seconds (JVM running for 7.203)
-2019-05-14 21:59:33.864 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2019-05-14 21:59:33.864 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
-2019-05-14 21:59:33.884 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 16 ms
-2019-05-14 22:07:34.871 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
-2019-05-14 22:07:34.875 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
-2019-05-14 22:07:34.885 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
+2019-05-16 08:17:50.327 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 7200 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
+2019-05-16 08:17:50.359 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
+2019-05-16 08:17:51.410 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
+2019-05-16 08:17:51.414 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
+2019-05-16 08:17:51.430 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
+2019-05-16 08:17:51.430 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-05-16 08:17:51.539 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
+2019-05-16 08:17:51.539 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1120 ms
+2019-05-16 08:17:51.696 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2019-05-16 08:17:51.899 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
+2019-05-16 08:17:52.336 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
+2019-05-16 08:17:52.617 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
+2019-05-16 08:17:52.634 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
+2019-05-16 08:17:52.650 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.536 seconds (JVM running for 3.518)
+2019-05-16 08:17:59.365 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-05-16 08:17:59.366 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
+2019-05-16 08:17:59.377 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 11 ms
+2019-05-16 08:45:12.405 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
+2019-05-16 08:45:12.410 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-05-16 08:45:12.433 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
+2019-05-16 08:45:19.958 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 12072 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
+2019-05-16 08:45:19.963 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
+2019-05-16 08:45:20.994 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
+2019-05-16 08:45:21.005 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
+2019-05-16 08:45:21.014 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
+2019-05-16 08:45:21.015 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-05-16 08:45:21.136 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
+2019-05-16 08:45:21.136 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1110 ms
+2019-05-16 08:45:21.286 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2019-05-16 08:45:21.487 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
+2019-05-16 08:45:21.926 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
+2019-05-16 08:45:22.220 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
+2019-05-16 08:45:22.237 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
+2019-05-16 08:45:22.240 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.5 seconds (JVM running for 3.506)
+2019-05-16 08:45:27.695 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-05-16 08:45:27.696 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
+2019-05-16 08:45:27.705 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 9 ms
+2019-05-16 08:47:14.887 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
+2019-05-16 08:47:14.889 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-05-16 08:47:14.892 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
+2019-05-16 08:47:34.792 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 5264 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
+2019-05-16 08:47:34.797 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
+2019-05-16 08:47:35.843 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
+2019-05-16 08:47:35.854 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
+2019-05-16 08:47:35.863 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
+2019-05-16 08:47:35.864 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-05-16 08:47:35.998 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
+2019-05-16 08:47:35.999 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1140 ms
+2019-05-16 08:47:36.198 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2019-05-16 08:47:36.440 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
+2019-05-16 08:47:36.894 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
+2019-05-16 08:47:37.177 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
+2019-05-16 08:47:37.194 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
+2019-05-16 08:47:37.196 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.622 seconds (JVM running for 3.594)
+2019-05-16 08:47:43.460 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-05-16 08:47:43.460 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
+2019-05-16 08:47:43.467 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 7 ms
+2019-05-16 08:48:23.041 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
+2019-05-16 08:48:23.044 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-05-16 08:48:23.047 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed
+2019-05-16 08:48:32.363 - INFO  [           main] o.s.b.StartupInfoLogger        : Starting App on DESKTOP-4T4LNRJ with PID 2388 (E:\GitHubFiles\CRM\target\classes started by May in E:\GitHubFiles\CRM)
+2019-05-16 08:48:32.368 - INFO  [           main] o.s.b.SpringApplication        : No active profile set, falling back to default profiles: default
+2019-05-16 08:48:33.389 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat initialized with port(s): 8080 (http)
+2019-05-16 08:48:33.401 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing ProtocolHandler ["http-nio-8080"]
+2019-05-16 08:48:33.410 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting service [Tomcat]
+2019-05-16 08:48:33.410 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-05-16 08:48:33.531 - INFO  [           main] o.a.j.l.DirectJDKLog           : Initializing Spring embedded WebApplicationContext
+2019-05-16 08:48:33.532 - INFO  [           main] letWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1104 ms
+2019-05-16 08:48:33.663 - INFO  [           main] a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2019-05-16 08:48:33.867 - INFO  [           main] c.a.d.p.DruidDataSource        : {dataSource-1} inited
+2019-05-16 08:48:34.308 - INFO  [           main] c.ExecutorConfigurationSupport : Initializing ExecutorService 'applicationTaskExecutor'
+2019-05-16 08:48:34.605 - INFO  [           main] o.a.j.l.DirectJDKLog           : Starting ProtocolHandler ["http-nio-8080"]
+2019-05-16 08:48:34.608 - INFO  [           main] o.s.b.w.e.t.TomcatWebServer    : Tomcat started on port(s): 8080 (http) with context path '/CRM'
+2019-05-16 08:48:34.624 - INFO  [           main] o.s.b.StartupInfoLogger        : Started App in 2.475 seconds (JVM running for 3.44)
+2019-05-16 08:48:36.992 - INFO  [nio-8080-exec-1] o.a.j.l.DirectJDKLog           : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-05-16 08:48:36.992 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Initializing Servlet 'dispatcherServlet'
+2019-05-16 08:48:37.003 - INFO  [nio-8080-exec-1] o.s.w.s.FrameworkServlet       : Completed initialization in 11 ms
+2019-05-16 08:50:41.070 - INFO  [on(2)-127.0.0.1] gistrar$SpringApplicationAdmin : Application shutdown requested.
+2019-05-16 08:50:41.073 - INFO  [on(2)-127.0.0.1] c.ExecutorConfigurationSupport : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-05-16 08:50:41.077 - INFO  [on(2)-127.0.0.1] c.a.d.p.DruidDataSource        : {dataSource-1} closed

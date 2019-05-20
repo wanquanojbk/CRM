@@ -133,6 +133,20 @@
  		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
  			#{item}
  		</foreach>
- 		
+ 	</select>
+ 	
+ 	<select id="selectAll" parameterType="int" resultType="student">
+ 			SELECT
+			s.*
+		FROM
+			student s,
+			users u,
+			classes c 
+		<where>
+			AND c.classes_CounselorId = u.users_Id
+			AND u.users_Id = #{tacherId}
+			AND s.student_ClassId = c.classes_Id
+		</where>
+			
  	</select>
   </mapper>

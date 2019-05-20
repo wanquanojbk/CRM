@@ -73,4 +73,4 @@ mybatis:
   type-aliases-package: com.crm.entity
   mapper-locations: classpath:mapper/*.xml
 logging:
-  config: classpath:log4j2.yml
+  config: classpath:log4j2.xml

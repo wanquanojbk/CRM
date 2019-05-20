@@ -22,6 +22,7 @@ public interface StudentMapper {
 	 */
 	public Integer selectCount(PageNation pageNation);
 	
+	public List<Student> selectAll(Integer usersId);
 	
 	
 	public List<Student> selectAllCheckedStudent(Integer[] ids);

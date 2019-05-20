@@ -11,10 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.crm.Excel.ExcelUtil;
 import com.crm.entity.PageNation;
 import com.crm.entity.Student;
 import com.crm.entity.Users;
+import com.crm.excel.ExcelUtil;
 import com.crm.service.StudentService;
 
 @Controller
@@ -45,11 +45,21 @@ public class StudentController {
 		return studentService.selectStudent(pageNation, session);
 	}
 	
+	@RequestMapping(value = "selectAllwriteExcel")
+	public void selectAllwriteExcel(HttpServletResponse response,HttpSession session) throws IOException {
+		List<Student> list = studentService.slectAll(session);
+	    String fileName = "所有学生";
+	    String sheetName = "第一个 sheet";
+	    ExcelUtil.writeExcel(response, list, fileName, sheetName, new Student());
+	    
+	   }
+	
 	@RequestMapping(value = "writeExcel")
 	public void writeExcel(HttpServletResponse response,String ids) throws IOException {
 		List<Student> list = studentService.selectAllCheckedStudent(ids);
-	    String fileName = "第一个表格";
+	    String fileName = "选中学生";
 	    String sheetName = "第一个 sheet";
 	    ExcelUtil.writeExcel(response, list, fileName, sheetName, new Student());
-	    }
+	    
+	   }
 }

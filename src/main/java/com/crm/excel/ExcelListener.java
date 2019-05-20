@@ -1,4 +1,4 @@
-package com.crm.Excel;
+package com.crm.excel;
 
 
 import com.alibaba.excel.context.AnalysisContext;
@@ -51,10 +51,10 @@ public class ExcelListener extends AnalysisEventListener {
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        
-		/* datas.clear(); */
-		/* 解析结束销毁不用的资源 */
-         
+        /*
+            datas.clear();
+            解析结束销毁不用的资源
+         */
     }
 
     public List<Object> getDatas() {

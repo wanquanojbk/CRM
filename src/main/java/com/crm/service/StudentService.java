@@ -14,4 +14,5 @@ public interface StudentService {
 	
 	List<Student> selectAllCheckedStudent(String ids);
 	
+	List<Student> slectAll(HttpSession session);
 }

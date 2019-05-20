@@ -10,6 +10,8 @@
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" th:inline="none">
+    var ids ="";
+    var rows;
 	var classname;
 	var teachername;
 	$(function (){
@@ -21,6 +23,12 @@
 		    method:'post',
 		    pagination:true,
 		    toolbar:"#bar",
+		    onCheck:function(index,row){
+		    	//rows = $("#dg").datagrid("getChecked");
+		    	ids+=row.student_Id+","
+		    	
+				
+		    },
 		    columns:[[    
 		        {field:'student_Id',title:'学生ID'},    
 		        {field:'student_Name',title:'姓名'},    
@@ -83,24 +91,29 @@
 		$('#chankanwin').window('open');
 	}
 	
-	function Excel(){
-		var rows = $("#dg").datagrid("getChecked");
-		var ids ="";
-		for(var i=0;i<rows.length;i++){
-			ids+=rows[i].student_Id+","
-		}
-		ids=ids.substring(0,ids.length-1);
-		 var timestamp = (new Date()).valueOf();
-		$.post("/CRM/Student/writeExcel",{
-			ids:ids
-		},function(res){
-			
-		},"json")
-	} 
+ 	function xuanzhong(){
+ 		if(ids=="" || ids == null){
+ 			$.messager.alert("系统信息","请选择你要导出的数据");
+ 		}else{
+ 			    
+	 	 		ids=ids.substring(0,ids.length-1);
+	 			alert(ids);
+	 			 window.location.href="/CRM/Student/writeExcel?ids="+ids;
+	 		h
+	 			ids=""; 
+ 		}
+		
+	}  
+ 	
+ 	 function quanbu(){
+ 		window.location.href="/CRM/Student/selectAllwriteExcel";
+ 	} 
 </script>
 </head>
+
 <body>
-	<table id="dg"></table>
+	<table id="dg" data-options="fitColumns:true" >  </table>
+		
 	<div id="bar">
 		姓名：<input class="easyui-textbox" id="text1" name="text1" style="width:80px"/>  
 		性别：<input class="easyui-textbox" id="text2" name="text2" style="width:80px"/> 
@@ -112,87 +125,155 @@
 			    <option value="1">已缴费</option>   
 				</select>  
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="init()" data-options="iconCls:'icon-search'">查询</a> 
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="Excel()" data-options="iconCls:'icon-save'">导出详细信息为Excel</a> 
+		<a href="javascript:void(0)" id="mb" class="easyui-menubutton"     
+        data-options="menu:'#mm',iconCls:'icon-edit'">导出Excel</a>   
+		<div id="mm">   
+		    <div data-options="iconCls:'icon-redo'" onclick="quanbu()" id="quanbu">全部导出</div>   
+		    <div data-options="iconCls:'icon-redo'" onclick="xuanzhong()" id="xuanzhong">选中导出</div>     
+		</div> 
 	</div>
+	
+	
 	<div id="chankanwin" class="easyui-window" title="学生详细信息" style="width:400px;height:500px"   
         data-options="iconCls:'icon-save',modal:true,closed:true">   
+        
     <form action="" id="chankanForm">
     	<table id="chankanTable">
     		<tr>
     			<td>学生ID:</td>
-    			<td><input class="easyui-textbox" id="student_Id" name="student_Id"/></td>
+    			<td><input class="easyui-textbox" id="student_Id" name="student_Id" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>姓名:</td>
-    			<td><input class="easyui-textbox" id="student_Name" name="student_Name"/></td>
+    			<td><input class="easyui-textbox" id="student_Name" name="student_Name" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>性别:</td>
-    			<td><input class="easyui-textbox" id="student_Sex" name="student_Sex"/></td>
+    			<td><input class="easyui-textbox" id="student_Sex" name="student_Sex" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>生日:</td>
-    			<td><input class="easyui-textbox" id="student_Birthday" name="student_Birthday"/></td>
+    			<td><input class="easyui-textbox" id="student_Birthday" name="student_Birthday" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>学员来源:</td>
-    			<td><input class="easyui-textbox" id="student_Source" name="student_Source"/></td>
+    			<td><input class="easyui-textbox" id="student_Source" name="student_Source" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>身份证号:</td>
-    			<td><input class="easyui-textbox" id="student_IdentityNumber" name="student_IdentityNumber"/></td>
+    			<td><input class="easyui-textbox" id="student_IdentityNumber" name="student_IdentityNumber" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>邮箱:</td>
-    			<td><input class="easyui-textbox" id="student_Email" name="student_Email"/></td>
+    			<td><input class="easyui-textbox" id="student_Email" name="student_Email" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>QQ:</td>
-    			<td><input class="easyui-textbox" id="student_Qq" name="student_Qq"/></td>
+    			<td><input class="easyui-textbox" id="student_Qq" name="student_Qq" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>电话：</td>
-    			<td><input class="easyui-textbox" id="student_Tel" name="student_Tel"/></td>
+    			<td><input class="easyui-textbox" id="student_Tel" name="student_Tel" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>地区：</td>
-    			<td><input class="easyui-textbox" id="student_Address" name="student_Address"/></td>
+    			<td><input class="easyui-textbox" id="student_Address" name="student_Address" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>跟进人：</td>
-    			<td><input class="easyui-textbox" id="student_Creator" name="student_Creator"/></td>
+    			<td><input class="easyui-textbox" id="student_Creator" name="student_Creator" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>入学时间：</td>
-    			<td><input class="easyui-textbox" id="student_CreateTime" name="student_CreateTime"/></td>
+    			<td><input class="easyui-textbox" id="student_CreateTime" name="student_CreateTime" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>更新时间：</td>
-    			<td><input class="easyui-textbox" id="student_UpdateTime" name="student_UpdateTime"/></td>
+    			<td><input class="easyui-textbox" id="student_UpdateTime" name="student_UpdateTime" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>备注:</td>
-    			<td><input class="easyui-textbox" id="student_Remarks" name="student_Remarks"/></td>
+    			<td><input class="easyui-textbox" id="student_Remarks" name="student_Remarks" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>班级id:</td>
-    			<td><input class="easyui-textbox" id="student_Remarks" name="student_Remarks"/></td>
+    			<td><input class="easyui-textbox" id="student_Remarks" name="student_Remarks" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>缴费状态：</td>
-    			<td><input class="easyui-textbox" id="student_Status" name="student_Status"/></td>
+    			<td><input class="easyui-textbox" id="student_Status" name="student_Status" data-options="readonly:true"/></td>
     		</tr>
     		<tr>
     			<td>班级名称：</td>
-    			<td><input class="easyui-textbox" id="className" name="classes_Name" /></td>
+    			<td><input class="easyui-textbox" id="className" name="classes_Name" data-options="readonly:true" /></td>
     		</tr>
     		<tr>
     			<td>教师名称：</td>
-    			<td><input class="easyui-textbox" id="teacherName" name="users_LoginName"/></td>
+    			<td><input class="easyui-textbox" id="teacherName" name="users_LoginName" data-options="readonly:true"/></td>
     		</tr>
     	</table>
     </form>
     
 	</div>  
 </body>
+
+<!-- <script type="text/javascript">
+function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+	//如果jsondata不是对象，那么json.parse将分析对象中的json字符串。
+	var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+	var CSV = '';
+
+	//在第一行拼接标题
+	CSV += ReportTitle + '\r\n\n';
+	//产生数据标头
+	if (ShowLabel) {
+		var row = "";
+		//此循环将从数组的第一个索引中提取标签
+		for ( var index in arrData[0]) {
+			//现在将每个值转换为字符串和逗号分隔
+			row += index + ',';
+		}
+		row = row.slice(0, -1);
+		//添加带换行符的标签行
+		CSV += row + '\r\n';
+	}
+
+	//第一个循环是提取每一行
+	for (var i = 0; i < arrData.length; i++) {
+		var row = "";
+
+		for ( var index in arrData[i]) {
+			row += '"' + arrData[i][index] + '",';
+		}
+		row.slice(0, row.length - 1);
+		CSV += row + '\r\n';
+	}
+	if (CSV == '') {
+		alert("Invalid data");
+		return;
+	}
+	var fileName = "我的学生_";
+	fileName += ReportTitle.replace(/ /g, "_");
+	var uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURI(CSV);
+	var link = document.createElement("a");
+	link.href = uri;
+	link.style = "visibility:hidden";
+	link.download = fileName + ".csv";
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+}
+$("#btnExport").click(function() {
+	var rows=$("#dg").datagrid("getSelections");
+	if(rows.length==0||rows==null){
+		$.messager.alert("系统信息","请选择你要导出的数据");
+		return ;
+	}
+	var data = JSON.stringify(rows);
+	if (data == '')
+		return;
+	JSONToCSVConvertor(data, "数据信息", true);
+});
+</script> -->
+
 </html>
