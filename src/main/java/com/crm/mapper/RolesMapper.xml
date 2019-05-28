@@ -53,8 +53,9 @@
 		values(#{roles_Name})
 	</insert>
 	<delete id="deleteRoles" parameterType="int">
-		delete from roles 
-		where roles_Id = #{roles_Id}
+		DELETE 
+		FROM roles WHERE NOT EXISTS (SELECT usersRoles_RoleId FROM usersroles WHERE usersRoles_RoleId = #{roles_Id})
+		AND roles_Id = #{roles_Id}
 	</delete>
 	<update id="updateRoles" parameterType="com.crm.entity.Roles">
 		update roles set roles_Name = #{roles_Name}

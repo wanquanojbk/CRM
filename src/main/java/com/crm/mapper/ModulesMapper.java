@@ -65,4 +65,19 @@ Integer updateModules(Modules modules);
  * @return
  */
 Modules selectModulesByModuleName(Modules modules);
+
+/**
+ * 
+ * @param modules 根据模块名称 查找是否有重复顶层节点
+ * @return
+ */
+Modules selectParentModulesByName(Modules modules);
+
+/**
+ * 
+ * @param modules 添加顶级模块
+ * @return
+ */
+Integer insertParentModule(Modules modules);
+
 }

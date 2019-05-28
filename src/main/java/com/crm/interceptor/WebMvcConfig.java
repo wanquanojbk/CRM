@@ -23,10 +23,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		 //loginRegistry.excludePathPatterns("/loginout"); //退出登录的映射
 		 loginRegistry.excludePathPatterns("/code");  //验证码 
 		 loginRegistry.excludePathPatterns("/js/**");//静态资源所有
+		 loginRegistry.excludePathPatterns("/img/**");//静态资源所有
 	}
 //	配置静态资源文件夹,放行的东西
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/js/").addResourceLocations("classpath:/js/**");
+		registry.addResourceHandler("/img/").addResourceLocations("classpath:/img/**");
 	}
 }

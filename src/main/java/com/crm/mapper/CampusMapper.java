@@ -25,7 +25,7 @@ public interface CampusMapper {
 	 * @param pageNation
 	 * @return
 	 */
-	public Integer addClasses(PageNation pageNation);
+	public Integer addClasses(Classes classes);
 	/**
 	 * 	修改班级
 	 * @param pageNation
@@ -45,6 +45,11 @@ public interface CampusMapper {
 	 */
 	public List<Users> selectUsers(PageNation pageNation);
 	/**
+	 * 	查询辅导员学生数
+	 * @return
+	 */
+	public List<Users> selectUsersStudent();
+	/**
 	 * 	查询辅导员总数
 	 * @param pageNation
 	 * @return Integer
@@ -62,4 +67,20 @@ public interface CampusMapper {
 	 * @return Integer
 	 */
 	public Integer countStudent(PageNation pageNation);
+	/**
+	 * 	修改学生
+	 * @param student
+	 * @return Integer
+	 */
+	public Integer UpdateStudent(Student student);
+	/**
+	 * 查询未分班的学生
+	 * @return List<Student>
+	 */
+	public List<Student> selectStudentFL(PageNation pageNation);
+	/**
+	 * 查询student_Remarks人数
+	 * @return List<Student>
+	 */
+	public List<Student> countStudentFL();
 }

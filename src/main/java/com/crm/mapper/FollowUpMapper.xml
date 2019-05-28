@@ -160,4 +160,13 @@
   			followUp_id = #{followUp_id}
   		</where>
   	</update>
+  	<!-- 根据客户id查看该客户的跟踪信息分页查询 -->
+  	<select id="selectManagerByAll" parameterType="pageNation" resultType="followUp">
+  		SELECT * FROM followup WHERE follwUp_ClueId = #{num1}
+  		limit #{page},#{row}
+  	</select>
+  	<!-- 根据客户id查看该客户的跟踪信息总数 -->
+  	<select id="selectManagerByAllCount" parameterType="pageNation" resultType="int">
+  		SELECT count(*) FROM followup WHERE follwUp_ClueId = #{num1}
+  	</select>
   </mapper>

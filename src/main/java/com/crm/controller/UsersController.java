@@ -2,7 +2,6 @@ package com.crm.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -32,42 +31,57 @@ public class UsersController {
 	
 	@RequestMapping("login")
 	public String login(Users users, Model model, HttpServletRequest request,HttpServletResponse response,String yanzhengma,Integer miandenglu) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-
 		String mima = users.getUsers_Password();
 		Result result = usersService.selectUsers(users,request);
+		HttpSession session = request.getSession();
+		Users user = (Users)session.getAttribute("users");
+		System.out.println(user+"--------------------------------------------------");
+		if(session.getAttribute("users")!=null) {
+			return "WeAdmin/main";
+		}
 		String piccode = (String)request.getSession().getAttribute("piccode");
-		  if(piccode==null||"".equals(piccode)) {
-				return "WeAdmin/lo_gin";
-			}
+		  if(piccode==null||"".equals(piccode)||"".equals(yanzhengma)||yanzhengma==null) {
+				  model.addAttribute("msg", "欢迎登录");
+				  return "WeAdmin/lo_gin";
+		  }
+		 
+		  else if(!piccode.equals(yanzhengma)) {
+			  model.addAttribute("msg", "验证码错误");
+			  return "WeAdmin/lo_gin";
+		  }
+		  else if("在线".equals(result.getUsers().getUsers_Exit2()) ) {
+			  model.addAttribute("msg", "用户已在线");
+			  return "WeAdmin/lo_gin";
+		  }
 		 else if (result.getSuccess()) {  //判断是信息正常  //判断是验证码没有输入
+//			 if(result.getIsLockout()==null) {
+//				 model.addAttribute("msg", "该账户已在线");
+//				 return "WeAdmin/lo_gin";
+//			 }
 			if (result.getIsLockout() == 1) {
-				
-				if(!piccode.equals(yanzhengma.toLowerCase())) {
-						model.addAttribute("msg", "验证码错误");
-						request.getSession().removeAttribute("users");
-						return "WeAdmin/lo_gin";
-				}
-			
-				else {
 					if(miandenglu!=null) {
+						request.getSession().getServletContext().setAttribute("sessionId", request.getSession().getId());
+						request.getSession().getServletContext().setAttribute("username", users.getUsers_LoginName());
+						usersService.updateUsersOnlineStatus(result.getUsers().getUsers_Id());
 						request.getSession().setAttribute("users", result.getUsers());
 						Cookie username = new Cookie("cookie", users.getUsers_LoginName());
 						username.setMaxAge(60*60*24*7);
-						Cookie password = new Cookie("cookie2", mima);
-						password.setMaxAge(60*60*24*7);
 						response.addCookie(username);
-						response.addCookie(password);
 						model.addAttribute("users", result.getUsers());
 						request.getSession().setAttribute("password", mima);
 						return "WeAdmin/main";
 					}
-					else {
+					else  {
+						request.getSession().getServletContext().setAttribute("sessionId", request.getSession().getId());
+						request.getSession().getServletContext().setAttribute("username", users.getUsers_LoginName());
+						usersService.updateUsersOnlineStatus(result.getUsers().getUsers_Id());
+						request.getSession().setAttribute("users", result.getUsers());
 						request.getSession().setAttribute("password", mima);
 						model.addAttribute("users", result.getUsers());
 						return "WeAdmin/main";
 					}
 					
-				}
+				
 				
 			} else {
 					model.addAttribute("msg", result.getMsg());
@@ -83,11 +97,12 @@ public class UsersController {
 
 	}
 
-	// 供前台layui拿到welcome页面
-	@RequestMapping("welcome")
-	public String welcome() {
-		return "WeAdmin/pages/welcome";
-	}
+	/*
+	 * // 供前台layui拿到welcome页面
+	 * 
+	 * @RequestMapping("welcome") public String welcome() { return
+	 * "WeAdmin/pages/welcome"; }
+	 */
 
 	// 供前台layui拿到index页面
 	@RequestMapping("index")
@@ -205,7 +220,6 @@ public class UsersController {
 		HttpSession session = request.getSession();
 		System.out.println(password+"-----------------");
 		Users users = (Users) session.getAttribute("users");
-		
 		return usersService.updatePasswordById(users.getUsers_Id(), password, twoPassword);
 	}
 	
@@ -222,7 +236,9 @@ public class UsersController {
 	@RequestMapping("logOut2")
 	public String logOut2(HttpServletRequest request, HttpServletResponse response,Model model) {
 		HttpSession session = request.getSession();
+		Users users = (Users)session.getAttribute("users");
 		session.removeAttribute("users");
+		usersService.updateUsersUnOnlineStatus(users.getUsers_Id());
 		model.addAttribute("msg", "欢迎您的登录");
 		return "WeAdmin/lo_gin";
 	}

@@ -10,6 +10,17 @@
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" th:inline="none">
+var ids = "";
+var array = [];
+/*点击动态列显示的关闭按钮就清空里边的东西*/
+$(document).ready(function(){
+   $('#lie_window').window({
+       onBeforeClose:function(){
+           $("#lie_window").dialog("clear");
+       }
+   });
+});
+	/* 页面初始化加载数据 */
 	$(function(){
 		 dongtai();
 		init();
@@ -21,13 +32,21 @@
 		return row.users.users_Exit2;
 	}
 	function init(){
-		$('#dg').datagrid({    
+		$('#dg').datagrid({
 		    url:'getAll',    
 		    method:"post",
 		    pagination:true,
-		    singleSelect:true,
+		    //singleSelect:true,
+		    striped:true,
+		    onCheck:function(index,row){
+		    	array.push(row.clue_Id);
+		    },
+		    onUncheck:function(index,row){	  
+		    	test(row.clue_Id);
+		    },
 		    toolbar:"#headTool",
 		    columns:[[    
+		        {field:'checkbox',width:100,checkbox:true,title:"复选框"},
 		        {field:'clue_Name',title:'姓名',width:100},    
 		        {field:'clue_Sex',title:'性别',width:100},    
 		        {field:'clue_Age',title:'年龄',width:100},
@@ -43,7 +62,7 @@
 		        {field:'clue_Address',title:'地区',width:100},
 		        {field:'users',title:'创建人',width:100,formatter:users},
 		        {field:'genzong',title:'负责人',width:100,formatter:genzong},
-		        {field:'clue_CreateTime',title:'创建时间',width:100},
+		        {field:'clue_CreateTime',title:'创建时间',width:100,sortOrder:"desc"},
 		         /*{field:'clue_UpdateTime',title:'更新时间',width:100},
 		        {field:'clue_BginTime',title:'线索开始时间',width:100},
 		        {field:'clue_EndTime',title:'线索结束时间',width:100}, */
@@ -59,6 +78,13 @@
 		    	text5:$("#max").datebox("getValue")
 		    }
 		});
+	}
+	function test(id){
+		for(var i=0;i<array.length;i++){
+			if(array[i]==id){
+				array.splice(i,1);
+			}
+		}
 	}
 	function dongtai(){
 		var createGridHeaderContextMenu = function(e, field) {
@@ -114,8 +140,8 @@
 		 var data = $("#dg").datagrid("getData");
         var row = data.rows[index];
         //添加数据到表单里
-        $("#").form("load",row); 
-        $("#").window("open");   //打开窗口。 
+        $("#selclueForm").form("load",row); 
+        $("#selclue_dialog").window("open");   //打开窗口。 
 	}
 	function open_window1(){
 		$("#addclue_dialog").window("open");
@@ -133,12 +159,12 @@
 	}
 	function add_Customer(){
 		var add_Name = $("#add_Name").val();
-		var add_Sex = $("#add_Sex").val();
+		var add_Sex = $("#add_Sex").combobox("getValue");
 		var add_Age = $("#add_Age").val();
-		var add_Birthday = $("#add_Birthday").val();
-		var add_Education = $("#add_Education").val();
-		var add_Direction = $("#add_Direction").val();
-		var add_Source = $("#add_Source").val();
+		var add_Birthday = $("#add_Birthday").datetimebox("getValue");
+		var add_Education = $("#add_Education").combobox("getValue");
+		var add_Direction = $("#add_Direction").combobox("getValue");
+		var add_Source = $("#add_Source").combobox("getValue");
 		var add_IdentityNumber = $("#add_IdentityNumber").val();
 		var add_Email = $("#add_Email").val();
 		var add_Qq = $("#add_Qq").val();
@@ -163,14 +189,17 @@
 			clue_Remarks:add_Remarks
 		},function(res){
 			if(res>0){
-				alert("添加成功");
+				$.messager.alert("提示","添加成功");
+				$("#addclueForm").form("reset");
+				$("#addDynamic_window").window("close");
+	            $("#dg").datagrid("reload");
 			}else{
 				alert("添加失败");
 			}
 		},"json")
 	}
-	function add_dynamic(){
-		var neirong = $("#neirong").val();
+	/* function add_dynamic(){
+		var neirong = $("#neirong").textbox("getValue");
 		var jieshou = $("#cc").combobox("getValue");
 		$.post('/CRM/Dynamic/addDynamic',{
 			dynamic_Recipients:jieshou,
@@ -178,11 +207,13 @@
 		},function(res){
 			if(res>0){
 				alert("发送成功");
+				$("#addDynamic_window").window("close");
+	            $("#dg").datagrid("reload");
 			}else{
 				alert("发送失败");
 			}
 		},"json")
-	}
+	} */
 	function clear_Customer(){//取消按钮
 		$("#addclue_dialog").window("close");
 	}
@@ -190,8 +221,51 @@
 		$("#addDynamic_window").window("close");
 	}
 	function show(){
-		alert("动态显示");
+		var datagridTitle = new Array();
+		var shuxing = new Array();
+        var fields = $("#dg").datagrid('getColumnFields');
+        var option;
+             for (var i = 0; i < fields.length; i++) {
+                option = $("#dg").datagrid('getColumnOption', fields[i]);
+                datagridTitle.push(option.title);
+                shuxing.push(option.field);
+               if (option.field != "checked" && option.hidden != true) { //如果easyui的表格列不隐藏的话
+               		$("#lie_window").append("<input type='checkbox' value="+shuxing[i]+"  name='ch'>"+datagridTitle[i]+"</br>");
+               		//$("input[name='ch']").get(i).checked=true;
+               		//$("input[name='ch']").eq(i).prop('checked', 'true');
+               		$("input[name='ch']").eq(i).prop('checked', 'true');//就把这个复选框设置为选中状态
+                }else{
+                	$("#lie_window").append("<input type='checkbox' value="+shuxing[i]+" name='ch' >"+datagridTitle[i]+"</br>");
+                	
+                } 
+            }
+		$("#lie_window").window("open");
+		$("input[name='ch']").click(function(){
+				if($(this).is(":checked")){
+					var p = $(this).val();
+					$("#dg").datagrid('showColumn',p);
+				}else{
+					var q = $(this).val();
+					$("#dg").datagrid('hideColumn',q);
+				}
+		})
 	}
+	function xuanzhong(){
+		if(array.length>0){
+			for(var i=0;i<array.length;i++){
+				ids+=array[i]+",";
+		}
+		 		ids=ids.substring(0,ids.length-1);
+				window.location.href="/CRM/Consultant/getClueById?ids="+ids;
+				ids=""; 
+		}else{
+			alert("请选择一个复选框");
+		}
+}  
+
+function quanbu(){
+	window.location.href="/CRM/Consultant/selectClueByAll";
+} 
 </script>
 </head>
 <body>
@@ -214,7 +288,14 @@
     <a type="button" href="javascript:void(0)" onclick="init()" class="easyui-linkbutton">搜索</a>
     <a type="button" href="javascript:void(0)" onclick="open_window1()" class="easyui-linkbutton">添加客户</a>
     <a type="button" href="javascript:void(0)" onclick="show()" class="easyui-linkbutton">动态设置</a>
-    <a type="button" href="javascript:void(0)" onclick="open_window2()" class="easyui-linkbutton">添加动态</a>
+     
+    <!-- <a type="button" href="javascript:void(0)" onclick="open_window2()" class="easyui-linkbutton">添加动态</a> -->
+    <a href="javascript:void(0)" id="mb" class="easyui-menubutton"     
+        data-options="menu:'#mm',iconCls:'icon-edit'">导出Excel</a>   
+		<div id="mm">   
+		    <div data-options="iconCls:'icon-redo'" onclick="quanbu()" id="quanbu">全部导出</div>   
+		    <div data-options="iconCls:'icon-redo'" onclick="xuanzhong()" id="xuanzhong">选中导出</div>     
+		</div>
 </div>
  <div id="addclue_dialog" class="easyui-dialog" title="新增客户信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
 				text:'保存',
@@ -226,7 +307,7 @@
 				handler:function(){
 					clear_Customer();
 				}
-			}]" style="width:500px;height:300px;padding:10px;">
+			}]" style="width:1000px;height:500px;padding:10px;">
          <form id="addclueForm">
                 <table cellpadding="5">
                     <tr>
@@ -234,8 +315,12 @@
                         <td><input class="easyui-textbox" type="text" id="add_Name"></input></td>
                     </tr>
                     <tr>
+                    <!--  id:add_Sex -->
                         <td>性别:</td>
-                        <td><input class="easyui-textbox" type="text" id="add_Sex"></input></td>
+                        <td><select id="add_Sex" class="easyui-combobox" style="width:200px;" >   
+							    <option value="男">男</option>   
+							    <option value="女">女</option>   
+							</select> </td>
                     </tr>
                     <tr>
                         <td>年龄:</td>
@@ -243,19 +328,54 @@
                     </tr>
                     <tr>
                         <td>出生日期:</td>
-                        <td><input class="easyui-textbox" type="text" id="add_Birthday"></input></td>
+                        <td><input class="easyui-datetimebox" type="text" id="add_Birthday"></input></td>
                     </tr>
                     <tr>
+                    <!-- id:add_Education -->
                         <td>学历:</td>
-                        <td><input class="easyui-textbox" type="text" id="add_Education"></input></td>
+                        <td><select id="add_Education" class="easyui-combobox"
+						style="width: 100px;">
+							<option value=''>--请选择--</option>
+							<option value="大专">大专</option>
+							<option value="高中">高中</option>
+							<option value="中专">中专</option>
+							<option value="初中">初中</option>
+							<option value="本科">本科</option>
+							<option value="其他">其他</option>
+					</select></td>
                     </tr>
                     <tr>
+                    <!-- add_Direction -->
                         <td>课程方向:</td>
-                        <td><input class="easyui-textbox" type="text" id="add_Direction"></input></td>
+                        <td><select id="add_Direction" class="easyui-combobox"
+						style="width: 100px;">
+							<option value=''>--请选择--</option>
+							<option value="软件开发">软件开发</option>
+							<option value="软件设计">软件设计</option>
+							<option value="网络营销">网络营销</option>
+					</select></td>
                     </tr>
                     <tr>
+                     <!-- id:add_Source -->
                         <td>来源渠道:</td>
-                        <td><input class="easyui-textbox" type="text" id="add_Source"></input></td>
+                        <td><select id="add_Source" class="easyui-combobox"
+						style="width: 100px;">
+							<option value=''>--请选择--</option>
+							<option value="未知">未知</option>
+							<option value="百度">百度</option>
+							<option value="百度移动端">百度移动端</option>
+							<option value="360">360</option>
+							<option value='360移动端'>360移动端</option>
+							<option value="搜狗">搜狗</option>
+							<option value="搜狗移动端">搜狗移动端</option>
+							<option value="UC移动端">UC移动端</option>
+							<option value="直接输入">直接输入</option>
+							<option value="自然流量">自然流量</option>
+							<option value="直电">直抵</option>
+							<option value="微信">微信</option>
+							<option value="QQ">QQ</option>
+
+					</select></td>
                     </tr>
                     <tr>
                         <td>身份证号:</td>
@@ -283,17 +403,131 @@
                     </tr>  
                     <tr>
                         <td>备注:</td>
-                        <td><input class="easyui-textbox" type="text" id="add_Remarks"></input></td>
+                        <td><input class="easyui-textbox" data-options="multiline:true" id="add_Remarks" style="height:60px" ></input></td>
                     </tr>
                 </table>
          </form>
     </div> 
-    <div id="addDynamic_window" class="easyui-dialog" title="添加动态" data-options="modal:true,closed:true,iconCls:'icon-add'" style="width:500px;height:300px;padding:10px;">
+ <div id="selclue_dialog" class="easyui-dialog" title="查看客户信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
+				text:'保存',
+				handler:function(){
+					add_Customer();
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+					clear_Customer();
+				}
+			}]" style="width:1000px;height:500px;padding:10px;">
+         <form id="selclueForm">
+                <table cellpadding="5">
+                    <tr>
+                        <td>姓名:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Name" ></input></td>
+                    </tr>
+                    <tr>
+                    <!--  id:add_Sex -->
+                        <td>性别:</td>
+                        <td><select name="clue_Sex" class="easyui-combobox" style="width:200px;" >   
+							    <option value="男">男</option>   
+							    <option value="女">女</option>   
+							</select> </td>
+                    </tr>
+                    <tr>
+                        <td>年龄:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Age"></input></td>
+                    </tr>
+                    <tr>
+                        <td>出生日期:</td>
+                        <td><input class="easyui-datetimebox" type="text" name="clue_Birthday"></input></td>
+                    </tr>
+                    <tr>
+                    <!-- id:add_Education -->
+                        <td>学历:</td>
+                        <td><select name="clue_Education" class="easyui-combobox"
+						style="width: 100px;">
+							<option value=''>--请选择--</option>
+							<option value="大专">大专</option>
+							<option value="高中">高中</option>
+							<option value="中专">中专</option>
+							<option value="初中">初中</option>
+							<option value="本科">本科</option>
+							<option value="其他">其他</option>
+					</select></td>
+                    </tr>
+                    <tr>
+                    <!-- add_Direction -->
+                        <td>课程方向:</td>
+                        <td><select name="clue_Direction" class="easyui-combobox"
+						style="width: 100px;">
+							<option value=''>--请选择--</option>
+							<option value="软件开发">软件开发</option>
+							<option value="软件设计">软件设计</option>
+							<option value="网络营销">网络营销</option>
+					</select></td>
+                    </tr>
+                    <tr>
+                     <!-- id:add_Source -->
+                        <td>来源渠道:</td>
+                        <td><select name="clue_Source" class="easyui-combobox"
+						style="width: 100px;">
+							<option value=''>--请选择--</option>
+							<option value="未知">未知</option>
+							<option value="百度">百度</option>
+							<option value="百度移动端">百度移动端</option>
+							<option value="360">360</option>
+							<option value='360移动端'>360移动端</option>
+							<option value="搜狗">搜狗</option>
+							<option value="搜狗移动端">搜狗移动端</option>
+							<option value="UC移动端">UC移动端</option>
+							<option value="直接输入">直接输入</option>
+							<option value="自然流量">自然流量</option>
+							<option value="直电">直抵</option>
+							<option value="微信">微信</option>
+							<option value="QQ">QQ</option>
+
+					</select></td>
+                    </tr>
+                    <tr>
+                        <td>身份证号:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_IdentityNumber"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Email" data-options="validType:'email'"></input></td>
+                    </tr>
+                    <tr>
+                        <td>QQ号:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Qq"></input></td>
+                    </tr>
+                    <tr>
+                        <td>微信号:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_WeChat"></input></td>
+                    </tr>
+                    <tr>
+                        <td>手机号:</td>
+                        <td><input type="text" class="easyui-numberbox" name="clue_Tel"></td>
+                    </tr>  
+                    <tr>
+                        <td>地区:</td>
+                        <td><input type="text" class="easyui-textbox" name="clue_Address"></td>
+                    </tr>  
+                    <tr>
+                        <td>备注:</td>
+                        <td><input class="easyui-textbox" data-options="multiline:true" name="clue_Remarks" style="height:60px" ></input></td>
+                    </tr>
+                </table>
+         </form>
+    </div> 
+    <div id="lie_window" class="easyui-dialog" title="列设置" data-options="modal:true,closed:true,iconCls:'icon-add'" style="width:500px;height:300px;padding:10px;">
+         
+    </div>
+    <!-- <div id="addDynamic_window" class="easyui-dialog" title="添加动态" data-options="modal:true,closed:true,iconCls:'icon-add'" style="width:500px;height:300px;padding:10px;">
          <form id="addDynamicForm">
                 <table cellpadding="5">
                     <tr>
                         <td>内容:</td>
-                        <td><input class="easyui-textbox" type="text" id="neirong" ></input></td>
+                        <td><input class="easyui-textbox" data-options="multiline:true" id="neirong" style="height:60px" ></input></td>
                     </tr>
                     <tr>
                         <td>接收人:</td>
@@ -307,6 +541,6 @@
                 <a href="javascript:void(0)" class="easyui-linkbutton" type="button" onclick="add_dynamic()">发送</a>
                 <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear_dynamic()">取消</a>        
             </div>
-    </div>
+    </div> -->
 	</body>
 </html>

@@ -17,6 +17,8 @@
 		<result property="users_Exit1" column="users_Exit1"/>
 		<result property="users_Exit2" column="users_Exit2"/>
 		<result property="users_CheckInStatus" column="users_CheckInStatus"/>
+		<result property="users_Weight" column="users_Weight"/>
+		<result property="users_Count" column="users_Count"></result>
 		<collection property="roles" ofType="com.crm.entity.Roles">
 			<id property="roles_Id" column="roles_Id"/>
 			<result property="roles_Name" column="roles_Name"/>
@@ -116,12 +118,16 @@
 		set users_LsLockout =  1 where users_Id =#{users_Id}
 	</update>
 	<delete id="deleteUsersByUsersId" parameterType="int">
-		delete from users where users_Id = #{users_Id}
+				delete from users where  NOT EXISTS (
+			SELECT *
+			FROM usersroles WHERE usersRoles_UserId = #{users_Id}
+		
+		) AND users_Id = #{users_Id}
 	</delete>
 	<insert id="insertUsers" parameterType="com.crm.entity.Users">
-		insert into users (users_LoginName,users_Password,users_ProTectEMail,users_ProtectTel)
-		values(#{users_LoginName},#{users_Password},#{users_ProTectEMail},#{users_ProtectTel})
-		<selectKey order="AFTER" keyProperty="users_Id" resultType="int">
+		insert into users (users_LoginName,users_Password,users_ProTectEMail,users_ProtectTel,users_Exit1)
+		values(#{users_LoginName},#{users_Password},#{users_ProTectEMail},#{users_ProtectTel},#{users_Exit1})
+		<selectKey order="AFTER"  keyProperty="users_Id" resultType="int">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 	</insert>
@@ -172,20 +178,61 @@
 	</update>
 	
 	<select id="selectCheckedZiXunShi" parameterType="int" resultType="com.crm.entity.Users">
-		SELECT u.*
-			FROM users u,usersroles ur,roles r WHERE u.users_Id = ur.usersRoles_UserId AND r.roles_Id = ur.usersRoles_Id AND r.roles_Name ='咨询师'
-		AND u.users_Exit1 = 7 AND u.users_CheckInStatus = 2
+		SELECT u.* FROM users u,usersroles ur,roles r WHERE u.users_Id = ur.usersRoles_UserId AND r.roles_Id = ur.usersRoles_RoleId AND r.roles_Name ='咨询师' AND u.users_Exit1 = #{users_Exit1} AND u.users_CheckInStatus = 2 ORDER BY u.users_Count ASC , u.users_Weight DESC  
 	</select>
 	
 	<select id="getOneUsersById" parameterType="int" resultType="com.crm.entity.Users">
 		SELECT * FROM users WHERE users_Id=#{id}
 	</select>
 	
-	
 		<!-- 查询是咨询师角色的用户 -->
 	<select id="selectUsersAll" resultType="users" >
 			SELECT users_Id,users_LoginName 
 			FROM users u, usersroles ul, roles r WHERE u.users_Id = ul.usersRoles_UserId AND ul.usersRoles_RoleId = r.roles_Id AND r.roles_Id = 2
-
+	</select>
+	<select id="getOkCheckUsers" parameterType="com.crm.entity.Users" resultType="com.crm.entity.Users">
+			SELECT * FROM users WHERE
+		users_LoginName=#{users_LoginName} AND
+		users_Password=#{users_Password} AND users_Exit2 != '在线'
+	</select>
+	<!-- 修改用户为在线 -->
+	<update id="updateUesrsOnline" parameterType="int">
+		update 
+		users set users_Exit2 = '在线' where users_Id = #{users_Id}
+	</update>
+	<update id="updateUesrsUnOnline" parameterType="int">
+		update 
+		users set users_Exit2 = '离线' where users_Id = #{users_Id}
+	</update>
+	<update id="updateUserClueCount" parameterType="int">
+		update
+		users set users_Count = users_Count +1 where users_Id = #{users_Id}
+	</update>
+	<select id="selectUsersById" parameterType="int" resultType="com.crm.entity.Users">
+		select *
+		from users where users_Id = #{users_Id}
+	</select>
+	<!-- 修改权重+1 -->
+	<update id="updatewancheng" parameterType="int">
+		update users set users_Weight = users_Weight+1 where users_Id = #{id}
+	</update>
+	<!-- 修改权重-1 -->
+	<update id="updatefangqi" parameterType="int">
+		update users set users_Weight = users_Weight-1 where users_Id = #{id}
+	</update>
+	<select id="selectAll" resultType="com.crm.entity.Users">
+		select users_Id,users_LoginName
+		from users 
+	</select>
+	<update id="updateStatus" parameterType="int">
+		update users set users_Exit2 = '在线' where users_Id = #{id}
+	</update>
+	
+	<select id="selectUsersByEmail" parameterType="java.lang.String" resultType="com.crm.entity.Users">
+		select * from users where users_ProTectEMail = #{email}
+	</select>
+	
+	<select id="selectUsersByTel" parameterType="java.lang.String" resultType="com.crm.entity.Users">
+		select * from users where users_ProtectTel = #{tel}
 	</select>
 </mapper>

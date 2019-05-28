@@ -32,7 +32,12 @@ SELECT usersRoles_RoleId FROM usersroles WHERE usersRoles_UserId=#{usersRoles_Us
 		values(#{modules_Name},#{modules_Path},#{modules_ParentId})
 	</insert>
 	<delete id="deleteModules" parameterType="com.crm.entity.Modules">
-		delete from modules where modules_Id = #{modules_Id}
+				DELETE
+		FROM modules WHERE NOT EXISTS (
+			SELECT *
+			FROM permissiontb WHERE permissiontb_ModuleId = #{modules_Id}
+		) AND modules_Id = #{modules_Id}
+		
 	</delete>
 	<update id="updateModules" parameterType="com.crm.entity.Modules">
 		update modules
@@ -47,4 +52,11 @@ SELECT usersRoles_RoleId FROM usersroles WHERE usersRoles_UserId=#{usersRoles_Us
 		where modules_ParentId = #{modules_ParentId} 
 		AND modules_Name = #{modules_Name}
 	</select>
+	<select id="selectParentModulesByName" resultType="com.crm.entity.Modules" parameterType="com.crm.entity.Modules">
+		select * from modules where modules_Name = #{modules_Name}
+	</select>
+	<insert id="insertParentModule" parameterType="com.crm.entity.Modules" >
+		insert into modules (modules_Name,modules_ParentId,modules_Weight)
+		values(#{modules_Name},0,1)
+	</insert>
   </mapper>

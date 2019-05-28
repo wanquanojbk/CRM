@@ -8,7 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -20,12 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.crm.entity.Distribution;
 import com.crm.entity.PageNation;
-import com.crm.entity.Roles;
 import com.crm.entity.Users;
 import com.crm.entity.UsersRoles;
+import com.crm.mapper.DistributionMapper;
 import com.crm.mapper.RolesMapper;
 import com.crm.mapper.UsersMapper;
 import com.crm.mapper.UsersRolesMapper;
@@ -35,6 +35,7 @@ import com.crm.util.RandomCreate;
 import com.crm.util.Result;
 
 @Service
+@Transactional
 public class UsersServiceImpl implements UsersService {
 	@Autowired
 	private UsersMapper usersMapper;
@@ -44,6 +45,8 @@ public class UsersServiceImpl implements UsersService {
 	private RolesMapper rolesMapper;
 	@Autowired
 	private UsersRolesMapper usersRolesMapper;
+	@Autowired
+	private DistributionMapper distributionMapper;
 	/**
 	 * 通过用户名和密码查询用户
 	 * 
@@ -56,7 +59,7 @@ public class UsersServiceImpl implements UsersService {
 	public Result selectUsers(Users users,HttpServletRequest request) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		// TODO Auto-generated method stub
 		Result result = new Result();
-		//先从前台传来的用户判断用户名为空是否,如果不为空代表前台输入了用户名,进入下一层判断
+		
 		if(users.getUsers_LoginName()!=null) {
 			Users user2 = usersMapper.selectUsersByUsersName(users);
 			// 如果user2不为空代表用户名实际存在,进入下一级别判断
@@ -68,21 +71,25 @@ public class UsersServiceImpl implements UsersService {
 				Users user = usersMapper.selectUsers(users);
 				// 如果user不为空,那么用户名和密码都正确,进入锁定判断
 				if (user != null) {
-					request.getSession().setAttribute("users", user);
 					result.setSuccess(true);
-					if (user.getUsers_LsLockout() == 1) {
-				        Date date = new Date();
-				        //设置要获取到什么样的时间
-				        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				        //获取String类型的时间
-				        String createdate = sdf.format(date);
-						user.setUsers_LastLoginTime(createdate);
-						usersMapper.updateUserPsdWrongTimeSucessByZero(user);
-						result.setMsg("登录成功");
-						result.setIsLockout(1);
-						result.setUsers(user);
-						return result;
-					} else {
+					//String status = user.getUsers_Exit2(); && !"在线".equals(status)
+					if (user.getUsers_LsLockout() == 1 ) {
+								//如果 不为空 但是又能登录上
+							  	Date date = new Date();
+						        //设置要获取到什么样的时间
+						        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						        //获取String类型的时间
+						        String createdate = sdf.format(date);
+								user.setUsers_LastLoginTime(createdate);
+								usersMapper.updateUserPsdWrongTimeSucessByZero(user);
+								//context.setAttribute("token", "登录");
+								result.setMsg("登录成功");
+								result.setIsLockout(1);
+								result.setUsers(user);
+								return result;
+				      
+					} 
+					else {
 						result.setMsg("目前该用户已经被锁定");
 						result.setIsLockout(2);
 						return result;
@@ -132,10 +139,7 @@ public class UsersServiceImpl implements UsersService {
 	
 	}
 
-	private SimpleDateFormat newSimpleDateFormat(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public Result emailRandom(Users users) throws NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -245,7 +249,18 @@ public class UsersServiceImpl implements UsersService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		users.setUsers_Exit1(0);
+		if(usersRoles.getUsersRoles_RoleId()==2||usersRoles.getUsersRoles_RoleId()==3) {
+			users.setUsers_Exit1(7);
+		}
 		Integer i = usersMapper.insertUsers(users);
+		if(usersRoles.getUsersRoles_RoleId()==5) {
+			Distribution distribution = new Distribution();
+			distribution.setDistribution_ManagerId(users.getUsers_Id());
+			distributionMapper.insertDistribution(distribution);
+		}
+		
+		
 		usersRoles.setUsersRoles_UserId(users.getUsers_Id());
 		Integer j = usersRolesMapper.insertUsersRoles(usersRoles);
 		if(i+j>1)
@@ -304,6 +319,7 @@ public class UsersServiceImpl implements UsersService {
 		 Integer j=0;
 		 String[] split = ids.split(","); Integer[] array = new Integer[split.length];
 		  for(int i=0;i<array.length;i++) { 
+			  
 			  array[i]=Integer.parseInt(split[i]);
 			  UsersRoles usersRoles = new UsersRoles();
 		      usersRoles.setUsersRoles_RoleId(array[i]);
@@ -320,7 +336,11 @@ public class UsersServiceImpl implements UsersService {
 	public Boolean insertUsersRoles(Integer id, String ids) {
 		// TODO Auto-generated method stub
 		Integer j=0;
-		 String[] split = ids.split(","); Integer[] array = new Integer[split.length];
+		String[] split = ids.split(","); Integer[] array = new Integer[split.length];
+		
+		
+		
+		
 		  for(int i=0;i<array.length;i++) { 
 			  array[i]=Integer.parseInt(split[i]);
 			  UsersRoles usersRoles = new UsersRoles();
@@ -361,7 +381,7 @@ public class UsersServiceImpl implements UsersService {
 		//背景框
 		graphics.fillRect(0, 0, 116, 36);
 		//内容字符数组
-		char[] ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+		char[] ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 		//生成随机数对象
 		Random random = new Random();
 		//定义两个变量
@@ -375,7 +395,8 @@ public class UsersServiceImpl implements UsersService {
 	        int y = random.nextInt(36);//最低出现的位置(从上往下)
 	        int xl = random.nextInt(13);//左右偏移值
 	        int yl = random.nextInt(15);//上下偏移值
-	        graphics.setColor(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
+	        //graphics.setColor(new Color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
+	        graphics.setColor(new Color(0, 0, 0));
 	        graphics.drawLine(x, y, x + xl, y + yl); 
 			//所有的颜色都不一样，随机获取字母的颜色
 			//graphics.setColor(new Color(random.nextInt(88),random.nextInt(188),random.nextInt(255)));
@@ -440,6 +461,41 @@ public class UsersServiceImpl implements UsersService {
 			e.printStackTrace();
 		}
 		return 1;//修改失败
+	}
+
+	@Override
+	public int updateUsersOnlineStatus(Integer usersId) {
+		
+		return usersMapper.updateUesrsOnline(usersId);
+	}
+
+	@Override
+	public int updateUsersUnOnlineStatus(Integer usersId) {
+		// TODO Auto-generated method stub
+		return usersMapper.updateUesrsUnOnline(usersId);
+	}
+
+
+
+	@Override
+	public Boolean testEmail(String email) {
+		// TODO Auto-generated method stub
+		Users users = usersMapper.selectUsersByEmail(email);
+		if(users!=null){
+			return true;
+		}
+		return false;
+	}
+
+
+
+	@Override
+	public Boolean testPhone(String phone) {
+		Users users = usersMapper.selectUsersByTel(phone);
+		if(users!=null){
+			return true;
+		}
+		return false;
 	}
 	
 }

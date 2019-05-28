@@ -1,15 +1,18 @@
 package com.crm.entity;
 
+import org.springframework.stereotype.Component;
+
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
 
 //班级表
+@Component
 public class Classes extends BaseRowModel{
 	private Integer classes_Id;// 编号
 	@ExcelProperty(value ="班级名称",index=15)
 	private String classes_Name;// 班级名称
 	private String classes_CreateTime;// 班级创建时间
-	private String classes_CounselorId;//班级辅导员编号
+	private Integer classes_CounselorId;//班级辅导员编号
 	private String classes_SchoolYear;//学年如（五年制、三年制)
 	private String classes_Campus;//校区编号
 	private String classes_Status;//班级状态
@@ -49,10 +52,10 @@ public class Classes extends BaseRowModel{
 	public void setClasses_CreateTime(String classes_CreateTime) {
 		this.classes_CreateTime = classes_CreateTime;
 	}
-	public String getClasses_CounselorId() {
+	public Integer getClasses_CounselorId() {
 		return classes_CounselorId;
 	}
-	public void setClasses_CounselorId(String classes_CounselorId) {
+	public void setClasses_CounselorId(Integer classes_CounselorId) {
 		this.classes_CounselorId = classes_CounselorId;
 	}
 	public String getClasses_SchoolYear() {
@@ -98,7 +101,7 @@ public class Classes extends BaseRowModel{
 				+ classes_SchoolYear + ", classes_Campus=" + classes_Campus + ", classes_Status=" + classes_Status
 				+ ", classes_Exit1=" + classes_Exit1 + ", classes_Exit2=" + classes_Exit2 + ", users=" + users + "]";
 	}
-	public Classes(Integer classes_Id, String classes_Name, String classes_CreateTime, String classes_CounselorId,
+	public Classes(Integer classes_Id, String classes_Name, String classes_CreateTime, Integer classes_CounselorId,
 			String classes_SchoolYear, String classes_Campus, String classes_Status, Integer classes_Exit1,
 			String classes_Exit2, Users users) {
 		super();

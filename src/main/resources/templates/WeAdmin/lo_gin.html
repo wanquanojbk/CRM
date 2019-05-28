@@ -15,14 +15,37 @@
 		if($("#cookie").text()!=null&&$("#cookie").text()!=""){
 			$("#users_LoginName").val($("#cookie").text());
 		}
-		if($("#cookie2").text()!=null&&$("#cookie2").text()!=""){
-			$("#users_Password").val($("#cookie2").text());
-		}
 	})
 
 	function code(a){
 		 var timestamp = (new Date()).valueOf();
          $(a).attr("src","/CRM/code?timestamp="+timestamp );
+	}
+	
+	function tiJiao(){
+		
+	}
+	function testPassword(){
+		var a= /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
+		var password = $("#users_Password").val();
+		if(!password.match(a)){
+			$("#msg").css("color","red");
+			$("#msg").text("密码长度最低为6位哦");
+			$("#users_Password").val("");
+			return ;
+		}
+		else{
+			$("#msg").css("color","white");
+			$("#msg").text("密码符合强度要求");
+		}
+
+	}
+	function test(){
+		var h4 = $("#msg").text();
+		if(h4=="本机已登录,请确认账号安全"){
+			alert("已经登录");
+			return false;
+		}
 	}
 		/* $("#tu").on("click",function () {
 			 var timestamp = (new Date()).valueOf();
@@ -37,21 +60,20 @@
 	<div class="wrapper">
 		<div class="container">
 			<h1>Welcome</h1>
-			<h4 th:utext="${msg}"></h4>
+			<h3 id="msg"  th:utext="${msg}"></h3>
 			<h4 style="display: none;" id="cookie" th:each="cookie:${#httpServletRequest.getCookies()}"  th:if="${cookie.getName().equals('cookie')}"  th:text="${cookie.getValue()}"></h4>
-			<h4 style="display: none;" id="cookie2" th:each="cookie:${#httpServletRequest.getCookies()}"  th:if="${cookie.getName().equals('cookie2')}"  th:text="${cookie.getValue()}"></h4>
-			<form class="form" action="/CRM/login" method="post" >
+			<!-- <h4 style="display: none;" id="cookie2" th:each="cookie:${#httpServletRequest.getCookies()}"  th:if="${cookie.getName().equals('cookie2')}"  th:text="${cookie.getValue()}"></h4> -->
+			<form id="loginForm" onsubmit="test()" class="form" action="/CRM/login" method="post" >
 			<!--  -->
 			<!--  -->
 				<input class="loginInput" id="users_LoginName" autocomplete="off"   type="text" name="users_LoginName" required="required" placeholder="Username">
-				<input class="loginInput" id="users_Password"  type="password" required="required" name="users_Password" placeholder="Password">
+				<input class="loginInput" onblur="testPassword()" id="users_Password"  type="password" required="required" name="users_Password" placeholder="Password">
 				
 				<div> 
 					<input class="loginInput"  type="text" autocomplete="off" required="required"  name="yanzhengma" placeholder="请输入验证码">
 					<img style="" id="tu" onclick="code(this)" alt="" src="/CRM/code">
 					<input id="miandenglu" type="checkbox" name="miandenglu" value="1">7天免登录
 				</div>
-				
 				<button type="submit" >Login</button>
 			</form>
 		</div>

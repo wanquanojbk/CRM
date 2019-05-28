@@ -116,8 +116,22 @@ public class AdminController {
 	@RequestMapping("/testLoginName")
 	@ResponseBody
 	public Boolean testLoginName(Users users) {
-		System.out.println("进入");
 		Boolean jieGuo=usersService.testLoginName(users);
 		return jieGuo;
 	}
+	@RequestMapping("/testEmail")
+	@ResponseBody
+	public Boolean testEmail(String email) {
+		Boolean jieGuo=usersService.testEmail(email);
+		return jieGuo;
+	}
+	@RequestMapping("/testTel")
+	@ResponseBody
+	public Boolean testTel(String tel) {
+		Boolean jieGuo=usersService.testPhone(tel);
+		return jieGuo;
+	}
+	
+
+	
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.crm.entity.Classes;
 import com.crm.entity.PageNation;
 import com.crm.entity.Student;
 import com.crm.entity.Users;
@@ -53,5 +54,33 @@ public class StudentServiceImpl implements StudentService {
 		return list;
 	}
 	
+	@Override
+	public Integer[] selectClassStudent(Integer classid) {
+		// TODO Auto-generated method stub
+		Integer boy = studentMapper.selectboy(classid);
+		Integer girl = studentMapper.selectgirl(classid);
+		Integer[] suzu={boy,girl};
+		
+		
+		return suzu;
+	}
+
+	@Override
+	public List<Classes> selectclass(HttpSession session) {
+		// TODO Auto-generated method stub
+		Users users = (Users) session.getAttribute("users");
+		List<Classes> selectClass = studentMapper.selectClass(users.getUsers_Id());
+		return selectClass;
+	}
+	
+	@Override
+	public Integer[] selectAllStudent(Integer userid) {
+		// TODO Auto-generated method stub
+		Integer boy = studentMapper.selectAllBoy(userid);
+		Integer girl = studentMapper.selectAllStudent(userid);
+		girl = girl - boy;
+		Integer[] suzu={boy,girl};
+		return suzu;
+	}
 
 }

@@ -42,8 +42,16 @@ private Integer student_Status;//缴费状态(默认为0,0:未缴费,1:已缴费
 private Double student_Amount;//缴费金额
 private Integer student_Exit1;//预留1
 private String student_Exit2;//预留2
-private Classes classes;
+private Classes classes; //班级
+private Users users; //辅导员
 
+
+public Users getUsers() {
+	return users;
+}
+public void setUsers(Users users) {
+	this.users = users;
+}
 public Integer getStudent_Id() {
 	return student_Id;
 }

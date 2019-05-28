@@ -162,6 +162,83 @@ public interface UsersMapper {
 	 * @return
 	 */
 	public List<Users> selectUsersAll();
-
 	
+	
+	/**
+	 * 
+	 * @param users 查询出来能登录的用户
+	 * @return
+	 */
+	public Users getOkCheckUsers(Users users);
+	/**
+	 * 
+	 * @param usersId 根据用户id修改在线状态
+	 * @return
+	 */
+	public Integer updateUesrsOnline(Integer usersId);
+	/**
+	 * 
+	 * @param usersId 根据用户id修改不在先状态
+	 * @return
+	 */
+	public Integer updateUesrsUnOnline(Integer usersId);
+	
+	
+	/**
+	 * 
+	 * @param usersId 根据用户id 修改他的客户数量
+	 * @return
+	 */
+	public Integer updateUserClueCount(Integer usersId);
+	
+	
+	/**
+	 * 
+	 * @param usersId
+	 * @return
+	 */
+	public Users selectUsersById(Integer usersId);
+
+	/**
+	 * 修改该用户完成时后权重+1
+	 * @param id
+	 * @return
+	 */
+	public Integer updatewancheng(Integer id);
+	/**
+	 * 修改该用户放弃时权重-1
+	 * @param id
+	 * @return
+	 */
+	public Integer updatefangqi(Integer id);
+	
+	/**
+	 *  查询所有
+	 * @return
+	 */
+	public List<Users> selectAll();
+	
+	
+	
+	/**
+	 * 
+	 * @param usersId
+	 * @return
+	 */
+	public Integer updateStatus(Integer usersId);
+	
+	
+	/**
+	 * 
+	 * @param email 通过email查询出来用户
+	 * @return
+	 */
+	public Users selectUsersByEmail(String email);
+	
+	/**
+	 * 
+	 * @param tel 通过手机号码查询出来用户
+	 * @return
+	 */
+	public Users selectUsersByTel(String tel);
 }

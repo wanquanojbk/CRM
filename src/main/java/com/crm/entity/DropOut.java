@@ -1,5 +1,8 @@
 package com.crm.entity;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class DropOut {
 private Integer dropOut_Id;//编号
 private String dropOut_Text;//退学原因

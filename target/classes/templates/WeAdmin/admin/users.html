@@ -3,14 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<!-- <link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
 <link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
 <script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
 <script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script> -->
+		<link rel="stylesheet" href="/CRM/js2/easyui.css" />
+		<link rel="stylesheet" href="/CRM/js2/easyui_animation.css" />
+		<link rel="stylesheet" href="/CRM/js2/icon.css" />
+		<script src="/CRM/js2/jquery.min.js"></script>
+		<script src="/CRM/js2/jquery.easyui.min.js"></script>
+		<script src="/CRM/js2/insdep.extend.min.js"></script>
+		<script src="/CRM/js2/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" th:inline="none">
 	var ids="";
+	var test = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
+	var TEL_REGEXP = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+	var reg = new RegExp("^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$");
+	function testLoginName(obj){
+		var $v = $(obj);
+		if($v.val()==null || $v.val()== ''){
+			$.messager.alert("提示","用户名不能为空");
+			return;
+		}
+		
+		$.ajax({
+    		url:"/CRM/Admin/testLoginName",
+    		async:false,
+    		data:{
+    			"users_LoginName":$v.val()
+    			},
+    		type:'post',
+    		success:function(res){
+    			if(res){
+    				$.messager.alert("提示","用户名不能重复");
+    				$v.val("");
+				}
+    		},
+    		dataType:'json'
+    	})
+	}
+	function testPhone(obj){
+		var $v = $(obj);
+		if($v.val()==null || $v.val()==''){
+			$.messager.alert("提示","手机号码不能为空");
+			return;
+		}
+		if(!TEL_REGEXP.test($v.val())){
+			$.messager.alert("提示","手机号码不符合规则");
+			return;
+		}
+		$.ajax({
+    		url:"/CRM/Admin/testTel",
+    		async:false,
+    		data:{
+    			"tel":$v.val()
+    			},
+    		type:'post',
+    		success:function(res){
+    			if(res){
+    				$v.val("");
+					$.messager.alert("提示","手机不能重复");
+					return;
+				}
+    		},
+    		dataType:'json'
+    	})
+		
+	}
+	
+	
+	function testEmail(obj){
+		var $v = $(obj);
+		if($v.val()==null || $v.val()==''){
+			$.messager.alert("提示","邮箱不能为空");
+			return;
+		}
+		if(!reg.test($v.val())){
+			$.messager.alert("提示","邮箱不符合要求");
+			$v.val("");
+			return ;
+		}
+		$.ajax({
+    		url:"/CRM/Admin/testEmail",
+    		async:false,
+    		data:{
+    			"email":$v.val()
+    			},
+    		type:'post',
+    		success:function(res){
+    			if(res){
+					$v.val("");
+					$.messager.alert("提示","邮箱不能重复");
+					return ;
+				}
+    		},
+    		dataType:'json'
+    	})
+		
+	}
+	function testPassword(){
+		var onepass = $("#onePassword").val();
+		var twopass = $("#twoPassword").val();
+		
+		if(onepass==null || twopass == null || onepass =="" || twopass == ""){
+			$("#onePassword").val("");
+			$("#twoPassword").val("");
+			$.messager.alert("提示","请输入内容");
+			return;
+		}
+		else if(!test.test(onepass)){
+			$("#onePassword").val("");
+			$.messager.alert("提示","密码长度最低为6位");
+			return ;
+		}
+		else if(!test.test(twopass)){
+			$("#twoPassword").val("");
+			$.messager.alert("提示","密码长度最低为6位");
+			return ;
+		}
+		else if(onepass !=twopass){
+			$("#twoPassword").val("");
+			$.messager.alert("提示","两次密码不一致");
+			return ;
+		}
+	}
+	
 	function tianjia(){
 		$("#roleSelect").combobox({
 			url:'/CRM/Admin/roles',
@@ -21,21 +140,79 @@
 		$("#addWindow").window("open");
 	}
 	function add(){
-		$('#addForm').form({
+		/* var addEmail = $("#addEmail").val();
+		var addPhone = $("#addPhone").val();
+		var loginName = $("#loginName").val(); */
+		var onepass = $("#onePassword").val();
+		var twopass = $("#twoPassword").val();
+		$('#addForm').form('submit',{
 		    url:'/CRM/Admin/add',
 		    onSubmit: function(){
-				// do some check
-				// return false to prevent submit;
+				
+				if(onepass==null || twopass == null || onepass =="" || twopass == ""){
+					$("#onePassword").passwordbox("setValue","");
+					$("#twoPassword").passwordbox("setValue","");
+					$.messager.alert("提示","请输入内容");
+					return false;
+				}
+				 if(!test.test(onepass)){
+					$("#onePassword").passwordbox("setValue","");
+					$.messager.alert("提示","密码长度最低为6位");
+					return false;
+				}
+				 if(!test.test(twopass)){
+					$("#twoPassword").passwordbox("setValue","");
+					$.messager.alert("提示","密码长度最低为6位");
+					return false;
+				}
+				if(onepass !=twopass){
+					$("#twoPassword").passwordbox("setValue","");
+					$.messager.alert("提示","两次密码不一致");
+					return false;
+				}
+				
+		    	/* if(!TEL_REGEXP.test(addPhone)){
+					$.messager.alert("提示","手机号不符合要求");
+					$("#addPhone").textbox("setValue","");
+					return false;
+				}
+				if(!reg.test(addEmail)){
+					$.messager.alert("提示","邮箱不符合要求");
+					$("#addEmail").textbox("setValue","");
+					return false;
+				} */
+				
+			/* 	$.ajax({
+		    		url:"/CRM/Admin/testEmail",
+		    		async:false,
+		    		data:{
+		    			"email":addEmail
+		    			},
+		    		type:'post',
+		    		success:function(res){
+		    			if(res){
+							$("#addEmail").textbox("setValue","");
+							$.messager.alert("提示","邮箱不能重复");
+							return false;
+						}
+		    		},
+		    		dataType:'json'
+		    	}) */
+		    	
+				
+				
+				
 		    },
 		    success:function(data){
 				if(data){
 					$("#demo").datagrid("reload");
+					$("#addForm").form("reset");
 					$("#addWindow").window("close");
-					$.messager.alert("添加成功");
+					$.messager.alert("提示","添加成功");
 				}
 				else {
 					$("#addWindow").window("close");
-					$.messager.alert("添加失败");
+					$.messager.alert("提示","添加失败");
 				}
 		    }
 		});
@@ -113,7 +290,7 @@
 	function LockOFF(){
 		ids="";
 		var rows = $("#demo").datagrid("getChecked");
-		$.messager.confirm('Confirm','真的解锁行么?',function(r){
+		$.messager.confirm('提示','真的解锁行么?',function(r){
 		    if (r){
 		    	if(rows.length>0){
 		    		 for(var i=0;i<rows.length;i++){
@@ -129,13 +306,16 @@
 						}
 					},"json")
 				  }
+		    	 else{
+					  $.messager.alert("提示","请选择具体某一行");
+				  }
 		    }
 		});
 	}
 	function LockON(){
 		ids="";
 		var rows = $("#demo").datagrid("getChecked");
-		$.messager.confirm('Confirm','真的锁定行么?',function(r){
+		$.messager.confirm('提示','真的锁定行么?',function(r){
 		    if (r){
 		    	if(rows.length>0){
 		    		 for(var i=0;i<rows.length;i++){
@@ -151,6 +331,9 @@
 						}
 					},"json")
 				  }
+		    	 else{
+					  $.messager.alert("提示","请选择具体某一行");
+				  }
 		    }
 		});
 		
@@ -161,6 +344,7 @@
 			content:'/SpringBootCRM/Admin/addUser'
 		})
 	} */
+	
 	function edit(index){
 		var data  = $("#demo").datagrid("getData");
 		var row = data.rows[index];
@@ -191,11 +375,23 @@
 		 }
 	}
 	function gai(){
-		$('#updateForm').form({
+		
+		var gaiEmail = $("#gaiEmail").val();
+		
+		var gaiPhone = $("#gaiPhone").val();
+		$('#updateForm').form('submit',{
 		    url:'/CRM/Admin/update',
 		    onSubmit: function(){
-				// do some check
-				// return false to prevent submit;
+				if(!TEL_REGEXP.test(gaiPhone)){
+					$.messager.alert("提示","手机号不符合要求");
+					$("#gaiPhone").textbox("setValue","");
+					return false;
+				}
+				if(!reg.test(gaiEmail)){
+					$.messager.alert("提示","邮箱不符合要求");
+					$("#gaiEmail").textbox("setValue","");
+					return false;
+				}
 		    },
 		    success:function(data){
 				if(data){
@@ -236,30 +432,22 @@
 		    	text2:$("#startDate").datetimebox("getValue"),
 		    	text3:$("#endDate").datetimebox("getValue")
 			}
+			
 		})
 	}
 	$(function(){
 		init();
 	})
-	function testLogin(){
-		
-		var loginName = $("#loginName").val();
-		$.post("/CRM/Admin/testLoginName",{
-			users_LoginName:loginName
-		},function(res){
-			if(res){
-				$("#loginName").val("");
-				$.messager.alert("提示","用户名不能重复");
-			}
-		},"json")
-	}
+	
 	
 	function youwangzuo(){
 		ids="";
 		var rows = $("#role").datagrid("getChecked");
+				
 		$.messager.confirm('提示','确认进行操作么?',function(r){
 		    if (r){
 		    	 if(rows.length>0){
+		    		 
 					  for(var i=0;i<rows.length;i++){
 						  ids+=rows[i].roles_Id+",";
 					  }
@@ -269,7 +457,6 @@
 						  if(res){
 							  $("#roles").datagrid("reload");
 							  $("#role").datagrid("reload");
-							  $.messager.alert("提示","操作成功")
 						  }
 						  else{
 							  $.messager.alert("提示","操作失败")
@@ -288,7 +475,19 @@
 	}
 	function zuowangyou(){
 		ids="";
-		var rows = $("#roles").datagrid("getChecked");
+		var rows = $("#roles").datagrid("getChecked");  //左边所有的
+		
+		var yourows = $('#role').datagrid('getRows');  //右边 已有的
+		for (var i = 0; i < yourows.length; i++) { 
+			for(var j=0;j<rows.length;j++){
+				if(rows[j].roles_Id==yourows[i]['roles_Id']){
+					$.messager.alert("提示","用户有重复角色,本次操作将取消");
+					return;
+				}
+			}
+    	}
+		
+		
 		$.messager.confirm('提示','确认进行操作么?',function(r){
 		    if (r){
 		    	 if(rows.length>0){
@@ -302,7 +501,6 @@
 							  $("#roles").datagrid("reload");
 							  $("#role").datagrid("reload");
 							  //$(window.top.document).find("#corp-tree").tree('reload',node.target);
-							  $.messager.alert("提示","操作成功");
 						  }
 						  else{
 							  $.messager.alert("提示","操作失败");
@@ -326,10 +524,10 @@
 	<br/>
 	<div id="tool">
 				      <label >创建时间</label>
-				        <input type="text" name="" placeholder="开始时间"  id="startDate" class="easyui-datetimebox"/>
+				      <input type="text" name="" placeholder="开始时间"  id="startDate" class="easyui-datetimebox"/>
 				     -
-				        <input type="text" name="" placeholder="结束时间" id="endDate" class="easyui-datetimebox"/>
-	   	 			<select id="isLocks">
+				      <input type="text" name="" placeholder="结束时间" id="endDate" class="easyui-datetimebox"/>
+	   	 			<select id="isLocks" style="width: 150px;" class="easyui-combobox">
 	   	 				<option value="">--请选择--</option>
 	   	 				<option value="1">未锁定</option>
 	   	 				<option value="2">锁定</option>
@@ -343,20 +541,21 @@
 	</div>
 	<table id="demo"  class="easyui-datagrid"></table>
 	
-	
-	
-	
 	<!--添加窗口  -->
-	<div class="easyui-window" id="addWindow" data-options="modal:true,closed:true">
+	<div class="easyui-window" id="addWindow" data-options="modal:true,closed:true,title:'添加客户'">
 		<form action="javascript:add()"  id="addForm">
 			<table cellpadding="5">
 				<tr>
 					<td>登录名</td>
-					<td><input type="text" id="loginName" onblur="testLogin()" name="users_LoginName"    placeholder="请输入用户名"  class="easyui-validatebox"></td>
+					<td><input type="text"   id="loginName" style="height: 30px;"  name="users_LoginName" onblur="testLoginName(this)" autocomplete="off"    required="required"   class="easyui-validatebox textbox"></td>
 				</tr>
 				<tr>
 					<td>密码:</td>
-					<td><input type="password" name="users_Password"     class="easyui-passwordbox"></td>
+					<td><input type="password" id="onePassword"       class="easyui-passwordbox"></td>
+				</tr>
+				<tr>
+					<td>确认密码:</td>
+					<td><input type="password"  id="twoPassword"   name="users_Password"     class="easyui-passwordbox"></td>
 				</tr>
 				<tr>
 					<td>角色:</td>
@@ -368,11 +567,11 @@
 				</tr>
 				<tr>
 					<td>邮箱:</td>
-					<td><input type="text" name="users_ProTectEMail"    placeholder="请输入邮箱"  data-options="validType:['email']" class="easyui-validatebox"></td>
+					<td><input id="addEmail"  type="text" style="height: 30px;"  name="users_ProTectEMail"  autocomplete="off"   onblur="testEmail(this)" required="required"   class="easyui-validatebox textbox"></td>
 				</tr>
 				<tr>
 					<td>手机:</td>
-					<td><input type="text" name="users_ProtectTel"    placeholder="请输入手机"  data-options="validType:['email']" class="easyui-validatebox"></td>
+					<td><input id="addPhone"  type="text" style="height: 30px;"   name="users_ProtectTel"  autocomplete="off"  onblur="testPhone(this)"  required="required"   class="easyui-validatebox textbox"></td>
 				</tr>
 				<tr>
 					<td><button class="easyui-linkbutton" type="submit" >立即提交</button></td>
@@ -383,25 +582,25 @@
 	</div>
 	
 	<!--修改窗口  -->
-	<div class="easyui-window" id="updateWindow" data-options="modal:true,closed:true">
+	<div class="easyui-window" id="updateWindow" data-options="modal:true,closed:true,title:'修改用户'">
 		<form action="javascript:gai()"  id="updateForm">
 			<table cellpadding="5">
 				<tr>
 					<td>用户编号</td>
-					<td><input type="text"    name="users_Id"     class="easyui-validatebox"></td>
+					<td><input type="text" readonly="readonly"   name="users_Id"     class="easyui-textbox"></td>
 				</tr>
 				<tr>
 					<td>登录名</td>
-					<td><input type="text"  readonly="readonly" name="users_LoginName"    placeholder="请输入用户名"  class="easyui-validatebox"></td>
+					<td><input type="text"  readonly="readonly" name="users_LoginName"    placeholder="请输入用户名"  class="easyui-textbox"></td>
 				</tr>
 			
 				<tr>
 					<td>邮箱:</td>
-					<td><input type="text" name="users_ProTectEMail"     data-options="validType:['email']" class="easyui-validatebox"></td>
+					<td><input id="gaiEmail" style="height: 30px;"  type="text" name="users_ProTectEMail"     autocomplete="off"   onblur="testEmail(this)" required="required"   class="easyui-validatebox textbox"></td>
 				</tr>
 				<tr>
 					<td>手机:</td>
-					<td><input type="text" name="users_ProtectTel"       class="easyui-validatebox"></td>
+					<td><input id="gaiPhone" style="height: 30px;" type="text" name="users_ProtectTel"      autocomplete="off"  onblur="testPhone(this)"  required="required"   class="easyui-validatebox textbox"></td>
 				</tr>
 				<tr>
 					<td><button class="easyui-linkbutton" type="submit" >立即提交</button></td>
@@ -413,17 +612,20 @@
 	
 	<!--分配权限  -->
 	
-	<div class="easyui-window" id="roleWindow" data-options="modal:true,closed:true">
-		<div class="easyui-layout" style="width:600px;height: 400px;">
-			 <div data-options="region:'east',title:'East',split:true" style="width:250px;">
-			 	<table style="width: 200px;" id="role" class="easyui-datagrid"></table>
+	<div class="easyui-window" id="roleWindow" data-options="modal:true,closed:true,title:'分配权限'">
+		<div class="easyui-layout" style="width:600px;height: 350px;">
+			 <div data-options="region:'east',title:'所有角色',split:true" style="width:270px;">
+			 	<table style="width: 265px;" id="role" class="easyui-datagrid"></table>
 			 </div>
-		    <div data-options="region:'west',title:'West',split:true" style="width:250px;">
-		    	<table style="width: 200px;" id="roles" class="easyui-datagrid"></table>
+		    <div data-options="region:'west',title:'该用户角色',split:true" style="width:270px;">
+		    	<table style="width: 265px;" id="roles" class="easyui-datagrid"></table>
 		    </div>
-		    <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
-		    	<button onclick="zuowangyou()" class="easyui-linkbutton">>></button>
-		    	<button onclick="youwangzuo()" class="easyui-linkbutton">&lt;&lt;</button>
+		    <div data-options="region:'center'" style="padding:5px;background:#eee;">
+		    	<div style="margin-top: 70px;margin-left: 4px;">
+		    		<button onclick="zuowangyou()" class="easyui-linkbutton">>></button>
+		    		<br/>
+		    		<button onclick="youwangzuo()" class="easyui-linkbutton">&lt;&lt;</button>
+		    	</div>
 		    </div>
 		</div>
 	</div>

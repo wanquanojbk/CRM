@@ -1,5 +1,9 @@
 package com.crm.interceptor;
 
+import java.net.InetAddress;
+import java.util.UUID;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,8 +23,15 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
+/*		Cookie[] cookies = request.getCookies();
+		for(int i=0;i<cookies.length;i++) {
+			if(cookies[i].)
+		}
+		UUID randomUUID = UUID.randomUUID();*/
 		HttpSession session = request.getSession();
+		
+		System.out.println(session.getId());
+		System.out.println(InetAddress.getLocalHost().toString()+"-----------------");
 		System.out.println("进入登录拦截器");
 //		 这里的User是登陆时放入session的
 		Users users = (Users) session.getAttribute("users");

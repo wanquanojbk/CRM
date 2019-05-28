@@ -2,7 +2,6 @@ package com.crm.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -141,6 +140,33 @@ public interface UsersService {
 	 * @return
 	 */
 	public int updatePasswordById(Integer users_Id, String password, String twoPassword);
-
 	
+	
+	/**
+	 * 
+	 * @param usersId 根据用户id修改在线状态
+	 * @return
+	 */
+	public int updateUsersOnlineStatus(Integer usersId);
+	/**
+	 * 
+	 * @param usersId usersId 根据用户id修为不在线状态
+	 * @return
+	 */
+	public int updateUsersUnOnlineStatus(Integer usersId);
+	
+	
+	/**
+	 *  
+	 * @param email 测试邮件 是否能够 通过测试
+	 * @return
+	 */
+	public Boolean testEmail(String email);
+	
+	/**
+	 * 
+	 * @param phone 测试手机号 是否能够通过测试
+	 * @return
+	 */
+	public Boolean testPhone(String phone);
 }

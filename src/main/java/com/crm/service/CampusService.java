@@ -1,6 +1,7 @@
 package com.crm.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.crm.entity.Classes;
 import com.crm.entity.PageNation;
@@ -19,7 +20,7 @@ public interface CampusService {
 	 * @param pageNation
 	 * @return
 	 */
-	public Integer addClasses(PageNation pageNation);
+	public Integer addClasses(Classes classes);
 	/**
 	 * 	修改班级
 	 * @param pageNation
@@ -39,9 +40,25 @@ public interface CampusService {
 	 */
 	public PageNation selectUsers(PageNation pageNation);
 	/**
+	 * 	图表
+	 * @return
+	 */
+	public Map selectUsersStudent(PageNation pageNation);
+	/**
 	 * 	查询学生
 	 * @param pageNation
 	 * @return pageNation
 	 */
 	public PageNation selectStudent(PageNation pageNation);
+	/**
+	 * 	修改学生
+	 * @param student
+	 * @return Integer
+	 */
+	public Integer UpdateStudent(Student student);
+	/**
+	 * 分量
+	 * @return List<Student>
+	 */
+	public Boolean selectStudentFL(PageNation pageNation);
 }

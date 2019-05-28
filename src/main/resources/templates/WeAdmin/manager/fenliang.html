@@ -12,7 +12,45 @@
 <script type="text/javascript" th:inline="none">
 	$(function(){
 		init();
+		$.post("/CRM/Manager/selectStatus",{
+			
+		},function(res){
+			if(res){
+				$('#switch').switchbutton({
+					checked: true,
+					onChange: function(checked){
+						if (checked == true){
+							$.post("/CRM/Manager/changeStatusON",{},function(res){},"json")
+							return;
+						}
+						if (checked == false){
+							$.post("/CRM/Manager/changeStatusOFF",{},function(res){},"json")
+						}}
+				})
+			}
+			else{
+				$('#switch').switchbutton({
+					checked: false,
+					onChange: function(checked){
+						if (checked == true){
+							$.post("/CRM/Manager/changeStatusON",{},function(res){},"json")
+							return;
+						}
+						if (checked == false){
+							$.post("/CRM/Manager/changeStatusOFF",{},function(res){},"json")
+						}}
+				})
+			}
+		},"json")
 	})
+	function test(){
+		$.post("/CRM/Manager/zidong",{
+			
+		},function(res){
+			
+		},"json")
+	}
+	
 	function init(){
 		$("#dg").datagrid({
 			url:'/CRM/Manager/shoudong',
@@ -44,12 +82,15 @@
 			    ]],toolbar:'#tool'
 		
 		})
+	
+
 	}
 </script>
 </head>
 <body>
 	<div id="tool" >
-		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-tip'">分配</a>
+		<input id="switch"  class="easyui-switchbutton" >
+		<a href="javascript:void(0)" onclick="test()" class="easyui-linkbutton" data-options="iconCls:'icon-tip'">手动分配</a>
 	</div>
 	<div id="fenPeiWindow" data-options="modal:true,closed:true" >
 		

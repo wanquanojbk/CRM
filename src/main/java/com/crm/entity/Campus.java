@@ -1,5 +1,9 @@
 package com.crm.entity;
+
+import org.springframework.stereotype.Component;
+
 //校区表
+@Component
 public class Campus {
 private Integer campus_Id;//编号
 private String campus_Name;//校区名称

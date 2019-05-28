@@ -9,14 +9,154 @@
 <script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/CRM/js/echarts.js"></script>
 <script type="text/javascript" th:inline="none">
 var a;
+var ids = "";
+function tongji(){
+	 var myEcharts = echarts.init(document.getElementById('myEcharts'));
+	 $.post("/CRM/Consultant/clueEcharts",{},function(res){
+		 if(res!=null){
+			 var option = {
+					    xAxis: {
+					        type: 'category',
+					        data: ['男性', '女性', '已完成', '已放弃', '正在跟进']
+					    },
+					    yAxis: {
+					        type: 'value'
+					    },
+					    series: [{
+					        data: [res[0]-res[1],res[1],res[0]-res[2]-res[3],res[3],res[2]],
+					        type: 'bar'
+					    }]
+					};
+				/* var option = {
+					    tooltip: {
+					        trigger: 'item',
+					        formatter: "{a} <br/>{b}: {c} ({d}%)"
+					    },
+					    legend: {
+					        orient: 'vertical',
+					        x: 'left',
+					        data:['男','女','已完成','正在跟进','已放弃']
+					    },
+					    series: [
+					        {
+					            name:'自己客户统计',
+					            type:'pie',
+					            selectedMode: 'single',
+					            radius: [0, '30%'],
+
+					            label: {
+					                normal: {
+					                    position: 'inner'
+					                }
+					            },
+					            labelLine: {
+					                normal: {
+					                    show: false
+					                }
+					            },
+					            data:[
+					                {value:res[0]-res[1], name:'男'},
+					                {value:res[1], name:'女'}
+					            ]
+					        },
+					        {
+					            name:'',
+					            type:'pie',
+					            radius: ['40%', '55%'],
+					            label: {
+					                normal: {
+					                    formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+					                    backgroundColor: '#eee',
+					                    borderColor: '#aaa',
+					                    borderWidth: 1,
+					                    borderRadius: 4,
+					                    // shadowBlur:3,
+					                    // shadowOffsetX: 2,
+					                    // shadowOffsetY: 2,
+					                    // shadowColor: '#999',
+					                    // padding: [0, 7],
+					                    rich: {
+					                        a: {
+					                            color: '#999',
+					                            lineHeight: 22,
+					                            align: 'center'
+					                        },
+					                        // abg: {
+					                        //     backgroundColor: '#333',
+					                        //     width: '100%',
+					                        //     align: 'right',
+					                        //     height: 22,
+					                        //     borderRadius: [4, 4, 0, 0]
+					                        // },
+					                        hr: {
+					                            borderColor: '#aaa',
+					                            width: '100%',
+					                            borderWidth: 0.5,
+					                            height: 0
+					                        },
+					                        b: {
+					                            fontSize: 16,
+					                            lineHeight: 33
+					                        },
+					                        per: {
+					                            color: '#eee',
+					                            backgroundColor: '#334455',
+					                            padding: [2, 4],
+					                            borderRadius: 2
+					                        }
+					                    }
+					                }
+					            },
+					            data:[
+					                {value:res[2], name:'正在跟进'},
+					                {value:res[3], name:'已放弃'},
+					                {value:res[0]-res[2]-res[3], name:'已完成'}
+					            ]
+					        }
+					    ]
+					}; */
+					myEcharts.setOption(option);
+		  }
+	 },"json");
+	$("#tu").window("open");
+}
+var array = [];
 	$(function(){
 		dongtai();
 		init();
 	})
 	function caozuo(value,row,index){
-		return "<a class='easyui-linkbutton' onclick='upd("+index+")' href='javascript:void(0);'>修改</a> <a onclick='abandon("+index+")' class='easyui-linkbutton' href='javascript:void(0);'>放弃</a> <a onclick='complete("+index+")' class='easyui-linkbutton' href='javascript:void(0);'>完成</a>";		
+		return "<a class='easyui-linkbutton' onclick='select("+index+")' href='javascript:void(0);'>查看跟踪</a> <a class='easyui-linkbutton' onclick='upd("+index+")' href='javascript:void(0);'>修改</a> <a onclick='abandon("+index+")' class='easyui-linkbutton' href='javascript:void(0);'>放弃</a> <a onclick='complete("+index+")' class='easyui-linkbutton' href='javascript:void(0);'>完成</a>";		
+	}
+	function select(index){
+		var data = $("#dg").datagrid("getData");
+		var row = data.rows[index];
+		var id = row.clue_Id;
+		$("#xck").datagrid({
+			 url:'/CRM/FollowUp/getFollowUpByclueId',   
+			 method:"post",
+			 pagination:true,
+			 striped:true,
+			    columns:[[ 
+			        {field:'follwUp_Text',title:'跟进内容',width:100},
+			        {field:'follwUp_Type',title:'跟进方式',width:100},
+			        {field:'follwUp_Time',title:'开始时间',width:100},
+			        {field:'follwUp_FirstVisitTime',title:'首访时间',width:100},
+			        {field:'follwUp_Door',title:'是否上门',width:100},
+			        {field:'follwUp_DoorTime',title:'上门时间',width:100},
+			        {field:'follwUp_ReturnVisit',title:'是否回访',width:100},
+			        {field:'follwUp_ReturnVisitTim',title:'回访时间',width:100},
+			        {field:'follwUp_ReturnVisitSituation',title:'回访情况',width:100},
+			        {field:'follwUp_EndTim',title:'结束时间',width:100},
+			    ]],
+			    queryParams:{
+			    	num1:id
+			    }
+		});
+		$("#chakan_window").window("open");
 	}
 	function upd(index){
 		a = index;
@@ -64,9 +204,16 @@ var a;
 		    url:'getCustomers',    
 		    method:"post",
 		    pagination:true,
-		    singleSelect:true,
+		   /*  singleSelect:true, */
 		    toolbar:"#headTool",
-		    columns:[[    
+		    onCheck:function(index,row){
+		    	array.push(row.clue_Id);
+		    },
+		    onUncheck:function(index,row){	  
+		    	test(row.clue_Id);
+		    },
+		    columns:[[
+		    	{field:'checkbox',width:100,checkbox:true,title:"复选框"},
 		        {field:'clue_Name',title:'姓名',width:100},    
 		        {field:'clue_Sex',title:'性别',width:100},    
 		        {field:'clue_Age',title:'年龄',width:100},
@@ -77,17 +224,14 @@ var a;
 		        {field:'clue_IdentityNumber',title:'身份证号',width:100},
 		        {field:'clue_Email',title:'电子邮箱',width:100},
 		        {field:'clue_Qq',title:'QQ号',width:100},
-		        {field:'clue_WeChat',title:'微信号',width:100},
+		        {field:'clue_WeChat',title:'微信号',width:100,hidden:true},
 		        {field:'clue_Tel',title:'电话',width:100},
 		        {field:'clue_Address',title:'地区',width:100},
 		        {field:'users',title:'创建人',width:100,formatter:users},
-		        {field:'clue_CreateTime',title:'创建时间',width:100},
-		         /*{field:'clue_UpdateTime',title:'更新时间',width:100},
-		        {field:'clue_BginTime',title:'线索开始时间',width:100},
-		        {field:'clue_EndTime',title:'线索结束时间',width:100}, */
+		        {field:'clue_CreateTime',title:'创建时间',width:100,hidden:true},
 		        {field:'clue_Remarks',title:'备注',width:100},
 		        /* {field:'clue_Status',title:'状态',width:100}, */
-		         {field:'caozuo',title:'操作',width:100,formatter:caozuo}
+		         {field:'caozuo',title:'操作',width:150,formatter:caozuo}
 		    ]],
 		    queryParams:{
 		    	text1:$("#name").val(),
@@ -97,6 +241,13 @@ var a;
 		    	text5:$("#max").datebox("getValue")
 		    }
 		});
+	}
+	function test(id){
+		for(var i=0;i<array.length;i++){
+			if(array[i]==id){
+				array.splice(i,1);
+			}
+		}
 	}
 	function users(value,row,index){
 		return row.users.users_LoginName;
@@ -153,10 +304,10 @@ var a;
 		var row = data.rows[a];
 		var clue_Id = row.clue_Id;
 		var clue_Name = $("#clue_Name").val();
-		var clue_Sex = $("#clue_Sex").val();
+		var clue_Sex = $("#clue_Sex").combobox("getVlaue");
 		var clue_Age = $("#clue_Age").val();
-		var clue_Birthday = $("#clue_Birthday").val();
-		var clue_Education = $("#clue_Education").val();
+		var clue_Birthday = $("#clue_Birthday").datebox("getValue");
+		var clue_Education = $("#clue_Education").combobox("getValue");
 		var clue_Direction = $("#clue_Direction").val();
 		var clue_Source = $("#clue_Source").val();
 		var clue_IdentityNumber = $("#clue_IdentityNumber").val();
@@ -185,12 +336,13 @@ var a;
 		},function(res){
 			if(res>0){
 				alert("修改成功");
+				$("#updclue_dialog").window("close");
+	            $("#dg").datagrid("reload");
 			}else{
 				alert("修改失败");
 			}
 		},"json")
 	}
-	//
 	function wancheng(){
 		$('#wc').datagrid({
 			url:'getByComplete',    
@@ -225,6 +377,49 @@ var a;
 	function EstablishUsers(value,row,index){
 		return row.users.users_LoginName;
 	}
+	function show(){
+		var datagridTitle = new Array();
+		var shuxing = new Array();
+        var fields = $("#dg").datagrid('getColumnFields');
+        var option;
+             for (var i = 0; i < fields.length; i++) {
+                option = $("#dg").datagrid('getColumnOption', fields[i]);
+                datagridTitle.push(option.title);
+                shuxing.push(option.field);
+               if (option.field != "checkItem" && option.hidden != true) { 
+               		$("#lie_window").append("<input type='checkbox' value="+shuxing[i]+"  name='ch'>"+datagridTitle[i]+"</br>");
+               		$("input[name='ch']").get(i).checked=true;
+                }else{
+                	$("#lie_window").append("<input type='checkbox' value="+shuxing[i]+" name='ch' >"+datagridTitle[i]+"</br>");
+                } 
+            }
+		$("#lie_window").window("open");
+		$("input[name='ch']").click(function(){
+				if($(this).is(":checked")){
+					var p = $(this).val();
+					$("#dg").datagrid('showColumn',p);
+				}else{
+					var q = $(this).val();
+					$("#dg").datagrid('hideColumn',q);
+				}
+		})
+	}
+	function xuanzhong(){
+		if(array.length>0){
+			for(var i=0;i<array.length;i++){
+				ids+=array[i]+",";
+		}
+		 		ids=ids.substring(0,ids.length-1);
+				window.location.href="/CRM/Consultant/getClueById?ids="+ids;
+				ids=""; 
+		}else{
+			alert("请选择一个复选框");
+		}
+}  
+
+function quanbu(){
+	window.location.href="/CRM/Consultant/getClueByPrincipal";
+} 
 </script>
 </head>
 <body>
@@ -245,7 +440,14 @@ var a;
         <input id="max" class="easyui-datebox" type="text"/>   
     </div>
     <a type="button" href="javascript:void(0);" onclick="init()" class="easyui-linkbutton">搜索</a>
-    <a type="button" href="javascript:void(0);" class="easyui-linkbutton">动态设置列</a>
+    <a type="button" href="javascript:void(0)" onclick="show()" class="easyui-linkbutton">动态设置</a>
+    <a type="button" href="javascript:void(0)" onclick="tongji()" class="easyui-linkbutton">统计图</a>
+    <a href="javascript:void(0)" id="mb" class="easyui-menubutton"     
+        data-options="menu:'#mm',iconCls:'icon-edit'">导出Excel</a>   
+		<div id="mm">   
+		    <div data-options="iconCls:'icon-redo'" onclick="quanbu()" id="quanbu">全部导出</div>   
+		    <div data-options="iconCls:'icon-redo'" onclick="xuanzhong()" id="xuanzhong">选中导出</div>     
+		</div>
     <a type="button" href="javascript:void(0);" onclick="wancheng()" class="easyui-linkbutton">查看完成</a>
 </div>
 <div id="updclue_dialog" class="easyui-dialog" title="修改客户信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
@@ -266,8 +468,13 @@ var a;
                         <td><input class="easyui-textbox" type="text" name="clue_Name" id="clue_Name"></input></td>
                     </tr>
                     <tr>
-                        <td>性别:</td>
-                        <td><input class="easyui-textbox" type="text" name="clue_Sex" id="clue_Sex"></input></td>
+                        <td>性别:</td><!-- clue_Sex  clue_Sex-->
+                        <td><select id="clue_Sex" name="clue_Sex" class="easyui-combobox" style="width:200px;" >   
+							    <option value="男">男</option>   
+							    <option value="女">女</option>   
+							</select> 
+                        
+                        </td>
                     </tr>
                     <tr>
                         <td>年龄:</td>
@@ -275,19 +482,55 @@ var a;
                     </tr>
                     <tr>
                         <td>出生日期:</td>
-                        <td><input class="easyui-textbox" type="text" name="clue_Birthday" id="clue_Birthday"></input></td>
+                        <td><input class="easyui-datebox" type="text" name="clue_Birthday" id="clue_Birthday"></input></td>
                     </tr>
                     <tr>
-                        <td>学历:</td>
-                        <td><input class="easyui-textbox" type="text" name="clue_Education" id="clue_Education"></input></td>
+                        <td>学历:</td><!-- clue_Education -->
+                        <td><select id="clue_Education" name="clue_Education" class="easyui-combobox"
+						style="width: 100px;">
+							<option value=''>--请选择--</option>
+							<option value="大专">大专</option>
+							<option value="高中">高中</option>
+							<option value="中专">中专</option>
+							<option value="初中">初中</option>
+							<option value="本科">本科</option>
+							<option value="其他">其他</option>
+					</select></td>
                     </tr>
                     <tr>
-                        <td>课程方向:</td>
-                        <td><input class="easyui-textbox" type="text" name="clue_Direction" id="clue_Direction"></input></td>
+                        <td>课程方向:</td><!-- clue_Direction -->
+                        <td>
+                        <select id="clue_Direction" name="clue_Direction" class="easyui-combobox"
+						style="width: 100px;">
+							<option value=''>--请选择--</option>
+							<option value="软件开发">软件开发</option>
+							<option value="软件设计">软件设计</option>
+							<option value="网络营销">网络营销</option>
+					</select>
+                        </td>
                     </tr>
                     <tr>
-                        <td>来源渠道:</td>
-                        <td><input class="easyui-textbox" type="text" name="clue_Source" id="clue_Source"></input></td>
+                        <td>来源渠道:</td><!--  clue_Source-->
+                        <td><select id="clue_Source" name="clue_Source" class="easyui-combobox"
+						style="width: 100px;">
+							<option value=''>--请选择--</option>
+							<option value="未知">未知</option>
+							<option value="百度">百度</option>
+							<option value="百度移动端">百度移动端</option>
+							<option value="360">360</option>
+							<option value='360移动端'>360移动端</option>
+							<option value="搜狗">搜狗</option>
+							<option value="搜狗移动端">搜狗移动端</option>
+							<option value="UC移动端">UC移动端</option>
+							<option value="直接输入">直接输入</option>
+							<option value="自然流量">自然流量</option>
+							<option value="直电">直抵</option>
+							<option value="微信">微信</option>
+							<option value="QQ">QQ</option>
+
+					</select>
+                        
+                        </td>
                     </tr>
                     <tr>
                         <td>身份证号:</td>
@@ -328,5 +571,13 @@ var a;
 			}]" style="width:500px;height:300px;padding:10px;">
 			<table id="wc"></table>
 	</div>
+	 <div id="lie_window" class="easyui-dialog" title="列设置" data-options="modal:true,closed:true,iconCls:'icon-add'" style="width:500px;height:300px;padding:10px;">
+    </div>
+    <div id="chakan_window" class="easyui-dialog" title="查看跟踪信息" data-options="modal:true,closed:true,iconCls:'icon-add'" style="width:1000px;height:500px;padding:10px;">
+         <table id="xck"></table>
+ </div>
+ <div class="easyui-window" id="tu" style="width:800px;height: 500px;"  data-options="modal:true,closed:true,title:'客户统计分布'">
+ 	<div id="myEcharts" style="width: 500px;height: 400px;"></div>
+ </div>
 </body>
 </html>

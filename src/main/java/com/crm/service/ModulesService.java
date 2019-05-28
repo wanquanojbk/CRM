@@ -50,9 +50,20 @@ public interface ModulesService {
 	 * @return
 	 */
 	Boolean selectModulesByModuleName(Modules modules);
+	/**
+	 * 
+	 * @param modules 查询是否存在
+	 * @return
+	 */
+	Boolean selectParentModuleByName(Modules modules);
 	
 	
-	
+	/**
+	 * 
+	 * @param modules 添加顶级模块
+	 * @return
+	 */
+	Boolean insertParentModules(Modules modules);
 	/*
 	 * 
 	 * 角色表         角色权限中间表          权限表           模块表  

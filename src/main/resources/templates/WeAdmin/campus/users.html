@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>辅导员管理</title>
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/CRM/js/echarts.js"></script>
+<script type="text/javascript">
+	$(function (){
+		selectUsers();
+	})
+	function selectUsers(){
+		$("#useTab").datagrid({
+			url:"/CRM/Campus/selectUsers",
+			method:"POST",
+			pagination:true,
+			singleSelect:true,
+			toolbar:"#toolbar",
+			queryParams:{
+				text1:$("#text1").val(),
+				text2:$("#text2").val()
+			}
+		})
+		$("#toolFrm").form("clear");
+	};
+	
+	function Classes(value,row,index){
+		if(row.classes != null){
+			return row.classes.classes_Exit1;
+		}
+		return 0;
+	}
+	function Users(value,row,index){
+		return "<a href='javascript:void(0)' onclick='selectUsersClasses("+index+")'>查看班级</a>";
+	}
+	function selectUsersClasses(index){
+		var arr=$("#useTab").datagrid("getData");
+		var row=arr.rows[index];
+		$("#useTab1").datagrid({
+			url:"/CRM/Campus/selectClass",
+			method:"POST",
+			pagination:true,
+			singleSelect:true,
+			queryParams:{
+				num3:row.users_Id
+			}
+		});
+		$("#selectClasses").window("open");
+	}
+	function tuBiao(){
+		$.post('/CRM/Campus/selectUsersStudent',{
+		},function (res){
+			var option=null;
+			var myChart = echarts.init(document.getElementById('main'));
+				option =res;
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+		},'json');
+		$("#mainFrm").window("open");
+	}
+
+</script>
+</head>
+<body>
+	<table id="useTab" class="easyui-datagrid" >
+		<thead>
+			<tr>
+				<th data-options="field:'users_Id',title:'编号'"></th>
+				<th data-options="field:'users_LoginName',title:'辅导员姓名'"></th>
+				<th data-options="field:'users_ProtectTel',title:'手机号'"></th>
+				<th data-options="field:'users.classes.cla',title:'班级数',formatter:Classes"></th>
+				<th data-options="field:'classes',title:'操作',formatter:Users"></th>
+			</tr>
+		</thead>
+	</table>
+	<div id="toolbar">
+		<form id="toolFrm" class="easyui-form">
+			 <label for="text1">辅导员名称:</label>
+        	 <input class="easyui-validatebox" type="text" id="text1"  />   
+			 <label for="text2">手机号:</label>
+        	 <input class="easyui-validatebox" type="text" id="text2"  />
+        	 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="selectUsers()">搜索</a>
+        	 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="tuBiao()">查看图表</a>  
+		</form>
+	</div>
+	<div class="easyui-window" id="selectClasses" data-options="modal:true,closed:true,title:'班级窗口'" style="width: 350px;height: 500px">
+		<table id="useTab1" class="easyui-datagrid" >
+			<thead>
+				<tr>
+					<th data-options="field:'classes_Id',title:'编号'"></th>
+					<th data-options="field:'classes_Name',title:'班级名称'"></th>
+					<th data-options="field:'classes_CreateTime',title:'班级创建时间'"></th>
+					<th data-options="field:'classes_SchoolYear',title:'学年'"></th>
+					<th data-options="field:'classes_Status',title:'班级状态'"></th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div class="easyui-window" id="mainFrm" data-options="modal:true,closed:true,title:'窗口'" style="width: 1000px;height: 500px">
+		<div id="main" style="height:100%;width:100%;"></div>
+	</div>
+</body>
+</html>

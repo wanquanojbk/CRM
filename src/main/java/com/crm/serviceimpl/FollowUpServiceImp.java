@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.crm.entity.FollowUp;
 import com.crm.entity.PageNation;
@@ -15,6 +16,7 @@ import com.crm.entity.Users;
 import com.crm.mapper.FollowUpMapper;
 import com.crm.service.FollowUpService;
 @Service
+@Transactional
 public class FollowUpServiceImp implements FollowUpService {
 	@Autowired
 	private FollowUpMapper followUpMapper;
@@ -47,5 +49,17 @@ public class FollowUpServiceImp implements FollowUpService {
 	public Integer updFollowUp(FollowUp followUp) {
 		// TODO Auto-generated method stub
 		return followUpMapper.updFollowUp(followUp);
+	}
+	@Override
+	public PageNation getFollowUpByContomer(PageNation pageNation) {
+		Integer row = Integer.parseInt((String) pageNation.getRows().get(0));
+		pageNation.setPage((pageNation.getPage()-1)*row);
+		pageNation.setRow(row);
+		// TODO Auto-generated method stub
+		List<FollowUp> selectManagerByAll = followUpMapper.selectManagerByAll(pageNation);
+		Integer selectManagerByAllCount = followUpMapper.selectManagerByAllCount(pageNation);
+		pageNation.setRows(selectManagerByAll);
+		pageNation.setTotal(selectManagerByAllCount);
+		return pageNation;
 	}
 }
