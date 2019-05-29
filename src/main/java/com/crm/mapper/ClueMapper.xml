@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crm.mapper.ClueMapper">
-	<resultMap type="com.crm.entity.Clue" id="clue1Map">
+		<resultMap type="com.crm.entity.Clue" id="clue1Map">
   		<id column="clue_Id" property="clue_Id"/>
   		<result column="clue_Name" property="clue_Name"/> 
   		<result column="clue_Sex" property="clue_Sex"/> 
@@ -86,6 +86,37 @@
   			<result column="users_CheckInStatus" property="users_CheckInStatus"/>
   		</association>
   	</resultMap>
+  	<!-- 经理的映射 -->
+  	<resultMap type="com.crm.entity.Clue" id="managerMap">
+  		<id column="clue_Id" property="clue_Id"/>
+  		<result column="clue_Name" property="clue_Name"/> 
+  		<result column="clue_Sex" property="clue_Sex"/> 
+  		<result column="clue_Age" property="clue_Age"/> 
+  		<result column="clue_Birthday" property="clue_Birthday"/> 
+  		<result column="clue_Education" property="clue_Education"/> 
+  		<result column="clue_Direction" property="clue_Direction"/> 
+  		<result column="clue_Source" property="clue_Source"/> 
+  		<result column="clue_IdentityNumber" property="clue_IdentityNumber"/> 
+  		<result column="clue_Email" property="clue_Email"/> 
+  		<result column="clue_Qq" property="clue_Qq"/> 
+  		<result column="clue_WeChat" property="clue_WeChat"/> 
+  		<result column="clue_Tel" property="clue_Tel"/> 
+  		<result column="clue_Address" property="clue_Address"/> 
+  		<result column="clue_Principal" property="clue_Principal"/> 
+  		<result column="clue_Creator" property="clue_Creator"/> 
+  		<result column="clue_CreateTime" property="clue_CreateTime"/> 
+  		<result column="clue_UpdateTime" property="clue_UpdateTime"/> 
+  		<result column="clue_BginTime" property="clue_BginTime"/> 
+  		<result column="clue_EndTime" property="clue_EndTime"/> 
+  		<result column="clue_Remarks" property="clue_Remarks"/> 
+  		<result column="clue_Status" property="clue_Status"/> 
+  		<result column="clue_Exit1" property="clue_Exit1"/> 
+  		<result column="clue_Exit2" property="clue_Exit2"/> 
+  		<association property="users" javaType="com.crm.entity.Users">
+  			<result column="users_LoginName" property="users_LoginName"/>
+  			<result column="a" property="users_Exit2"/>
+  		</association>
+  	</resultMap>
 	<select id="selectAllUnFenPeiClue" parameterType="int" resultType="com.crm.entity.Clue">
 		SELECT *
 			FROM clue WHERE clue_Creator IN (
@@ -96,6 +127,15 @@
 		
 	</select>
 	
+	<select id="selectAllNeedHeaderFenpeiClues" parameterType="int" resultType="com.crm.entity.Clue">
+			SELECT *
+FROM clue WHERE clue_Creator IN (
+SELECT u.users_Id
+FROM users u, roles r, usersroles ur WHERE u.users_Exit1 = #{managerId}
+
+AND u.users_Id = ur.usersRoles_UserId AND r.roles_Id = ur.usersRoles_RoleId AND r.roles_Id = 3
+) AND clue_Status !=1 AND clue_Status !=3
+	</select>
 	
 	
 	<!-- 多条件查询属于网路咨询师的客户信息 -->
@@ -126,6 +166,7 @@
 						SELECT c.clue_Principal
 						FROM `clue` c INNER JOIN users u on c.clue_Creator = u.users_Id
 							and c.clue_Creator = #{num1} )) as r  on l.clue_Principal = r.r1 
+							ORDER BY l.clue_CreateTime DESC
   							LIMIT #{page},#{row}
   	</select>
   	<!-- 多条件查询总数 -->
@@ -206,6 +247,7 @@
   			<!-- 限制只能多条件查看自己分配的客户信息 -->
   			and c.clue_Principal = #{num1} and c.clue_Status = 1
   		</where>
+  		ORDER BY c.clue_CreateTime DESC
   		LIMIT #{page},#{row}
   	</select>
   	
@@ -240,11 +282,11 @@
   	</select>
   	<!-- 修改状态为完成状态 -->
   	<update id="updateClueByComplete" parameterType="int">
-  		update clue set clue_Status = 3 where clue_Id = #{id}
+  		update clue set clue_Status = 3,clue_EndTime = NOW() where clue_Id = #{id}
   	</update>
   	<!-- 修改状态为放弃状态 -->
   	<update id="updateClueByAbandon" parameterType="int">
-  		update clue set clue_Status = 2 where clue_Id = #{id}
+  		update clue set clue_Status = 2,clue_EndTime = NOW() where clue_Id = #{id}
   	</update>
   	<!-- 修改客户信息 -->
   	<update id="updateClueByCustomer" parameterType="clue">
@@ -330,5 +372,154 @@
   		on c.clue_Creator = u.users_Id
   	WHERE clue_Principal = #{num1} AND clue_Status = 3
   	</select>
-	
+	<select id="selectManagerUnDistributionCount" parameterType="int" resultType="int">
+		SELECT COUNT(DISTINCT clue_Id)
+FROM clue WHERE clue_Creator IN (
+SELECT u.users_Id
+FROM users u, roles r, usersroles ur WHERE u.users_Exit1 = #{managerId}
+
+AND u.users_Id = ur.usersRoles_UserId AND r.roles_Id = ur.usersRoles_RoleId AND r.roles_Id = 3
+) AND clue_Status = 0
+	</select>
+	<select id="selectManagerUnDistribution" parameterType="int" resultType="com.crm.entity.Clue">
+			SELECT *
+FROM clue WHERE clue_Creator IN (
+SELECT u.users_Id
+FROM users u, roles r, usersroles ur WHERE u.users_Exit1 = #{managerId}
+
+AND u.users_Id = ur.usersRoles_UserId AND r.roles_Id = ur.usersRoles_RoleId AND r.roles_Id = 3
+) AND clue_Status = 0
+	</select>
+	<select id="selectAllClueByZiXunShiId" parameterType="int" resultType="com.crm.entity.Clue">
+		select *
+		from	clue 
+		where clue_Principal = #{clue_Principal}
+	</select>
+	<select id="selectAllOKClueByZiXunShiId" parameterType="int" resultType="com.crm.entity.Clue">
+		select *
+		from clue 
+		where clue_Principal = #{clue_Principal} and clue_Status = 1
+	</select>
+	<update id="updateFenPei" parameterType="com.crm.entity.Clue" >
+		update clue
+		set clue_Principal = #{clue_Principal},clue_Status = #{clue_Status},
+		clue_BginTime = #{clue_BginTime}
+		where clue_Id = #{clue_Id}
+	</update>
+	<!-- 查看该经理下的网络咨询师添加的客户信息，并且多条件分页查看信息 -->
+	<select id="selectManagersCheckCustomers" parameterType="pageNation" resultMap="managerMap">
+	SELECT c.*,u1.users_LoginName,u.users_LoginName a
+	FROM clue c LEFT JOIN users u ON u.users_Id =c.clue_Creator
+	LEFT JOIN users u1 ON u1.users_Id =c.clue_Principal 
+	<where>
+		<if test="text1 != null and text1 != '' ">
+			<!-- 根据姓名模糊查询 -->
+			and c.clue_Name like CONCAT(CONCAT('%',#{text1}), '%')
+		</if>
+		<if test="text2 != null and text2 != ''">
+		<!-- 根据电话号码 -->
+		and c.clue_Tel like CONCAT(CONCAT('%',#{text2}), '%')
+		</if>
+		<if test="text3 != null and text3 != ''">
+		<!-- 根据qq号码 -->
+		and c.clue_Qq like CONCAT(CONCAT('%',#{text2}), '%')
+		</if>
+		<if test="num2 >= 0 ">
+		<!-- 根据状态 -->
+		and c.clue_Status = #{num2}
+		</if>
+		<if test="text4 != null and text4 != '' and text5 != null and text5 != ''">
+		<!-- 根据时间方式最小时间 -->
+			and ${text4} &gt;= #{text5}
+		</if>
+		<if test="text4 != null and text4 != '' and text6 != null and text6 != ''">
+		<!-- 根据时间方式最大时间 -->
+			and ${text4} &lt;= #{text6}
+		</if>
+	AND u.users_Exit1 = #{num1}
+	</where>
+	ORDER BY c.clue_CreateTime DESC
+	limit #{page},#{row}
+	</select>
+	<!-- 查看该经理下的网络咨询师添加的客户信息，并且多条件查询总数 -->
+	<select id="selectManagersCheckCustomersCount" parameterType="pageNation" resultType="int">
+	SELECT count(*)
+	FROM clue c LEFT JOIN users u ON u.users_Id =c.clue_Creator
+	LEFT JOIN users u1 ON u1.users_Id =c.clue_Principal
+	<where>
+		<if test="text1 != null and text1 != '' ">
+			<!-- 根据姓名模糊查询 -->
+			and c.clue_Name like CONCAT(CONCAT('%',#{text1}), '%')
+		</if>
+		<if test="text2 != null and text2 != ''">
+		<!-- 根据电话号码 -->
+		and c.clue_Tel like CONCAT(CONCAT('%',#{text2}), '%')
+		</if>
+		<if test="text3 != null and text3 != ''">
+		<!-- 根据qq号码 -->
+		and c.clue_Qq like CONCAT(CONCAT('%',#{text2}), '%')
+		</if>
+		<if test="num2 >= 0 ">
+		<!-- 根据状态 -->
+		and c.clue_Status = #{num2}
+		</if>
+		<if test="text4 != null and text4 != '' and text5 != null and text5 != ''">
+		<!-- 根据时间方式最小时间 -->
+			and ${text4} &gt;= #{text5}
+		</if>
+		<if test="text4 != null and text4 != '' and text6 != null and text6 != ''">
+		<!-- 根据时间方式最大时间 -->
+			and ${text4} &lt;= #{text6}
+		</if>
+	AND u.users_Exit1 = #{num1}
+	</where>
+	</select>
+	<!-- 根据客户id查询数据 -->
+	<select id="selectClueById" parameterType="int" resultType="clue">
+		select * from clue where clue_Id = #{id}
+	</select>
+	<!-- 导出excel表格所有的数据 -->
+	<select id="selectAll" resultType="clue" parameterType="int">
+		SELECT c.*,u1.users_LoginName,u.users_LoginName a
+	FROM clue c LEFT JOIN users u ON u.users_Id =c.clue_Creator
+	LEFT JOIN users u1 ON u1.users_Id =c.clue_Principal 
+	AND u.users_Exit1 = #{id}
+	</select>
+	<!-- 根据根据选中id导出excel表格 -->
+	<select id="selectByidList" parameterType="int" resultType="clue">
+		select * from clue where clue_Id in
+	<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+	 	#{item}
+	</foreach>
+	</select>
+	<select id="selectZXSLoss" resultType="double" parameterType="int">
+		SELECT  (SELECT COUNT(1)
+		FROM users INNER  JOIN clue ON users.users_Id = clue.clue_Principal AND users.users_Id = #{id} AND clue.clue_Status = 2) /
+		(SELECT COUNT(1)
+		FROM users INNER  JOIN clue ON users.users_Id = clue.clue_Principal AND users.users_Id = #{id}) *100
+	</select>
+	<!-- 导出excel表格是,根据网络咨询师自己的id导出excel表格全部的 -->
+	<select id="selectClueByAll" parameterType="int" resultType="clue">
+		select * from clue where clue_Creator = #{id}
+	</select>
+	<!-- 导出excel表格,根据咨询师下边的客户信息 正在跟踪的客户信息 -->
+	<select id="selectClueByPrincipal" parameterType="int" resultType="clue">
+		select * from clue where clue_Principal = #{id} and clue_Status = 1
+	</select>
+	<!-- 查询出来自己的 所有客户的总数  -->
+	<select id="selectMyClueCount" parameterType="int" resultType="int">
+		SELECT COUNT(clue_Id) FROM clue WHERE clue_Principal = #{users_Id}
+	</select>
+	<!--查询出来自己 所有女的客户数量  -->
+	<select id="selectMyClueGirl" parameterType="int" resultType="int">
+		SELECT count(clue_Id) FROM clue WHERE clue_Sex = '女' AND clue_Principal = #{users_Id}
+	</select>
+	<!--查询出来自己 所有放弃的客户数量  -->
+	<select id="selectMyClueLoss" parameterType="int" resultType="int">
+		SELECT count(clue_Id) FROM clue WHERE clue_Status = 2 AND clue_Principal = #{users_Id}
+	</select>
+	<!-- 查询出来自己 所正在跟进的客户数量  -->
+	<select id="selectMyclueIng" parameterType="int" resultType="int">
+		SELECT count(clue_Id) FROM clue WHERE clue_Status = 1 AND clue_Principal = #{users_Id}
+	</select>
 </mapper>

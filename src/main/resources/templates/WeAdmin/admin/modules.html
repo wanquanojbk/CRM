@@ -3,13 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
-<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
-<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
-<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
-<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" href="/CRM/js2/easyui.css" />
+		<link rel="stylesheet" href="/CRM/js2/easyui_animation.css" />
+		<link rel="stylesheet" href="/CRM/js2/icon.css" />
+		<script src="/CRM/js2/jquery.min.js"></script>
+		<script src="/CRM/js2/jquery.easyui.min.js"></script>
+		<script src="/CRM/js2/insdep.extend.min.js"></script>
+		<script src="/CRM/js2/locale/easyui-lang-zh_CN.js"></script>
+<style type="text/css">
+	.one {
+		height: 30px;
+	}
+</style>
 <script type="text/javascript">
+	function testParentName(){
+		$.post("/CRM/Module/selectParent",{
+			modules_Name:$("#parentModuleName").val()
+		},function(res){
+			if(res){
+				$.messager.alert("提示","顶层节点不能重复哦");
+				$("#parentModuleName").val("");
+				return ;
+			}
+		},"json")
+	}
+	function testName(obj){
+		var $v = $(obj);
+		$.post("/CRM/Module/selectModuleName",{
+			modules_Name:$v.val(),
+			modules_ParentId:$("#parentId").val()
+		},function(res){
+			if(res){
+				$.messager.alert("提示","模块不能重名");
+				$v.val("");
+			}
+			
+		},"json")
+	}
+	function addParent(){
+		$.post("/CRM/Module/insertParentModule",{
+			modules_Name:$("#parentModuleName").val()
+		},function(res){
+			if(res){
+				$("#allTree").tree("reload");
+				$("#parentForm").form("reset");
+				$("#addParentWindow").window("close");
+				$.messager.alert("提示","添加成功");
+			}
+			else{
+				$.messager.alert("提示","添加失败");
+			}
+		},"json")
+	}
+	function addParentModules(){
+		$("#addParentWindow").window("open");
+	}
 	$(function(){
 		$("#allTree").tree({
 			url:'/CRM/Module/selectAllModules',
@@ -95,6 +143,7 @@
 						id:node.id
 					},function(res){
 						if(res){
+							$("#allTree").tree("reload");
 							$.messager.alert("提示","删除成功");
 						}
 						else{
@@ -113,24 +162,103 @@
 		<div onclick="edit()" data-options="iconCls:'icon-edit'">修改</div>
 		<div onclick="remove()" data-options="iconCls:'icon-remove'">移除</div>
 	</div>
-	<div id="updateWindow" style="width: 500px;height: 300px;" class="easyui-window" data-options="closed:true,modol:true">
-		<form  id="updateForm" action="javascript:xiugai()" >
-			节点名称:<input readonly="readonly"  id="id"  type="text" name="modules_Id"/>
-			节点名称:<input id="name"  type="text" name="modules_Name"/>
-			路径:<input id="url" name="modules_Path"  type="text" />
-			权重:<input id="weight" name="modules_Weight"  type="text" />
-			父id:<input id="parent" name="modules_ParentId"  type="text" />
-			<input type="submit" value="提交">
-		</form>
+	<div id="addParentWindow" style="width: 200px;height: 150px;" class="easyui-window" data-options="title:'添加模块',modal:true,closed:true">
+		<center>
+			<form  id="parentForm">
+				<input required="required" autocomplete="off" placeholder="添加顶级模块" id="parentModuleName"   style="height: 30px;" onblur="testParentName()"   />
+				<a href='javascript:void(0)' class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="addParent()" >添加</a>
+			</form>
+		</center>
 	</div>
-	<div id="addWindow" style="width: 500px;height: 300px;"  class="easyui-window" data-options="closed:true,modol:true">
-		<form action="javascript:add()" id="addForm" >
-			节点名称:<input  type="text" name="modules_Name"/>
-			路径:<input  type="text"  name="modules_Path"/>
-			ParentId:<input readonly="readonly" id="parentId"  type="text" name="modules_ParentId"/>
-			<input type="submit" value="提交">
+	<div id="updateWindow" style="width: 500px;height: 300px;" class="easyui-window" data-options="closed:true,modol:true,title:'修改模块'">
+		<center>
+			<form  id="updateForm" action="javascript:xiugai()" >
+			<table>
+				<tr>
+					<td>
+						节点id:
+					</td>
+					<td>
+						<input readonly="readonly" class="one" id="id"  type="text" name="modules_Id"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						节点名称:
+					</td>
+					<td>
+						<input id="name" class="one" onblur="testName(this)" autocomplete="off" required="required"  type="text" name="modules_Name"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						路径:
+					</td>
+					<td>
+						<input id="url" class="one" required="required"   autocomplete="off"  name="modules_Path"  type="text" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						权重:
+					</td>
+					<td>
+						<input readonly="readonly" id="weight" class="one" name="modules_Weight"  type="text" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						父节点id:
+					</td>
+					<td>
+						<input readonly="readonly" id="parent" class="one" name="modules_ParentId"  type="text" />
+					</td>
+				</tr>
+			</table>
+			<br>
+			<input type="submit" style="height: 30px;width: 50px;" class="easyui-linkbutton" value="提交">
 		</form>
+		</center>
+		
 	</div>
+	<div id="addWindow" style="width: 500px;height: 300px;"  class="easyui-window" data-options="closed:true,modol:true,title:'添加模块'">
+		<center>
+			<form action="javascript:add()" id="addForm" >
+			<table>
+				<tr >
+					<td>
+						节点名称:
+					</td>
+					<td>
+						<input onblur="testName(this)" class="one" autocomplete="off" id="addName"  type="text" name="modules_Name"/>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						路径:
+					</td>
+					<td>
+						<input  type="text" required="required" class="one"  autocomplete="off" name="modules_Path"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						父节点id:
+					</td>
+					<td>
+						<input readonly="readonly" id="parentId" class="one"  type="text" name="modules_ParentId"/>
+					</td>
+				</tr>
+				
+			</table>
+			<br/>
+			<input style="width: 50px;height: 30px;" class="easyui-linkbutton" type="submit" value="提交">
+		</form>
+		</center>
+		
+	</div>
+	<a class="easyui-linkbutton" onclick="addParentModules()" href="javascript:void(0)" data-options="iconCls:'icon-add'">添加</a>
 	<ul id="allTree"></ul>
 </body>
 </html>

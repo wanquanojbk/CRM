@@ -1,5 +1,8 @@
 package com.crm.entity;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Distribution {
 	private Integer distribution_Id;//分配id
 	

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<!-- <link rel="stylesheet" href="/CRM/js2/easyui.css" />
+		<link rel="stylesheet" href="/CRM/js2/easyui_animation.css" />
+		<link rel="stylesheet" href="/CRM/js2/icon.css" />
+		<link rel="stylesheet" href="/CRM/layui/css/layui.css" />
+		<script src="/CRM/js2/jquery.min.js"></script>
+		<script src="/CRM/layui/lay/modules/layim.js"></script>
+		<script src="/CRM/layui/layui.js"></script>
+		<script src="/CRM/js2/jquery.easyui.min.js"></script>
+		<script src="/CRM/js2/insdep.extend.min.js"></script>
+		<script src="/CRM/js2/locale/easyui-lang-zh_CN.js"></script>
+		<script src="/CRM/js/echarts.js"></script> -->
+	<!-- 		<link rel="stylesheet" href="/CRM/js2/easyui.css" />
+		<link rel="stylesheet" href="/CRM/js2/easyui_animation.css" />
+		<link rel="stylesheet" href="/CRM/js2/icon.css" />
+		<script src="/CRM/js2/jquery.min.js"></script>
+		<script src="/CRM/js2/jquery.easyui.min.js"></script>
+		<script src="/CRM/js2/insdep.extend.min.js"></script>
+		<script src="/CRM/js2/locale/easyui-lang-zh_CN.js"></script>
+		<script src="/CRM/js/echarts.js"></script> -->
+		<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
+<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
+<script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/CRM/js/echarts.js"></script>
+<script type="text/javascript" th:inline="none">
+//
+var a;
+var ids = "";
+var array = [];
+$(function(){
+	init();
+$.post("/CRM/Manager/selectStatus",{
+		
+	},function(res){
+		if(res){
+			$('#btn').linkbutton('disable');
+			$('#switch').switchbutton({
+				checked: true,
+				onChange: function(checked){
+					if (checked == true){
+						$.post("/CRM/Manager/changeStatusON",{},function(res){},"json")
+						$('#btn').linkbutton('disable');
+						return;
+					}
+					if (checked == false){
+						$.post("/CRM/Manager/changeStatusOFF",{},function(res){},"json")
+						$('#btn').linkbutton('enable');
+						return ;
+					}}
+			})
+		}
+		else{
+			$('#btn').linkbutton('enable');
+			$('#switch').switchbutton({
+				checked: false,
+				onChange: function(checked){
+					if (checked == true){
+						$.post("/CRM/Manager/changeStatusON",{},function(res){},"json")
+						$('#btn').linkbutton('disable');
+						return;
+					}
+					if (checked == false){
+						$.post("/CRM/Manager/changeStatusOFF",{},function(res){},"json")
+						$('#btn').linkbutton('enable');
+						return ;
+					}}
+			})
+		}
+	},"json")
+	/* ("#zhuangtai").combobox("setText","--请选择--");
+$("#zhuangtai").combobox("setValue","");
+$("#timeType").combobox("setText","--请选择--");
+$("#timeType").combobox("setValue",""); */
+});
+function shoudong(){
+	$("#zixunshiList").datalist({
+		url:'/CRM/Manager/checkEmployee',
+		method:'post',
+		valueField:'users_Id',
+		textField:'users_LoginName'	,
+		singleSelect:true,
+		checkbox:true,
+		onCheck:function(index,row){
+			$.post("/CRM/Consultant/selectZXSLoss",{
+				usersId : row.users_Id
+			},function(res){
+				var myChart = echarts.init(document.getElementById('main'));
+				var option = {
+						 tooltip : {
+						        formatter: "{a} <br/>{b} : {c}%"
+						    },
+						    toolbox: {
+						        feature: {
+						            restore: {},
+						            saveAsImage: {}
+						        }
+						    },
+						    series: [
+						        {
+						            name: '客户流失率',
+						            type: 'gauge',
+						            detail: {formatter:'{value}%'},
+						            data: [{value: res, name: '流失率'}]
+						        }
+						    ]
+					};
+				myChart.setOption(option);
+			},"json")
+		}
+	})
+	$("#unFenPeiClue").datalist({
+		url:'/CRM/Manager/shoudong',
+		method:'post',
+		valueField:'clue_Id',
+		textField:'clue_Name',
+		checkbox:true
+	})
+	
+	
+		
+
+	
+	$("#shoudong").dialog("open");
+}
+$(document).ready(function(){
+	   $('#lie_window').window({
+	       onBeforeClose:function(){
+	           $("#lie_window").dialog("clear");
+	       }
+	   });
+	});
+	
+	
+	function test(id){
+		for(var i=0;i<array.length;i++){
+			if(array[i]==id){
+				array.splice(i,1);
+			}
+		}
+	}
+	
+function init(){
+	$('#dg').datagrid({    
+	    url:'getAllCustomer',//请求地址
+	    method:"post",
+	    striped:true,
+	    pagination:true,
+	    toolbar:"#headTool",
+	    onCheck:function(index,row){
+	    	array.push(row.clue_Id);
+	    },
+	    onUncheck:function(index,row){	  
+	    	test(row.clue_Id);
+	    },
+	    queryParams:{
+	    	text1:$("#name").val(),
+	    	text2:$("#telephone").val(),
+	    	text3:$("#qq").val(),
+	    	num2:$("#zhuangtai").val(),
+	    	text4:$("#timeType").val(),
+	    	text5:$("#min").datebox("getValue"),
+	    	text6:$("#max").datebox("getValue")
+	    }
+	});
+}
+function show(){
+	var datagridTitle = new Array();
+	var shuxing = new Array();
+    var fields = $("#dg").datagrid('getColumnFields');
+    var option;
+         for (var i = 0; i < fields.length; i++) {
+            option = $("#dg").datagrid('getColumnOption', fields[i]);
+            datagridTitle.push(option.title);
+            shuxing.push(option.field);
+           if (option.field != "checked" && option.hidden != true) { //如果easyui的表格列不隐藏的话
+           		$("#lie_window").append("<input type='checkbox' value="+shuxing[i]+"  name='ch'>"+datagridTitle[i]+"</br>");
+           		$("input[name='ch']").eq(i).prop('checked', 'true');//就把这个复选框设置为选中状态
+            }else{
+            	$("#lie_window").append("<input type='checkbox' value="+shuxing[i]+" name='ch' >"+datagridTitle[i]+"</br>");
+            	
+            } 
+        }
+	$("#lie_window").window("open");
+	$("input[name='ch']").click(function(){
+			if($(this).is(":checked")){
+				var p = $(this).val();
+				$("#dg").datagrid('showColumn',p);
+			}else{
+				var q = $(this).val();
+				$("#dg").datagrid('hideColumn',q);
+			}
+	})
+}
+function users(value,row,index){//咨询师
+	return row.users.users_LoginName;
+}
+function genzong(value,row,index){//网络咨询师
+	return row.users.users_Exit2;
+}
+function caozuo(value,row,index){
+	return "<a class='easyui-linkbutton' onclick='upd("+index+")' href='javascript:void(0);'>修改</a> <a onclick='abandon("+index+")' class='easyui-linkbutton' href='javascript:void(0);'>放弃</a> <a class='easyui-linkbutton' onclick='chakan("+index+")' href='javascript:void(0);'>查看跟踪信息</a>";
+}
+function  abandon(index){
+	
+	var data = $("#dg").datagrid("getData");
+	var row = data.rows[index];
+	if(row.clue_Status!=2){
+		$.messager.alert("提示","没有放弃不能流失");
+		return ;
+	}
+	else{
+		$.messager.confirm('确认','确定进行流失操作么?',function(r){
+		    if (r){
+		    	$.post("/CRM/LeadLoss/leadLossClue",{
+		  		  clueId :row.clue_Id
+		  		},function(res){
+		  			if(res){
+		  				$.messager.alert("提示","流失成功");
+		  			}
+		  			else{
+		  				$.messager.alert("提示","流失失败");
+		  			}
+		  		},"json")
+		    }
+		});
+	
+	}
+}
+function upd(index){
+	a = index;
+	var data = $("#dg").datagrid("getData");
+	var row = data.rows[index];
+		$("#updclueForm").form("load",row);
+		$("#updclue_dialog").window("open");
+	
+}
+function upd_Customer(){
+	var data = $("#dg").datagrid("getData");
+	var row = data.rows[a];
+	var clue_Id = row.clue_Id;
+	var clue_Name = $("#clue_Name").val();
+	var clue_Sex = $("#clue_Sex").val();
+	var clue_Age = $("#clue_Age").val();
+	var clue_Birthday = $("#clue_Birthday").val();
+	var clue_Education = $("#clue_Education").val();
+	var clue_Direction = $("#clue_Direction").val();
+	var clue_Source = $("#clue_Source").val();
+	var clue_IdentityNumber = $("#clue_IdentityNumber").val();
+	var clue_Email = $("#clue_Email").val();
+	var clue_Qq = $("#clue_Qq").val();
+	var clue_WeChat = $("#clue_WeChat").val();
+	var clue_Tel = $("#clue_Tel").val();
+	var clue_Address = $("#clue_Address").val();
+	var clue_Remarks = $("#clue_Remarks").val();
+	$.post("/CRM/Consultant/updateCustomer",{
+		clue_Id:clue_Id,
+		clue_Name:clue_Name,
+		clue_Sex:clue_Sex,
+		clue_Age:clue_Age,
+		clue_Birthday:clue_Birthday,
+		clue_Education:clue_Education,
+		clue_Direction:clue_Direction,
+		clue_Source:clue_Source,
+		clue_IdentityNumber:clue_IdentityNumber,
+		clue_Email:clue_Email,
+		clue_Qq:clue_Qq,
+		clue_WeChat:clue_WeChat,
+		clue_Tel:clue_Tel,
+		clue_Address:clue_Address,
+		clue_Remarks:clue_Remarks
+	},function(res){
+		if(res>0){
+			alert("修改成功");
+			$("#updclue_dialog").window("close");
+            $("#dg").datagrid("reload");
+		}else{
+			alert("修改失败");
+		}
+	},"json")
+}
+
+
+
+function chakan(index){
+	var data = $("#dg").datagrid("getData");
+	var row = data.rows[index];
+	var id = row.clue_Id;
+	$("#xck").datagrid({
+		 url:'/CRM/FollowUp/getFollowUpByclueId',   
+		 method:"post",
+		 pagination:true,
+		 striped:true,
+		    columns:[[ 
+		        {field:'follwUp_Text',title:'跟进内容',width:100},
+		        {field:'follwUp_Type',title:'跟进方式',width:100},
+		        {field:'follwUp_Time',title:'开始时间',width:100},
+		        {field:'follwUp_FirstVisitTime',title:'首访时间',width:100},
+		        {field:'follwUp_Door',title:'是否上门',width:100},
+		        {field:'follwUp_DoorTime',title:'上门时间',width:100},
+		        {field:'follwUp_ReturnVisit',title:'是否回访',width:100},
+		        {field:'follwUp_ReturnVisitTim',title:'回访时间',width:100},
+		        {field:'follwUp_ReturnVisitSituation',title:'回访情况',width:100},
+		        {field:'follwUp_EndTim',title:'结束时间',width:100},
+		    ]],
+		    queryParams:{
+		    	num1:id
+		    }
+	});
+	$("#chakan_window").window("open");
+	
+}
+function clue_Status(value,row,index){
+	switch(row.clue_Status){
+	case 0:
+		return "未分配";
+		break;
+	case 1:
+		return "正在跟进";
+		break;
+	case 2:
+		return "已放弃";
+		break;
+	case 3:
+		return "成为学员";
+		break;
+	}
+}
+function open_window2(){
+	$("#cc").combobox({
+		url:'/CRM/Dynamic/selectUsersAll',//修改请求地址
+		method:'post',
+		valueField:'users_Id',
+		textField:'users_LoginName'
+	});
+	//add_dynamic
+	$("#addDynamic_window").window("open");
+}
+function add_dynamic(){
+	var neirong = $("#neirong").textbox("getValue");
+	var jieshou = $("#cc").combobox("getValue");
+	$.post('/CRM/Dynamic/addDynamic',{
+		dynamic_Recipients:jieshou,
+		dynamic_Text:neirong
+	},function(res){
+		if(res>0){
+			alert("发送成功");
+			$("#addDynamic_window").window("close");
+            $("#dg").datagrid("reload");
+		}else{
+			alert("发送失败");
+		}
+	},"json")
+}
+function clear_dynamic(){
+	$("#addDynamic_window").window("close");
+}
+function tijiao(){
+	var clueIds=new Array();
+	var clueRows = $("#unFenPeiClue").datalist("getSelections");
+	var zxs = $("#zixunshiList").datalist("getSelected");
+	if(clueRows.length==0){
+		$.messager.alert("提示","请选择具体的客户在进行分配操作");
+		return ;
+	}
+	if(zxs==null){
+		$.messager.alert("提示","请选择具体的咨询师在进行分配操作");
+		return ;
+	}
+	for(var i=0;i<clueRows.length;i++){
+		clueIds.push(clueRows[i].clue_Id);
+	}
+	
+	$.messager.confirm('确认','尊敬的经理,请问是否决定分配?',function(r){
+	    if (r){
+			$.post("/CRM/Manager/ShouDong",{
+				clueIds:clueIds,
+				userId:zxs.users_Id
+			},function(res){
+				if(res){
+					$.messager.alert("提示","分配成功");
+					$("#unFenPeiClue").datalist("reload");
+				}
+				else{
+					$.messager.alert("提示","分配失败");
+				}
+			},"json")
+	    }
+	});
+	
+}
+function closeShouDongWindow(){
+	$("#shoudong").dialog("close");
+}
+
+function xuanzhong(){
+		if(array.length>0){
+			for(var i=0;i<array.length;i++){
+				ids+=array[i]+",";
+		}
+		 		ids=ids.substring(0,ids.length-1);
+				window.location.href="/CRM/Consultant/getClueById?ids="+ids;
+				ids=""; 
+		}else{
+			alert("请选择一个复选框");
+		}
+}  
+
+function quanbu(){
+	window.location.href="/CRM/Consultant/getClueByAll";
+} 
+</script>
+</head>
+<body>
+	<table id="dg" class="easyui-datagrid" style="width:100%;height:500px">   
+	    <thead>  
+	        <tr>   
+	        	<th data-options="field:'ck',checkbox:true,title:'复选框'"></th>
+	            <th data-options="field:'clue_Name',width:100">姓名</th>   
+	            <th data-options="field:'clue_Sex',width:100">性别</th>   
+	            <th data-options="field:'clue_Age',width:100">年龄</th>   
+	            <th data-options="field:'clue_Birthday',width:100">出生日期</th>   
+	            <th data-options="field:'clue_Education',width:100">学历</th>   
+	            <th data-options="field:'clue_Direction',width:100">课程方向</th>   
+	            <th data-options="field:'clue_Source',width:100">来源</th>   
+	            <th data-options="field:'clue_IdentityNumber',width:100">身份证号</th>   
+	            <th data-options="field:'clue_Email',width:100">电子邮箱</th>   
+	            <th data-options="field:'clue_Qq',width:100">QQ号</th>   
+	            <th data-options="field:'clue_WeChat',width:100">微信号</th>   
+	            <th data-options="field:'clue_Tel',width:100">电话</th>   
+	            <th data-options="field:'clue_Address',width:100">地区</th>  
+	            <th data-options="field:'users',width:100,formatter:users">负责人</th>   
+	            <th data-options="field:'genzong',width:100,formatter:genzong">创建人</th>  
+	            <th data-options="field:'clue_CreateTime',width:100">创建时间</th>  
+	            <th data-options="field:'clue_UpdateTime',width:100">更新时间</th>   
+	            <th data-options="field:'clue_BginTime',width:100">线索开始时间</th>   
+	            <th data-options="field:'clue_EndTime',width:100">线索结束时间</th>   
+	            <th data-options="field:'clue_Status',width:100,formatter:clue_Status">状态</th>
+	            <th data-options="field:'clue_Remarks',width:100">备注</th>   
+	            <th data-options="field:'caozuo',width:100,formatter:caozuo">操作</th>   
+	        </tr>   
+	    </thead>   
+	</table>
+	<div id="headTool">
+	<div>
+		自动分配开关:<input id="switch"  class="easyui-switchbutton" >
+		<a id="btn" href="javascript:void(0)" onclick="shoudong()" class="easyui-linkbutton" data-options="iconCls:'icon-tip'">手动分配</a>   
+        <label for="name">客户姓名:</label>
+        <input id="name" class="easyui-validatebox" type="text"/>   
+        <label for="name">电话号码:</label>   
+        <input id="telephone" class="easyui-validatebox" type="text"/>   
+        <label for="name">QQ查询:</label>   
+        <input id="qq" class="easyui-validatebox" type="text"/>
+        <label for="name">状态:</label>   
+        <select id="zhuangtai">
+       		<option value="-1">--请选择--</option>
+       		<option value="0">未分配</option>
+       		<option value="1">正在跟进</option>
+       		<option value="2">已放弃</option>
+       		<option value="3">已完成</option>
+        </select>
+        </br>
+        <label for="name">时间方式:</label>
+        <select id="timeType">
+       		<option value="">--请选择--</option>
+       		<option value="c.clue_Birthday">出生时间</option>
+       		<option value="c.clue_CreateTime">创建时间</option>
+       		<option value="c.clue_BginTime">线索开始时间</option>
+       		<option value="c.clue_EndTime">线索结束时间</option>
+        </select>
+                开始时间：<input id="min" class="easyui-datebox" type="text"/>-
+                结束时间<input id="max" class="easyui-datebox" type="text"/>   
+    </div>
+    <a type="button" href="javascript:void(0)" onclick="init()" class="easyui-linkbutton">搜索</a>
+    <a type="button" href="javascript:void(0)" onclick="show()" class="easyui-linkbutton">动态设置</a>
+    <!-- <a type="button" href="javascript:void(0)" onclick="open_window2()" class="easyui-linkbutton">添加动态</a> -->
+    <a href="javascript:void(0)" id="mb" class="easyui-menubutton"     
+        data-options="menu:'#mm',iconCls:'icon-edit'">导出Excel</a>   
+		<div id="mm">   
+		    <div data-options="iconCls:'icon-redo'" onclick="quanbu()" id="quanbu">全部导出</div>   
+		    <div data-options="iconCls:'icon-redo'" onclick="xuanzhong()" id="xuanzhong">选中导出</div>     
+		</div>
+</div>
+ <div id="lie_window" class="easyui-dialog" title="列设置" data-options="modal:true,closed:true,iconCls:'icon-add'" style="width:500px;height:300px;padding:10px;">
+         
+ </div>
+    <div id="addDynamic_window" class="easyui-dialog" title="添加动态" data-options="modal:true,closed:true,iconCls:'icon-add'" style="width:500px;height:300px;padding:10px;">
+         <form id="addDynamicForm">
+                <table cellpadding="5">
+                    <tr>
+                        <td>内容:</td>
+                        <td><input class="easyui-textbox" data-options="multiline:true" id="neirong" style="height:60px" ></input></td>
+                    </tr>
+                    <tr>
+                        <td>接收人:</td>
+                        <td><select id="cc" class="easyui-combobox" name="dept" style="width:200px;" >   
+							    <option></option>   
+							</select> 
+                    	</tr>
+                </table>
+         </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" type="button" onclick="add_dynamic()">发送</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clear_dynamic()">取消</a>        
+            </div>
+    </div>
+    <div id="chakan_window" class="easyui-dialog" title="查看跟踪信息" data-options="modal:true,closed:true,iconCls:'icon-add'" style="width:1000px;height:500px;padding:10px;">
+         <table id="xck"></table>
+ </div>
+ <div id="updclue_dialog" class="easyui-dialog" title="修改客户信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
+				text:'保存',
+				handler:function(){
+					upd_Customer();
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+					clear_Customer();
+				}
+			}]" style="width:1000px;height:500px;padding:10px;">
+         <form id="updclueForm">
+                <table cellpadding="5">
+                    <tr>
+                        <td>姓名:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Name" id="clue_Name"></input></td>
+                    </tr>
+                    <tr>
+                        <td>性别:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Sex" id="clue_Sex"></input></td>
+                    </tr>
+                    <tr>
+                        <td>年龄:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Age" id="clue_Age"></input></td>
+                    </tr>
+                    <tr>
+                        <td>出生日期:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Birthday" id="clue_Birthday"></input></td>
+                    </tr>
+                    <tr>
+                        <td>学历:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Education" id="clue_Education"></input></td>
+                    </tr>
+                    <tr>
+                        <td>课程方向:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Direction" id="clue_Direction"></input></td>
+                    </tr>
+                    <tr>
+                        <td>来源渠道:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Source" id="clue_Source"></input></td>
+                    </tr>
+                    <tr>
+                        <td>身份证号:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_IdentityNumber" id="clue_IdentityNumber"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Email" id="clue_Email" data-options="validType:'email'"></input></td>
+                    </tr>
+                    <tr>
+                        <td>QQ号:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Qq" id="clue_Qq"></input></td>
+                    </tr>
+                    <tr>
+                        <td>微信号:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_WeChat" id="clue_WeChat"></input></td>
+                    </tr>
+                    <tr>
+                        <td>手机号:</td>
+                        <td><input type="text" class="easyui-numberbox" name="clue_Tel" id="clue_Tel"></td>
+                    </tr>  
+                    <tr>
+                        <td>地区:</td>
+                        <td><input type="text" class="easyui-textbox" name="clue_Address" id="clue_Address"></td>
+                    </tr>  
+                    <tr>
+                        <td>备注:</td>
+                        <td><input class="easyui-textbox" type="text" name="clue_Remarks" id="clue_Remarks"></input></td>
+                    </tr>
+                </table>
+         </form>
+    </div> 
+        <div id="shoudong" style="width: 800px;height: 500px;" class="easyui-dialog" data-options="modal:true,closed:true,title:'分配窗口',buttons:[{
+				text:'提交',
+				handler:function(){
+					tijiao();
+				}
+			},{
+				text:'关闭',
+				handler:function(){
+					closeShouDongWindow();
+				}
+			}]">
+    	
+    	<div class="easyui-layout" style="width: 900px;height: 500px;">
+    		
+    		<div style="width: 400px;" data-options="region:'west',title:'未分配客户'">
+    			<ul style="width: 190px;" class="easyui-datalist" id="unFenPeiClue">
+    		
+    			</ul>
+    		</div>
+    		<div style="width: 500px;" data-options="region:'east',title:'已签到咨询师'">
+    			<ul style="width: 190px;" class="easyui-datalist" id="zixunshiList">
+    			</ul>
+    			<div id="main" style="width: 490px;height: 350px;"></div>
+    		</div>
+    		<!-- <div data-options="region:'center'">
+    			<center style="margin-top: 30px;">
+    				<a href="javascript:void(0)" class="easyui-linkbutton"></a>
+    				<a href="javascript:void(0)" class="easyui-linkbutton">&lt;&lt;</a>
+    			</center>
+    		</div> -->
+    		
+    	</div>
+    	</div>
+</body>
+
+<script type="text/javascript" th:inline="none">
+var createGridHeaderContextMenu = function(e, field) {
+	e.preventDefault();
+	var grid = $(this);/* grid本身 */
+	var headerContextMenu = this.headerContextMenu;/* grid上的列头菜单对象 */
+	var okCls = 'tree-checkbox1';// 选中
+	var emptyCls = 'tree-checkbox0';// 取消
+	if (!headerContextMenu) {//如果不是列头对象不触发
+		var tmenu = $('<div style="width:100px;"></div>').appendTo('body');
+		var fields = grid.datagrid('getColumnFields');
+		for (var i = 0; i < fields.length; i++) {
+			var fildOption = grid.datagrid('getColumnOption', fields[i]);
+			if (!fildOption.hidden) {
+				$('<div iconCls="' + okCls + '" field="' + fields[i] + '"/>')
+						.html(fildOption.title).appendTo(tmenu);
+			} else {
+				$('<div iconCls="' + emptyCls + '" field="' + fields[i] + '"/>')
+						.html(fildOption.title).appendTo(tmenu);
+			}
+		}
+		headerContextMenu = this.headerContextMenu = tmenu.menu({
+			onClick : function(item) {
+				var field = $(item.target).attr('field');
+				if (item.iconCls == okCls) {
+					grid.datagrid('hideColumn', field);
+					$(this).menu('setIcon', {
+						target : item.target,
+						iconCls : emptyCls
+					});
+				} else {
+					grid.datagrid('showColumn', field);
+					$(this).menu('setIcon', {
+						target : item.target,
+						iconCls : okCls
+					});
+				}
+			}
+		});
+	}
+	headerContextMenu.menu('show', {
+		left : e.pageX,
+		top : e.pageY
+	});
+};
+$.fn.datagrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+$.fn.treegrid.defaults.onHeaderContextMenu = createGridHeaderContextMenu;
+</script>
+</html>

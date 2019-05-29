@@ -2,6 +2,8 @@ package com.crm.entity;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+@Component
 public class Modules {
 	private Integer modules_Id;//模块编号
 	private String modules_Name;//模块编号

@@ -9,8 +9,245 @@
 <script src="/CRM/js/jquery.form.js" charset="utf-8"></script>
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+	$(function (){
+		selectStudent();
+	})
+	function selectStudent(){
+		$("#stuTab").datagrid({
+			url:"/CRM/Campus/SelectStudent",
+			method:"POST",
+			pagination:true,
+			singleSelect:true,
+			toolbar:"#toolbar",
+			queryParams:{
+				text1:$("#text1").val(),
+				text2:$("#text2").combobox("getValue"),
+				text3:$("#text3").val(),
+				text4:$("#text4").val(),
+				text5:$("#text5").val(),
+				num1:$("#num1").combobox("getValue")
+			},
+			onLoadSuccess:function () {
+				//数据加载成功后将指定值选中
+				$('#text2').combobox('setValue', "");
+				$('#text2').combobox('setText', "--请选择--");
+				$('#num1').combobox('setValue', "");
+				$('#num1').combobox('setText', "--请选择--");
+			}
+			
+		})
+		$("#toolFrm").form("clear")
+	};
+	function usersName(value,row,index){
+		return row.users.users_LoginName;
+	}
+	function classesName(value,row,index){
+		if(row.classes!=null){
+			return row.classes.classes_Name;
+		}
+		return null;
+	}
+	function studentStatus(value,row,index){
+		if(row.student_Status==0){
+			return "未缴费";
+		}else if(row.student_Status==1){
+			return "已缴费";
+		}
+		return null;
+	}
+	function student(value,row,index){
+		return "<a href='javascript:void(0)' onclick='UpdateStudent("+index+")'>修改</a>";
+	}
+	function UpdateStudent(index){
+		//获取当前行对象
+		var arr=$("#stuTab").datagrid("getData")
+		var row=arr.rows[index];
+		//填充表单
+		$("#StudentForm").form("load",row)
+		$("#Update11").combobox({
+			url:'/CRM/Campus/selectClassList',
+			method:'post',
+			valueField:'classes_Id',
+			textField:'classes_Name'
+		});
+		//数据加载成功后将指定值选中
+		if(row.classes!=null){
+			$('#Update11').combobox('setValue', row.classes.classes_Id);
+			$('#Update11').combobox('setText', row.classes.classes_Name);
+		}else{
+			$('#Update11').combobox('setValue', "");
+			$('#Update11').combobox('setText', "");
+		}
+		$("#UpdateStudentForm").window("open");
+	}
+	function Update(){
+		$.messager.confirm('提示','确定往下执行么?',function(r){
+		    if (r){
+		    	$('#StudentForm').form({
+				    url:'/CRM/Campus/UpdateStudent',
+				    onSubmit: function(){
+				    	
+				    },
+				    success:function(data){
+						if(data){
+							$("#stuTab").datagrid("reload");
+							$("#UpdateStudentForm").window("close");
+							$.messager.alert("提示","修改成功");
+						} else {
+							$("#UpdateStudentForm").window("close");
+							$.messager.alert("提示","修改失败");
+						}
+				    }
+				});
+		    }
+		});
+		
+	}
+	function StudentFL(){
+		$.messager.confirm('提示','确定往下执行么?',function(r){
+		    if (r){
+		    	$.post('/CRM/Campus/selectStudentFL',{
+				},function (res){
+					if(res){
+						$.messager.alert("提示","分配完成");
+					}else{
+						$.messager.alert("提示","分配失败");
+					}
+					selectStudent();
+				},'json');
+		    }
+		});
+	}
+</script>
 </head>
 <body>
-	
+	<table id="stuTab" class="easyui-datagrid" >
+		<thead>
+			<tr>
+				<th data-options="field:'student_Id',title:'编号'"></th>
+				<th data-options="field:'student_Name',title:'姓名'"></th>
+				<th data-options="field:'student_Sex',title:'性别'"></th>
+				<th data-options="field:'student_Birthday',title:'出生日期'"></th>
+				<th data-options="field:'student_Source',title:'学员来源'"></th>
+				<th data-options="field:'student_IdentityNumber',title:'身份证号'"></th>
+				<th data-options="field:'student_Email',title:'电子邮件'"></th>
+				<th data-options="field:'student_Qq',title:'qq'"></th>
+				<th data-options="field:'student_Tel',title:'电话'"></th>
+				<th data-options="field:'student_Address',title:'地区'"></th>
+				<th data-options="field:'student.users.users_LoginName',title:'推荐人',formatter:usersName"></th>
+				<th data-options="field:'student_CreateTime',title:'入学时间'"></th>
+				<th data-options="field:'student.Classes.classes_Name',title:'班级',formatter:classesName"></th>
+				<th data-options="field:'student_Remarks',title:'备注'"></th>
+				<th data-options="field:'student_Status',title:'缴费状态',formatter:studentStatus"></th>
+				<th data-options="field:'student_Amount',title:'缴费金额'"></th>
+				<th data-options="field:'classes',title:'操作',formatter:student"></th>
+			</tr>
+		</thead>
+	</table>
+	<div id="toolbar">
+		<form id="toolFrm" class="easyui-form">
+			 <label for="text1">学生姓名:</label>
+        	 <input class="easyui-validatebox" type="text" id="text1"  /> 
+        	 <select id="text2" class="easyui-combobox" style="width: 100px">
+        	 	<option selected value="">--请选择--</option>
+		   	 	<option value="男">男</option>
+		   	 	<option value="女">女</option>
+		   	 </select>  
+			 <label for="text3">推荐人:</label>
+        	 <input class="easyui-validatebox" type="text" id="text3"  />
+        	 <label for="text4">备注:</label>
+        	 <input class="easyui-validatebox" type="text" id="text4"  />
+        	 <label for="text5">班级:</label>
+        	 <input class="easyui-validatebox" type="text" id="text5"  />
+        	 <select id="num1" class="easyui-combobox" style="width: 100px">
+        	 	<option selected value="">--请选择--</option>
+		   	 	<option value="0">未缴费</option>
+		   	 	<option value="1">已缴费</option>
+		   	 </select>
+        	 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="selectStudent()">搜索</a> 
+        	 <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="StudentFL()">自动分配</a> 
+		</form>
+	</div>
+	<div class="easyui-window" id="UpdateStudentForm" data-options="modal:true,closed:true,title:'修改学生窗口'">
+		<form action="javascript:Update()"  id="StudentForm">
+			<table cellpadding="5">
+				<tr>
+					<td></td>
+					<td></td>
+					<td><input type="text" id="student_Id" name="student_Id" style="display: none;" class="easyui-validatebox"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>学生名称:</td>
+					<td><input id="Update1" name="student_Name" placeholder="请输入学生名称"  type="text" class="easyui-validatebox"></td>
+					
+					<td>性别:</td>
+					<td>
+						<select id="Update2" name="student_Sex" class="easyui-combobox" style="width: 100px">
+					   	 	<option value="男">男</option>
+					   	 	<option value="女">女</option>
+					   	</select>  
+				   	</td>
+				</tr>
+				<tr>
+					<td>出生日期:</td>
+					<td><input id="Update3" name="student_Birthday" class="eayui-datebox" type="text"></td>
+	   	 			
+	   	 			<td>学生来源:</td>
+					<td><input id="Update4" name="student_Source" placeholder="请输入学生来源"  type="text"  class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>身份证号:</td>
+					<td><input id="Update5" name="student_IdentityNumber" placeholder="请输入身份证号"  type="text"  class="easyui-validatebox"></td>
+					
+					<td>电子邮箱:</td>
+					<td><input id="Update6" name="student_Email" placeholder="请输入电子邮箱"  type="text"  class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>QQ:</td>
+					<td><input id="Update7" name="student_Qq" placeholder="请输入QQ"  type="text"  class="easyui-validatebox"></td>
+					
+					<td>电话:</td>
+					<td><input id="Update8" name="student_Tel" placeholder="请输入电话"  type="text"  class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td>地区:</td>
+					<td><input id="Update9" name="student_Address" placeholder="请输入地区"  type="text"  class="easyui-validatebox"></td>
+					
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>备注:</td>
+					<td><input id="Update10" name="student_Remarks" placeholder="请输入备注"  type="text"  class="easyui-validatebox"></td>
+					
+					<td>班级:</td>
+					<td>
+						<select id="Update11" name="student_ClassId" class="easyui-combobox" style="width: 100px">
+		   	 				<option></option>
+		   	 			</select>
+		   	 		</td>
+				</tr>
+				<tr>
+					<td>缴费状态:</td>
+					<td>
+						<select id="Update12" name="student_Status" class="easyui-combobox" style="width: 100px">
+					   	 	<option value="0">未缴费</option>
+					   	 	<option value="1">已缴费</option>
+				   	 	</select>
+				   	 </td>
+					<td>缴费金额:</td>
+					<td><input id="Update13" name="student_Amount" placeholder="请输入缴费金额"  type="text"  class="easyui-validatebox"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button class="easyui-linkbutton" type="submit" >提交</button></td>
+					<td></td>
+					<td><button type="reset" class="easyui-linkbutton">重置</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </body>
 </html>

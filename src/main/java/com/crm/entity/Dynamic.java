@@ -2,13 +2,22 @@ package com.crm.entity;
 
 import org.springframework.stereotype.Component;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.BaseRowModel;
+
 @Component
-public class Dynamic {
+public class Dynamic extends BaseRowModel {
+	@ExcelProperty(value ="动态编号",index=0)
 	private Integer dynamic_Id;//编号
+	@ExcelProperty(value ="动态内容",index=1)
 	private String dynamic_Text;//动态信息内容
+	@ExcelProperty(value ="创建人",index=2)
 	private Integer dynamic_Creator;//创建人
+	@ExcelProperty(value ="接收人",index=3)
 	private Integer dynamic_Recipients;//接收人
+	@ExcelProperty(value ="创建时间",index=4)
 	private String dynamic_CreateTime;//创建时间
+	@ExcelProperty(value ="状态",index=5)
 	private Integer dynamic_Status;//状态
 	private Integer dynamic_Exit1;//备用
 	private String dynamic_Exit2;//备用

@@ -2,21 +2,38 @@ package com.crm.entity;
 
 import org.springframework.stereotype.Component;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.BaseRowModel;
+
 @Component
-public class FollowUp {
+public class FollowUp extends BaseRowModel {
+@ExcelProperty(value ="编号",index=0)
 private Integer followUp_id;//编号
+@ExcelProperty(value ="跟进内容",index=1)
 private String follwUp_Text;//跟进内容
+@ExcelProperty(value ="跟进方式",index=2)
 private String follwUp_Type;//跟进方式
+@ExcelProperty(value ="创建时间",index=3)
 private String follwUp_Time;//创建时间
+@ExcelProperty(value ="首访时间",index=4)
 private String follwUp_FirstVisitTime;//首访时间
+@ExcelProperty(value ="是否上门",index=5)
 private String follwUp_Door;//是否上门
+@ExcelProperty(value ="上门时间",index=6)
 private String follwUp_DoorTime;//上门时间
+@ExcelProperty(value ="是否回访",index=7)
 private String follwUp_ReturnVisit;//是否回访
+@ExcelProperty(value ="回访时间",index=8)
 private String follwUp_ReturnVisitTim;//回访时间
+@ExcelProperty(value ="回访情况",index=9)
 private String follwUp_ReturnVisitSituation;//回访情况
+@ExcelProperty(value ="负责人编号",index=10)
 private Integer follwUp_Principal;//跟进负责人编号
+@ExcelProperty(value ="跟进结束时间",index=11)
 private String follwUp_EndTim;//跟进结束时间
+@ExcelProperty(value ="目标客户",index=12)
 private Integer follwUp_ClueId;//目标客户id
+@ExcelProperty(value ="结论",index=13)
 private String follwUp_Conclusion;//结论
 private Integer follwUp_Exit1;//预留1
 private String follwUp_Exit2;//预留2

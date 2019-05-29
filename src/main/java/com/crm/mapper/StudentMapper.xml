@@ -153,4 +153,141 @@
 		</where>
 			
  	</select>
+ 	<!-- 在业务员点击完成的时候，student表要有该学生的信息 -->
+ 	<insert id="insertStudent">
+ 		INSERT INTO 
+ 		student(
+ 		<if test="student_Remarks != null and student_Remarks != '' ">
+		student_Remarks,
+		</if>
+ 		
+ 		<if test="student_Sex != null and student_Sex != '' ">
+		student_Sex,
+		</if>
+ 		<if test="student_Birthday != null and student_Birthday != '' ">
+		student_Birthday,
+		</if>
+ 		<if test="student_Source != null and student_Source != '' ">
+		student_Source,
+		</if>
+ 		<if test="student_IdentityNumber != null and student_IdentityNumber != '' ">
+ 		student_IdentityNumber,
+ 		</if>
+ 		<if test="student_Email != null and student_Email != '' ">
+ 		student_Email,
+ 		</if>
+ 		<if test="student_Qq != null and student_Qq != '' ">
+		student_Qq,
+		</if>
+ 		<if test="student_Tel != null and student_Tel != '' ">
+		student_Tel,
+		</if>
+ 		<if test="student_Address != null and student_Address != '' ">
+		student_Address,
+		</if>
+ 		<if test="student_Creator != null and student_Creator != '' ">
+		student_Creator,
+		</if>
+ 		<if test="student_Name != null and student_Name != '' ">
+		student_Name
+		</if>
+ 		) 
+		VALUES(
+		<if test="student_Remarks != null and student_Remarks != '' ">
+		#{student_Remarks},
+		</if>
+		<if test="student_Sex != null and student_Sex != '' ">
+		#{student_Sex},
+		</if>
+		<if test="student_Birthday != null and student_Birthday != '' ">
+		#{student_Birthday},
+		</if>
+		<if test="student_Source != null and student_Source != '' ">
+		#{student_Source},
+		</if>
+		<if test="student_IdentityNumber != null and student_IdentityNumber != '' ">
+		#{student_IdentityNumber},
+		</if>
+		<if test="student_Email != null and student_Email != '' ">
+		#{student_Email},
+		</if>
+		<if test="student_Qq != null and student_Qq != '' ">
+		#{student_Qq},
+		</if>
+		<if test="student_Tel != null and student_Tel != '' ">
+		#{student_Tel},
+		</if>
+		<if test="student_Address != null and student_Address != '' ">
+		#{student_Address},
+		</if>
+		<if test="student_Creator != null and student_Creator != '' ">
+		#{student_Creator},
+		</if>
+		<if test="student_Name != null and student_Name != '' ">
+		#{student_Name}
+		</if>
+		)
+ 	</insert>
+ 	
+ 	
+ <select id="selectboy" resultType="int" >
+ 	select 
+ 		count(*) 
+ 	FROM
+		student s,
+		users u,
+		classes c 
+	<where>
+		AND c.classes_CounselorId = u.users_Id
+		AND s.student_ClassId = c.classes_Id
+		AND s.student_sex='男'
+		AND c.classes_Id=#{0}
+	</where>
+ </select>
+ <select id="selectgirl" resultType="int" >
+ 	select 
+ 		count(*) 
+ 	FROM
+		student s,
+		users u,
+		classes c 
+	<where>
+		AND c.classes_CounselorId = u.users_Id
+	
+		AND s.student_ClassId = c.classes_Id
+		AND s.student_sex='女'
+		AND c.classes_Id=#{0}
+	</where>
+ </select>
+ <select id="selectAllStudent" resultType="int" >
+ 	select 
+ 		count(*) 
+ 	FROM
+		student s,
+		users u,
+		classes c 
+	<where>
+		AND c.classes_CounselorId = u.users_Id
+		AND u.users_Id = #{0}
+		AND s.student_ClassId = c.classes_Id
+	</where>
+ </select>
+<select id="selectAllBoy" resultType="int">
+	select 
+ 		count(*) 
+ 	FROM
+		student s,
+		users u,
+		classes c 
+	<where>
+		AND c.classes_CounselorId = u.users_Id
+		AND u.users_Id = #{0}
+		AND s.student_ClassId = c.classes_Id
+		AND s.student_sex='男'
+	</where>
+</select>
+ <select id="selectClass" parameterType="int" resultType="classes">
+ 	SELECT * FROM classes WHERE classes_CounselorId = #{id}
+ </select>
+ 	
   </mapper>

@@ -7,59 +7,26 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!--引入主题样式-->
-		<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
+		<!--  <link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/default/easyui.css">   
 		<link rel="stylesheet" type="text/css" href="/CRM/js/jquery-easyui-1.4.3/themes/icon.css">   
 		<script type="text/javascript" src="/CRM/js/assets/default/login/js/jquery-2.1.1.min.js"></script>   
 		<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/jquery.easyui.min.js"></script>
-		<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>
+		<script type="text/javascript" src="/CRM/js/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"></script>-->
+		<!-- <link rel="stylesheet" href="/CRM/js2/insdep.easyui.min.css" /> -->
 		
-		<!--
-			主页面:
-				1 引入EasyUI插件
-				2 使用body布局方式
-				3 将布局后的每块区域完成内容填充
-			
-			
-		-->
-	<!-- 	<style type="text/css">
-			#sdiv {
-				text-align: center;
-				font-size: 14px;
-				font-weight: bold;
-				line-height: 30px;
-				background-color: gray;
-			}
-			/*修改头部标题样式*/
-			
-			#n_title {
-				color: white;
-				font-size: 14px;
-				line-height: 40px;
-			}
-			/*修改标题超链接样式*/
-			
-			#n_title a {
-				text-decoration: none;
-				color: white;
-			}
-			
-			#n_title a:hover {
-				color: orange;
-			}
-			/*修改密码样式*/
-			
-			#div_pwd table {
-				margin: auto;
-				margin-top: 10px;
-			}
-			
-			#div_pwd table tr {
-				height: 40px;
-				text-align: center;
-			}
-		</style> -->
-		<!--声明js代码域-->
-		<script type="text/javascript">
+		<link rel="stylesheet" href="/CRM/js2/easyui.css" />
+		<link rel="stylesheet" href="/CRM/js2/easyui_animation.css" />
+		<link rel="stylesheet" href="/CRM/js2/icon.css" />
+		<link rel="stylesheet" href="/CRM/layui/css/layui.css" />
+		<script src="/CRM/js2/jquery.min.js"></script>
+		<!-- <script src="/CRM/layui/lay/modules/layim.js"></script> -->
+		<script src="/CRM/layui/layui.js"></script>
+		<script src="/CRM/js2/jquery.easyui.min.js"></script>
+		<script src="/CRM/js2/insdep.extend.min.js"></script>
+		<script src="/CRM/js2/locale/easyui-lang-zh_CN.js"></script>
+		<script src="/CRM/js/echarts.js"></script>
+	
+		<script type="text/javascript" >
 			/*网页js功能*/
 			function checkin(){
 				$.post("/CRM/CheckIn/startCheck",{
@@ -67,89 +34,132 @@
 				},function(res){
 					if(res){
 						$.messager.alert("提示","签到成功");
-						$("#qiandao").text("已签到").removeAttr("onclick");
+						$("#qiandao").linkbutton({
+							text:'已签到',
+							disabled:true
+						})
 					}
 					else{
 						$.messager.alert("提示","签到失败");
 					}
 				},"json")
 			}
-			$(function() {
-				//退出功能
+			function clock(){
+				  var attime;
+				  var days=new  Array ("日", "一", "二", "三", "四", "五", "六");
+				  function clock(){
+				    var time=new Date();   
+				    var y,m,date,day,hs,ms,ss,theDateStr;
+				    y = time.getFullYear();
+				    m = time.getMonth(); //月
+					date = time.getDate(); //日
+					day = time.getDay(); //星期
+					hs = time.getHours(); //时
+					ms = time.getMinutes(); //分
+					ss = time.getSeconds(); //秒
+				    attime= y+"年"+  m +"月"+date+"日 星期"+days[day]+" "+hs+":"+ms+":"+ss;
+				    $("#time").text(attime);
+				  }
+				  setInterval(clock,1000);
+			}
+			$(function(){
+				clock();
+				
+				// 基于准备好的dom，初始化echarts实例
+				var myChart = echarts.init(document.getElementById('main'));
+
+				// 指定图表的配置项和数据
+				var option = {
+					    title: {
+					        text: '服务理念',
+					        subtext: 'CRM服务理念',
+					       	left:'center'
+					    
+					    },
+					    tooltip: {
+					        trigger: 'item',
+					        formatter: "{a} <br/>{b} : {c}%"
+					    },
+					    toolbox: {
+					        feature: {
+					        }
+					    },
+					    legend: {
+					    	orient: 'vertical',
+					    	left: 'left',
+					    	top:'center',
+					        data: ['服务','点击','访问','咨询','学生']
+					    },
+					    calculable: true,
+					    series: [
+					        {
+					            name:'CRM服务理念',
+					            type:'funnel',
+					            left: '10%',
+					            top: 60,
+					            //x2: 80,
+					            bottom: 60,
+					            width: '80%',
+					            // height: {totalHeight} - y - y2,
+					            min: 0,
+					            max: 100,
+					            minSize: '0%',
+					            maxSize: '100%',
+					            sort: 'descending',
+					            gap: 2,
+					            label: {
+					                show: true,
+					                position: 'inside'
+					            },
+					            labelLine: {
+					                length: 10,
+					                lineStyle: {
+					                    width: 1,
+					                    type: 'solid'
+					                }
+					            },
+					            itemStyle: {
+					                borderColor: '#fff',
+					                borderWidth: 1
+					            },
+					            emphasis: {
+					                label: {
+					                    fontSize: 20
+					                }
+					            },
+					            data: [
+					                {value: 60, name: '访问'},
+					                {value: 40, name: '咨询'},
+					                {value: 20, name: '学生'},
+					                {value: 80, name: '点击'},
+					                {value: 100, name: '服务'}
+					            ]
+					        }
+					    ]
+					};
+
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+		
+
+				
+				
+				
 				$("#n_title_out").click(function() {
-						//提示用户是否确定退出
-						$.messager.confirm("确认对话框", "你真的要退出吗？", function(r) {
-							//退出
-							if (r) {
-								window.location.href = "/CRM/logOut2";
-							}
-						})
+					//提示用户是否确定退出
+					$.messager.confirm("确认对话框", "你真的要退出吗？", function(r) {
+						//退出
+						if (r) {
+							window.location.href = "/CRM/logOut2";
+						}
 					})
-					//修改密码
+				})
+				
 				$("#n_title_pwd").click(function() {
 						//打开修改密码窗口
 						$("#div_pwd").window("open");
-					})
-			//确认修改密码
-				$("#btnCon").click(function() {
-					
-					var password=$('#yuanshi').val();
-				    var twoPassword=$('#xianzai').val();
-
-					
-					//校验原有密码
-					if ($(":password:eq(0)").val() == "") {
-						$.messager.alert("原有密码", "原有密码不能为空！", "warning");
-					} else if ($(":password:eq(1)").val() == "") {
-						//校验新密码
-						$.messager.alert("新密码", "新密码不能为空！", "warning");
-					} else if ($(":password:eq(2)").val() == "") {
-						//校验确认密码
-						$.messager.alert("确认密码", "确认密码不能为空！", "warning");
-					} else if ($(":password:eq(1)").val() != $(":password:eq(2)").val()) {
-						//校验两次密码
-						$.messager.alert("密码校验", "两次密码不一致！", "error");
-					} else {
-						//关闭密码窗口
-						$("#div_pwd").window("close");
-						//$.messager.alert("密码修改","密码修改成功！","info");
-						
-							$.messager.confirm('提示','确认修改密码?',function(r){
-								    if (r){
-								    	  $.post('/CRM/updatePasswordById',{
-								    	    	 password:password,
-								    	    	 twoPassword:twoPassword
-								    	     },function (res){
-								    	    	 if(res==0){
-								    	    		 $.messager.alert('提示','账户密码输入错误');
-								    	    	 }
-								    	    	 if(res==1){
-								    	    		 $.messager.alert('提示','修改失败');
-								    	    	 }
-								    	    	 if(res==2){
-								    	    		 $.messager.alert('提示','修改成功');
-								    	    		 parent.location.href = "/CRM/logOut2";
-								    	    	 }
-								    	    	 
-								    	     },'json');
-
-								    }
-							});
-						
-						/* $.messager.show({
-							title: '密码修改',
-							msg: '密码修改成功，新密码为:'+$(":password:eq(2)").val(),
-							timeout: 3000,
-							showType: 'slide'
-						}); */
-					}
 				})
-			//取消密码修改
-				$("#btnCan").click(function(){
-					$("#div_pwd").window("close");
-				})
-			//树状菜单和选项卡的联动
-				//给菜单添加单击事件
+				
 				$("#treeMenu").tree({
 					url:'/CRM/Module/selectModules',
 					method:'post',
@@ -180,44 +190,181 @@
 				})
 				
 				
-				
+				$("#btnCon").click(function() {
+					
+					var password=$('#yuanshi').val();
+				    var twoPassword=$('#xianzai').val();
+				    var test = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
+					//校验原有密码
+					if ($(":password:eq(0)").val() == "") {
+						$.messager.alert("原有密码", "原有密码不能为空！", "warning");
+					} 
+					else if(!test.test($(":password:eq(0)").val())){
+						$.messager.alert("原有密码", "长度不能小于6位", "warning");
+					}
+					
+					else if ($(":password:eq(1)").val() == "") {
+						//校验新密码
+						$.messager.alert("新密码", "新密码不能为空！", "warning");
+					} 
+					else if(!test.test($(":password:eq(1)").val())){
+						$.messager.alert("原有密码", "长度不能小于6位", "warning");
+					}
+					else if ($(":password:eq(2)").val() == "") {
+						//校验确认密码
+						$.messager.alert("确认密码", "确认密码不能为空！", "warning");
+					} 
+					else if(!test.test($(":password:eq(2)").val())){
+						$.messager.alert("原有密码", "长度不能小于6位", "warning");
+					}
+					else if ($(":password:eq(1)").val() != $(":password:eq(2)").val()) {
+						//校验两次密码
+						$.messager.alert("密码校验", "两次密码不一致！", "error");
+					} else {
+						//关闭密码窗口
+						$("#div_pwd").window("close");
+						//$.messager.alert("密码修改","密码修改成功！","info");
+						
+							$.messager.confirm('提示','确认修改密码?',function(r){
+								    if (r){
+								    	  $.post('/CRM/updatePasswordById',{
+								    	    	 password:password,
+								    	    	 twoPassword:twoPassword
+								    	     },function (res){
+								    	    	 if(res==0){
+								    	    		 $.messager.alert('提示','账户密码输入错误');
+								    	    	 }
+								    	    	 if(res==1){
+								    	    		 $.messager.alert('提示','修改失败');
+								    	    	 }
+								    	    	 if(res==2){
+								    	    		 $.messager.alert('提示','修改成功');
+								    	    		 parent.location.href = "/CRM/logOut2";
+								    	    	 }
+								    	    	 
+								    	     },'json');
+
+								    }
+							});
+						
+						
+					}
+				})
+				$("#btnCan").click(function(){
+					$("#div_pwd").window("close");
+				})
 			})
-			/*
-			 	Json数据格式
-			 		{"键名":"值","键名":"值",...........}
-			 		
-			 		{
-			 			"键名":"值",
-			 			"键名":"值",
-			 			...........
-			 		}
-			 * 
-			 * 
-			 * */
+			
+		
+			
+			
+			/* $(function() {
+				
+				
+			
+			
+				//退出功能
+					
+					//修改密码
+				
+			//确认修改密码
+				$("#btnCon").click(function() {
+					
+					var password=$('#yuanshi').val();
+				    var twoPassword=$('#xianzai').val();
+				    var test = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
+					//校验原有密码
+					if ($(":password:eq(0)").val() == "") {
+						$.messager.alert("原有密码", "原有密码不能为空！", "warning");
+					} 
+					else if(!test.test($(":password:eq(0)").val())){
+						$.messager.alert("原有密码", "长度不能小于6位", "warning");
+					}
+					
+					else if ($(":password:eq(1)").val() == "") {
+						//校验新密码
+						$.messager.alert("新密码", "新密码不能为空！", "warning");
+					} 
+					else if(!test.test($(":password:eq(1)").val())){
+						$.messager.alert("原有密码", "长度不能小于6位", "warning");
+					}
+					else if ($(":password:eq(2)").val() == "") {
+						//校验确认密码
+						$.messager.alert("确认密码", "确认密码不能为空！", "warning");
+					} 
+					else if(!test.test($(":password:eq(2)").val())){
+						$.messager.alert("原有密码", "长度不能小于6位", "warning");
+					}
+					else if ($(":password:eq(1)").val() != $(":password:eq(2)").val()) {
+						//校验两次密码
+						$.messager.alert("密码校验", "两次密码不一致！", "error");
+					} else {
+						//关闭密码窗口
+						$("#div_pwd").window("close");
+						//$.messager.alert("密码修改","密码修改成功！","info");
+						
+							$.messager.confirm('提示','确认修改密码?',function(r){
+								    if (r){
+								    	  $.post('/CRM/updatePasswordById',{
+								    	    	 password:password,
+								    	    	 twoPassword:twoPassword
+								    	     },function (res){
+								    	    	 if(res==0){
+								    	    		 $.messager.alert('提示','账户密码输入错误');
+								    	    	 }
+								    	    	 if(res==1){
+								    	    		 $.messager.alert('提示','修改失败');
+								    	    	 }
+								    	    	 if(res==2){
+								    	    		 $.messager.alert('提示','修改成功');
+								    	    		 parent.location.href = "/CRM/logOut2";
+								    	    	 }
+								    	    	 
+								    	     },'json');
+
+								    }
+							});
+						
+						
+					}
+				})
+			//取消密码修改
+				$("#btnCan").click(function(){
+					$("#div_pwd").window("close");
+				})
+			//树状菜单和选项卡的联动
+				//给菜单添加单击事件
+				
+				
+				
+				
+			}) */
+			
 		</script>
 	</head>
 
-	<body class="easyui-layout">
+	<body class="easyui-layout" >
 		<!--布局：北-->
-		<div data-options="region:'north'" style="height: 10%;">
+		<div data-options="region:'north'" style="height: 14%;">
 			<!--添加网站Logo-->
 			<span id="n_logo" style="margin-left: 20px;">
 				<center>
-					<font  color="black" size="4px">客户关系管理系统</font>
+					<font  color="black" size="5px">客户关系管理系统</font>
 				</center>
+				<h2 id="time"></h2>
 			</span>
 			<span id="n_title" style="float: right;">
-				欢迎<span th:text="${session.users.users_LoginName}"></span>登录&nbsp;&nbsp;&nbsp;
+				欢迎用户：<span th:text="${session.users.users_LoginName}"></span>登录&nbsp;&nbsp;&nbsp;
 				<button id="qiandao"  th:if="${session.users.users_CheckInStatus ==1}"  class="easyui-linkbutton" onclick="checkin()">签到</button>
-				<button th:if="${session.users.users_CheckInStatus >1}" class="easyui-linkbutton" >已签到</button>
-				<a id="n_title_pwd" href="javascript:void(0)">修改密码</a>|
-				<a id="n_title_out" href="javascript:void(0)">退出</a>
-				
+				<button th:if="${session.users.users_CheckInStatus >1}" disabled="disabled"  class="easyui-linkbutton" >已签到</button>
+				<a id="n_title_pwd" href='javascript:void(0)' class="easyui-linkbutton">修改密码</a>
+				<a id="n_title_out" href='javascript:void(0)'   class="easyui-linkbutton">退出</a>
 			</span>
 		</div>
 		<!--布局：南-->
-		<div id="sdiv" data-options="region:'south',border:false" style="height:10%;">
-			<center>&copy;2019CRM系统,仿冒必纠</center>
+		<div id="sdiv" data-options="region:'south',border:false" style="height:8%;">
+			<br/>
+			<center><h3>&copy;2019CRM系统,仿冒必纠</h3></center>
 		</div>
 		<!--布局：西-->
 		<div data-options="region:'west',title:'系统菜单',split:true" style="width: 200px;">
@@ -226,22 +373,97 @@
 			</ul>
 		</div>
 		<!--布局：中间-->
-		<div data-options="region:'center'">
+		<div data-options="region:'center'" >
 			<!--选项卡使用-->
 			<div id="div_tabs" class="easyui-tabs" data-options="fit:true,border:false">
 				<!--首页-->
 				<div id="" title="首页" style="background-size: cover;">
+					<div class="layui-container">
+						<div class="layui-row">
+							<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+      								<div style="width: 500px;height: 500px;" id="main">
+					
+									</div>
+   							</div>
+							<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+									<div class="layui-row">
+      							  		<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">	
+      							  				<div class="layui-inline" id="test-n1"></div>
+      							  		</div>
+      							  		<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">	
+      							  			  <ul class="layui-timeline">
+ 
+												  <li class="layui-timeline-item">
+												    <i class="layui-icon layui-timeline-axis"></i>
+												    <div class="layui-timeline-content layui-text">
+												      <h3 class="layui-timeline-title">4月28日</h3>
+												      <p>CRM系统是为了帮助企业更好的管理客户资源。根据功能划分有以下角色：</p>
+												      <ul>
+												        <li>管理员</li>
+												        <li>业务经理</li>
+												        <li>咨询师</li>
+												        <li>网络咨询师</li>
+												        <li>教导主任</li>
+												        <li>辅导员</li>
+												      </ul>
+												    </div>
+												  </li>
+
+												 
+											</ul>  
+      							  		</div>
+      							  </div>
+      							   <div class="layui-row">
+      							   		<div class="layui-col-xs12 layui-col-sm12 layui-col-md12">	
+	      							   		<table class="layui-table">
+												<thead>
+													<tr>
+														<th colspan="2" scope="col">项目信息</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<th width="30%">项目名</th>
+														<td><span id="lbServerName">CRM</span></td>
+													</tr>
+													<tr>
+														<td>项目默认访问路径</td>
+														<td>http://localhost:8080/CRM/login</td>
+													</tr>
+													<tr>
+														<td>服务器端口 </td>
+														<td>8080</td>
+													</tr>
+													<tr>
+														<td>项目创建时间 </td>
+														<td id="firstTime">2019-04-28 13:14:00</td>
+													</tr>
+													<tr>
+														<td>上次更新时间 </td>
+														<td id="lastTime">1分钟</td>
+													</tr>
+												</tbody>
+											</table>
+	      							   	</div>
+      							   </div>
+      							  
+   							</div>
+   							
+						</div>
+						
+					</div>
 					
 				</div>
 			</div>
 		</div>
 		<!--创建修改密码窗口-->
 		<div id="div_pwd" class="easyui-window" title="修改密码" style="width: 400px;height: 250px;" data-options="collapsible:false,minimizable:false,maximizable:false,closed:true,modal:true">
-			<table>
+			<center>
+				<table>
 				<tr>
 					<td>原有密码:</td>
 					<td>
-						<input id="yuanshi" type="password" th:value="${session.password}" />
+						<input id="yuanshi" type="password"  />
 					</td>
 				</tr>
 				<tr>
@@ -263,8 +485,178 @@
 					</td>
 				</tr>
 			</table>
+			</center>
+			
 		</div>
+		<script type="text/javascript" th:inline="javascript">
+		
 
+  		layui.use('laydate',function(){
+  			var laydate = layui.laydate;
+	  		  laydate.render({
+	  		    elem: '#test-n1',
+	  		    position: 'static',
+	  		    btns: []
+	  		  });
+  		})
+		
+			layui.use('layim', function(layim){
+				
+				layim.config({
+					//初始化方法
+						init:{
+							url:"/CRM/checkcenter/getLayIm" ,//接口地址
+							type:"post",
+							data:{
+								
+							}	
+						}
+				})
+				
+				
+				
+			var socket;  
+		    if(typeof(WebSocket) == "undefined") {  
+		        console.log("您的浏览器不支持WebSocket");  
+		    }else{  
+		        console.log("您的浏览器支持WebSocket");  
+		        	//实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接  
+		        	//session对象的id  登录过后的用户id
+		        		var ceshi =  [[${session.users.users_Id}]];
+		        	
+		        	// 生成一个  websocket对象  放入链接地址
+		            	socket = new WebSocket("ws://localhost:8080/CRM/websocket/"+ceshi);  
+		            	//等同于socket = new WebSocket("${basePath}websocket/${cid}".replace("http","ws"));  
+		            //打开事件  
+		            socket.onopen = function() {  
+		                console.log("Socket 已打开");  
+		                //socket.send("这是来自客户端的消息" + location.href + new Date());  
+		            };  
+		            //获得消息事件  
+		            socket.onmessage = function(res) {  
+		               console.log(res.data);
+		            	
+		               if(res.data !='连接成功'){
+		            	   console.log(res.data);
+		            		var username ;
+		            		var avatar ;
+		            		var id;
+		            		var content;
+		            		var mills;
+		            	   	var dongxi = res.data;
+		            	  	var array= dongxi.split(",");
+		            	 	
+		            	 	/* for(var i=0;i<array.length;i++){
+		            	 		alert(array[i]);
+		            	 	} */
+		            	 	
+		            	 	username=array[0];
+		            	 	avatar = array[1];
+		            	 	id = array[2];
+		            	 	mills = parseFloat(array[3]);
+		            	 	content= array[4];
+		            		
+		            		
+		            	   /* var shishi = res.data.replace(/"(\w+)":/g, "$1:");
+						   
+		            	   var jixu = "[" +shishi +"]";
+		            	   jixu = eval(jixu);
+		            	   var haha= JSON.parse(JSON.stringify(jixu));
+		            	   alert(haha);
+		            	   alert(haha.username); */
+		            	   
+		            	   layim.getMessage(
+		            			 {
+		          				username:username,
+		            			avatar: avatar,
+		            			id: id ,
+		            			type: 'friend' ,
+		            			content:content,
+		            			cid:0,
+		            			mine:false,
+		            			fromid:id,
+		            			timestamp: mills
+		            	     }	
+		            	   ); //res.data即你发送消息传递的数据（阅读：监听发送的消息）
+		            	 }
+		            };  
+		            //关闭事件  
+		            socket.onclose = function() {  
+		                console.log("Socket已关闭");  
+		            };  
+		            //发生了错误事件  
+		            socket.onerror = function() {  
+		                alert("Socket发生了错误");  
+		                //此时可以尝试刷新页面
+		            }  
+		            //离开页面时，关闭socket
+		            //jquery1.8中已经被废弃，3.0中已经移除
+		            // $(window).unload(function(){  
+		            //     socket.close();  
+		            //});  
+		    }
+				
+				
+				layim.on('sendMessage', function(res){
+  					var mine = res.mine;
+  					var to = res.to;
+  				/* 	$.post("/CRM/checkcenter/socket/push/1",{
+  						cid : 1,
+  						message:"hhhh"
+  					},function(res){
+  						
+  					},"json") */
+  					  
+  					 socket.send(JSON.stringify({
+  					    type: 'chatMessage' //随便定义，用于在服务端区分消息类型
+  					    ,data: res
+  					})); 
+				})
+				
+				
+			})
+		</script>
+		<!--  <script type="text/javascript">
+			  var attime;
+			  var days=new  Array ("日", "一", "二", "三", "四", "五", "六");
+			  function clock(){
+			    var time=new Date();   
+			    var y,m,date,day,hs,ms,ss,theDateStr;
+			    y = time.getFullYear();
+			    m = time.getMonth(); //月
+				date = time.getDate(); //日
+				day = time.getDay(); //星期
+				hs = time.getHours(); //时
+				ms = time.getMinutes(); //分
+				ss = time.getSeconds(); //秒
+			    attime= y+"年"+  m +"月"+date+"日 星期"+days[day]+" "+hs+":"+ms+":"+ss;
+			    $("#time").text(attime);
+			  }
+			  setInterval(clock,1000);
+		</script>  -->
+		<!-- <script type="text/javascript">
+	
+			var days=new  Array ("日", "一", "二", "三", "四", "五", "六");
+			function showDT() {
+			  var currentDT = new Date();
+			  var y,m,date,day,hs,ms,ss,theDateStr;
+			  y = currentDT.getFullYear(); //四位整数表示的年份
+			  m = currentDT.getMonth(); //月
+			  date = currentDT.getDate(); //日
+			  day = currentDT.getDay(); //星期
+			  hs = currentDT.getHours(); //时
+			  ms = currentDT.getMinutes(); //分
+			  ss = currentDT.getSeconds(); //秒
+			  theDateStr = y+"年"+  m +"月"+date+"日 星期"+days[day]+" "+hs+":"+ms+":"+ss;
+		
+			  $("#time").text =theDateStr;
+			  
+			  // setTimeout 在执行时,是在载入后延迟指定时间后,去执行一次表达式,仅执行一次
+			  window.setTimeout( showDT, 1000);
+			}
+		</script> -->
+		
+		
 	</body>
 
 </html>

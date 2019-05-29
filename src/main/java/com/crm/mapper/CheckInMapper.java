@@ -33,7 +33,29 @@ public interface CheckInMapper {
 	 */
 	Integer selectCheckCount(PageNation pageNation);
 	
+	/**
+	 * 
+	 * @param pageNation 查询出来一个人的详细签到记录
+	 * @return
+	 */
+	List<CheckIn> selectAllCheckInByUsersId(PageNation pageNation);
+	/**
+	 * 
+	 * @param pageNation 查询出来一个人的详细签到记录总条数
+	 * @return
+	 */
+	Integer selectAllCheckInByUsersIdCount(PageNation pageNation);
 	
-	
-	
+	/**
+	 * 
+	 * @param PageNation 根据用户id 查询当月签到 次数
+	 * @return
+	 */
+	List<CheckIn> selectYuanGongQianDao(PageNation pageNation);
+	/**
+	 *  
+	 * @param usersId 查询出来所有学生
+	 * @return
+	 */
+	Integer selectYuanGongDangYueQianDao(Integer usersId);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.crm.entity.Classes;
 import com.crm.entity.PageNation;
 import com.crm.entity.Student;
 import com.crm.entity.Users;
@@ -18,7 +19,7 @@ import com.crm.excel.ExcelUtil;
 import com.crm.service.StudentService;
 
 @Controller
-@RequestMapping("/Student")
+@RequestMapping("/xuesheng")
 public class StudentController {
 
 	@Autowired
@@ -62,4 +63,28 @@ public class StudentController {
 	    ExcelUtil.writeExcel(response, list, fileName, sheetName, new Student());
 	    
 	   }
+	
+	@RequestMapping("selectClass")
+	@ResponseBody
+	public List<Classes> selectclasses(HttpSession session) {
+		return studentService.selectclass(session);
+	}
+	
+	@RequestMapping("selectAllBoy")
+	@ResponseBody
+	public Integer[] selectAllBoy(HttpSession session) {
+		Users user = (Users)session.getAttribute("users");
+		Integer[] selectAllBoy = studentService.selectAllStudent(user.getUsers_Id());
+		return selectAllBoy;
+	}
+	@RequestMapping("selectClassBoy")
+	@ResponseBody
+	public Integer[] selectClassBoy(Integer classId) {
+		
+			Integer[] selectClassBoy = studentService.selectClassStudent(classId);
+			return selectClassBoy;
+		
+		
+	}
+	
 }

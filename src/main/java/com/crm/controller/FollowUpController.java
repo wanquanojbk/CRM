@@ -45,4 +45,11 @@ public class FollowUpController {
 		return followUpService.updFollowUp(followUp);
 	}
 	
+	
+	@RequestMapping(value="/getFollowUpByclueId")
+	@ResponseBody
+	public PageNation getFollowUpByclueId(PageNation pageNation) {
+		return followUpService.getFollowUpByContomer(pageNation);
+	}
+	
 }

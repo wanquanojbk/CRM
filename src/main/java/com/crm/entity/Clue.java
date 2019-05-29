@@ -1,32 +1,57 @@
 package com.crm.entity;
 
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
+
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.metadata.BaseRowModel;
 
 //线索表
-@Controller
-public class Clue {
+@Component
+public class Clue extends BaseRowModel {
+@ExcelProperty(value ="客户编号",index=0)
 private Integer clue_Id;//编号
+@ExcelProperty(value ="客户姓名",index=1)
 private String clue_Name;//姓名
+@ExcelProperty(value ="性别",index=2)
 private String clue_Sex;//性别
+@ExcelProperty(value ="年龄",index=3)
 private Integer clue_Age;//年龄
+@ExcelProperty(value ="出生日期",index=4)
 private String clue_Birthday;//出生日期
+@ExcelProperty(value ="学历",index=5)
 private String clue_Education;//学历
+@ExcelProperty(value ="课程方向",index=6)
 private String clue_Direction;//课程方向
+@ExcelProperty(value ="线索来源",index=7)
 private String clue_Source;//线索来源
+@ExcelProperty(value ="身份证号",index=8)
 private String clue_IdentityNumber;//身份证号
+@ExcelProperty(value ="电子邮箱",index=9)
 private String clue_Email;//电子邮箱
+@ExcelProperty(value ="QQ号",index=10)
 private String clue_Qq;//QQ
+@ExcelProperty(value ="微信号",index=11)
 private String clue_WeChat;//微信号
+@ExcelProperty(value ="电话号",index=12)
 private String clue_Tel;//电话
+@ExcelProperty(value ="地区",index=13)
 private String clue_Address;//地区
+@ExcelProperty(value ="负责人",index=14)
 private Integer clue_Principal;//负责人(咨询师)
+@ExcelProperty(value ="创建人",index=15)
 private Integer clue_Creator;//创建人(网络咨询师)
+@ExcelProperty(value ="创建时间",index=16)
 private String clue_CreateTime;//创建时间
+@ExcelProperty(value ="更新时间",index=17)
 private String clue_UpdateTime;//更新时间
+@ExcelProperty(value ="线索开始时间",index=18)
 private String clue_BginTime;//线索开始时间
+@ExcelProperty(value ="线索结束时间",index=19)
 private String clue_EndTime;//线索结束时间
+@ExcelProperty(value ="备注",index=20)
 private String clue_Remarks;//备注
+@ExcelProperty(value ="状态",index=21)
 private Integer clue_Status;//状态(默认为0,0:未分配1:正在跟进,2:已放弃,3:已成为学员)
 private Integer clue_Exit1;//预留1
 private String clue_Exit2;//预留2

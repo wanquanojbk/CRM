@@ -95,9 +95,11 @@ function upd1_Customer(){
 		follwUp_Conclusion:add_Conclusion
 	},function(res){
 		if(res>0){
-			alert("修改成功");	
+			$("#upd1_FollowUp_dialog").dialog("close");
+			$("#dg").datagrid("reload");
+			$.messager.alert("提示","修改成功");	
 		}else{
-			alert("修改失败");
+			$.messager.alert("提示","修改失败");	
 		}
 	},"json")
 }
@@ -139,9 +141,12 @@ function add_Customer(){
 		follwUp_Conclusion:add_Conclusion
 	},function(res){
 		if(res>0){
-			alert("添加成功");
+			$("#addFollowUp_dialog").dialog("close");
+			$("#dg").datagrid("reload");
+			$("#addclueForm").form("reset");
+			$.messager.alert("提示","添加成功");	
 		}else{
-			alert("添加失败");
+			$.messager.alert("提示","添加失败");	
 		}
 	},"json")
 }
@@ -177,7 +182,7 @@ function add_Customer(){
     <a type="button" href="javascript:void(0)" onclick="init()" class="easyui-linkbutton">搜索</a>
     <a type="button" href="javascript:void(0)" onclick="open_window1()" class="easyui-linkbutton">添加跟踪</a>
 </div>
-<div id="addFollowUp_dialog" class="easyui-dialog" title="新增客户信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
+<div id="addFollowUp_dialog" class="easyui-dialog" title="新增跟踪信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
 				text:'保存',
 				handler:function(){
 					add_Customer();
@@ -187,7 +192,7 @@ function add_Customer(){
 				handler:function(){
 					clear_Customer();
 				}
-			}]" style="width:500px;height:300px;padding:10px;">
+			}]" style="width:1000px;height:500px;padding:10px;">
          <form id="addclueForm">
                 <table cellpadding="5">
                     <tr>
@@ -249,7 +254,7 @@ function add_Customer(){
                 </table>
          </form>
     </div> 
-<div id="upd1_FollowUp_dialog" class="easyui-dialog" title="修改客户信息" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
+<div id="upd1_FollowUp_dialog" class="easyui-dialog" title="修改跟踪" data-options="modal:true,closed:true,iconCls:'icon-save',buttons:[{
 				text:'保存',
 				handler:function(){
 					upd1_Customer();

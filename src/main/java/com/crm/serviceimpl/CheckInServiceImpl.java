@@ -24,6 +24,17 @@ public class CheckInServiceImpl implements CheckInService {
 	private CheckIn checkIn;
 	@Override
 	public Boolean startCheckId(HttpSession session) {
+		//是否迟到  如果迟到 为 1 不迟到 为 0 默认为0
+		boolean isNow=LocalTime.now().isAfter(LocalTime.of(8,00,00));
+		if (isNow) {
+			//设置状态为迟到
+			checkIn.setCheckIn_Late(1);
+		}
+		// 否则就是未迟到
+		else {
+			checkIn.setCheckIn_Late(0);
+		}
+		
 		// TODO Auto-generated method stub
 		// 1. 获取当前时间，包含毫秒数 -----打印输出----- 21:03:26.315
 		LocalTime localTime = LocalTime.now(); 
@@ -38,6 +49,11 @@ public class CheckInServiceImpl implements CheckInService {
 			return true;
 		}
 		return false;
+	}
+	@Override
+	public Integer selectYuanGongQianDao(Integer usersId) {
+		Integer yuangong = checkInMapper.selectYuanGongDangYueQianDao(usersId);
+		return yuangong;
 	}
 
 }

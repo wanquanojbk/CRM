@@ -7,12 +7,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.crm.entity.Modules;
 import com.crm.mapper.ModulesMapper;
 import com.crm.service.ModulesService;
 
 @Service
+@Transactional
 public class ModulesServiceImpl implements ModulesService{
 @Autowired
 private ModulesMapper modulesMapper;
@@ -253,5 +255,22 @@ public List<Map<String,Object>> selectByUserId(Integer users_Id) {
 			}
 		}	
 		return a;
+	}
+	@Override
+	public Boolean selectParentModuleByName(Modules modules) {
+		// TODO Auto-generated method stub
+		Modules module = modulesMapper.selectParentModulesByName(modules);
+		if(module !=null) {
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public Boolean insertParentModules(Modules modules) {
+		// TODO Auto-generated method stub
+		Integer i = modulesMapper.insertParentModule(modules);
+		if(i>0)
+			return true;
+		return false;
 	}
 }

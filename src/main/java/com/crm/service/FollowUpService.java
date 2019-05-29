@@ -26,4 +26,11 @@ public interface FollowUpService {
 	 * @return
 	 */
 	public Integer updFollowUp(FollowUp followUp);
+	
+	/**
+	 * 得到该客户的跟踪信息
+	 * @param pageNation
+	 * @return
+	 */
+	public PageNation getFollowUpByContomer(PageNation pageNation);
 }

@@ -17,6 +17,30 @@ public class Users {
 	private String users_Exit2;//预留字段2
 	private Integer users_CheckInStatus;//签到状态
 	private List<Roles> roles;//角色集合
+	private Integer users_Weight;
+	private Integer users_Count;  //咨询师客户总数
+	private Classes classes;//班级
+	private Student student;
+	
+	
+	public Student getStudent() {
+		return student;
+	}
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+	public Integer getUsers_Count() {
+		return users_Count;
+	}
+	public void setUsers_Count(Integer users_Count) {
+		this.users_Count = users_Count;
+	}
+	public Integer getUsers_Weight() {
+		return users_Weight;
+	}
+	public void setUsers_Weight(Integer users_Weight) {
+		this.users_Weight = users_Weight;
+	}
 	public Integer getUsers_Id() {
 		return users_Id;
 	}
@@ -101,10 +125,16 @@ public class Users {
 	public void setRoles(List<Roles> roles) {
 		this.roles = roles;
 	}
+	public Classes getClasses() {
+		return classes;
+	}
+	public void setClasses(Classes classes) {
+		this.classes = classes;
+	}
 	public Users(Integer users_Id, String users_LoginName, String users_Password, Integer users_LsLockout,
 			String users_LastLoginTime, String users_CreateTime, Integer users_PsdWrongTime, String users_LockTime,
 			String users_ProTectEMail, String users_ProtectTel, Integer users_Exit1, String users_Exit2,
-			Integer users_CheckInStatus, List<Roles> roles) {
+			Integer users_CheckInStatus, List<Roles> roles, Classes classes) {
 		super();
 		this.users_Id = users_Id;
 		this.users_LoginName = users_LoginName;
@@ -120,6 +150,7 @@ public class Users {
 		this.users_Exit2 = users_Exit2;
 		this.users_CheckInStatus = users_CheckInStatus;
 		this.roles = roles;
+		this.classes = classes;
 	}
 	public Users() {
 		super();
@@ -132,7 +163,7 @@ public class Users {
 				+ users_PsdWrongTime + ", users_LockTime=" + users_LockTime + ", users_ProTectEMail="
 				+ users_ProTectEMail + ", users_ProtectTel=" + users_ProtectTel + ", users_Exit1=" + users_Exit1
 				+ ", users_Exit2=" + users_Exit2 + ", users_CheckInStatus=" + users_CheckInStatus + ", roles=" + roles
-				+ "]";
+				+", classes"+classes+"]";
 	}
 	
 	

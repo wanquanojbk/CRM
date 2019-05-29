@@ -8,4 +8,13 @@
   		INSERT INTO dynamic(dynamic_Text,dynamic_Creator,dynamic_Recipients,dynamic_CreateTime) 
   		VALUES(#{dynamic_Text},#{dynamic_Creator},#{dynamic_Recipients},#{dynamic_CreateTime})
   	</insert>
+  	
+  	<select id="selectMySelfWeiDuMessage" parameterType="int" resultType="com.crm.entity.Dynamic">
+  		SELECT * FROM `dynamic` WHERE dynamic_Status =0 AND dynamic_Recipients = #{usersId}
+  	</select>
+  	
+  	<update id="uapateStatus" parameterType="int">
+  		update `dynamic` set  dynamic_Status = 1 where dynamic_Id = #{dynamic_Id}
+  	</update>
+  	
   </mapper>

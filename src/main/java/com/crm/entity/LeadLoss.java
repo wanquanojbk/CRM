@@ -1,12 +1,34 @@
 package com.crm.entity;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class LeadLoss {
 private Integer leadLoss_Id;//编号
 private String leadLoss_Text;//流失原因
-private String leadLoss_Time;//流失时间
+private String leadLoss_Time;//流失开始时间
 private Integer leadLoss_ClueId;//流失客户编号
 private Integer leadLoss_Exit1;//预留1
 private String leadLoss_Exit2;//预留2
+private Integer leadLoss_UsersId;//用户id
+private String leadLoss_EndTime; //结束时间
+
+
+
+public String getLeadLoss_EndTime() {
+	return leadLoss_EndTime;
+}
+public void setLeadLoss_EndTime(String leadLoss_EndTime) {
+	this.leadLoss_EndTime = leadLoss_EndTime;
+}
+
+
+public Integer getLeadLoss_UsersId() {
+	return leadLoss_UsersId;
+}
+public void setLeadLoss_UsersId(Integer leadLoss_UsersId) {
+	this.leadLoss_UsersId = leadLoss_UsersId;
+}
 public Integer getLeadLoss_Id() {
 	return leadLoss_Id;
 }

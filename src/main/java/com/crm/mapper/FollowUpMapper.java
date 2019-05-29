@@ -30,4 +30,17 @@ public interface FollowUpMapper {
 	 * @return
 	 */
 	public Integer updFollowUp(FollowUp followUp);
+	
+	/**
+	 * 根据客户id查看该客户的跟踪信息分页查询
+	 * @param pageNation
+	 * @return
+	 */
+	public List<FollowUp> selectManagerByAll(PageNation pageNation);
+	/**
+	 * 根据客户id查看该客户的跟踪信息总数 
+	 * @param pageNation
+	 * @return
+	 */
+	public Integer selectManagerByAllCount(PageNation pageNation);
 }

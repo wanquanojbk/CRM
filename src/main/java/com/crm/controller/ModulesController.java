@@ -3,7 +3,6 @@ package com.crm.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +59,27 @@ public @ResponseBody List<Map<String, Object>> selectAllModulesByRolesId(Integer
 	}
 	@RequestMapping("/deleteModule")
 	@ResponseBody
-	public Boolean deleteModuleModule(Modules modules) {
-		return modulesService.deleteModules(modules);
+	public Boolean deleteModuleModule(Integer id) {
+		Modules module = new Modules();
+		module.setModules_Id(id);
+		return modulesService.deleteModules(module);
+	}
+	@RequestMapping("/selectModuleName")
+	@ResponseBody
+	public Boolean selectModuleName(Modules modules) {
+		return modulesService.selectModulesByModuleName(modules);
+	}
+	
+	@RequestMapping("/selectParent")
+	@ResponseBody
+	public Boolean testParent(Modules modules) {
+		return modulesService.selectParentModuleByName(modules);
+	}
+	
+	@RequestMapping("/insertParentModule")
+	@ResponseBody
+	public Boolean insertParentModule(Modules modules) {
+		System.out.println(modules+"---------------");
+		return modulesService.insertParentModules(modules);
 	}
 }

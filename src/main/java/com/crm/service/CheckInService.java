@@ -8,4 +8,10 @@ public interface CheckInService {
 	 * @return
 	 */
 	public Boolean startCheckId(HttpSession session);
+	/**
+	 * 
+	 * @param usersId 查的签到总数
+	 * @return
+	 */
+	public Integer selectYuanGongQianDao(Integer usersId);
 }	

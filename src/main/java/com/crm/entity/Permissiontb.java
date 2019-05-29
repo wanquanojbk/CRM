@@ -1,5 +1,8 @@
 package com.crm.entity;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Permissiontb {
 	private Integer permissiontb_Id;//权限编号
 	private String permissiontb_Value;//权限值
