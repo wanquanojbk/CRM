@@ -65,7 +65,6 @@
 			$(function(){
 				clock();
 				
-				
 				// 基于准备好的dom，初始化echarts实例
 				var myChart = echarts.init(document.getElementById('main'));
 
@@ -73,7 +72,9 @@
 				var option = {
 					    title: {
 					        text: '服务理念',
-					        subtext: 'CRM服务理念'
+					        subtext: 'CRM服务理念',
+					       	left:'center'
+					    
 					    },
 					    tooltip: {
 					        trigger: 'item',
@@ -84,6 +85,9 @@
 					        }
 					    },
 					    legend: {
+					    	orient: 'vertical',
+					    	left: 'left',
+					    	top:'center',
 					        data: ['服务','点击','访问','咨询','学生']
 					    },
 					    calculable: true,
@@ -350,16 +354,17 @@
 				<h2 id="time"></h2>
 			</span>
 			<span id="n_title" style="float: right;">
-				欢迎:<span th:text="${session.users.users_LoginName}"></span>登录&nbsp;&nbsp;&nbsp;
+				欢迎用户：<span th:text="${session.users.users_LoginName}"></span>登录&nbsp;&nbsp;&nbsp;
 				<button id="qiandao"  th:if="${session.users.users_CheckInStatus ==1}"  class="easyui-linkbutton" onclick="checkin()">签到</button>
 				<button th:if="${session.users.users_CheckInStatus >1}" disabled="disabled"  class="easyui-linkbutton" >已签到</button>
-				<a id="n_title_pwd" href="javascript:void(0)">修改密码</a>|
-				<a id="n_title_out" href="javascript:void(0)">退出</a>
+				<a id="n_title_pwd" href='javascript:void(0)' class="easyui-linkbutton">修改密码</a>
+				<a id="n_title_out" href='javascript:void(0)'   class="easyui-linkbutton">退出</a>
 			</span>
 		</div>
 		<!--布局：南-->
-		<div id="sdiv" data-options="region:'south',border:false" style="height:10%;">
-			<center>&copy;2019CRM系统,仿冒必纠</center>
+		<div id="sdiv" data-options="region:'south',border:false" style="height:8%;">
+			<br/>
+			<center><h3>&copy;2019CRM系统,仿冒必纠</h3></center>
 		</div>
 		<!--布局：西-->
 		<div data-options="region:'west',title:'系统菜单',split:true" style="width: 200px;">
@@ -368,14 +373,86 @@
 			</ul>
 		</div>
 		<!--布局：中间-->
-		<div data-options="region:'center'">
+		<div data-options="region:'center'" >
 			<!--选项卡使用-->
 			<div id="div_tabs" class="easyui-tabs" data-options="fit:true,border:false">
 				<!--首页-->
 				<div id="" title="首页" style="background-size: cover;">
-					<div style="width: 500px;height: 500px;" id="main">
+					<div class="layui-container">
+						<div class="layui-row">
+							<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+      								<div style="width: 500px;height: 500px;" id="main">
 					
+									</div>
+   							</div>
+							<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+									<div class="layui-row">
+      							  		<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">	
+      							  				<div class="layui-inline" id="test-n1"></div>
+      							  		</div>
+      							  		<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">	
+      							  			  <ul class="layui-timeline">
+ 
+												  <li class="layui-timeline-item">
+												    <i class="layui-icon layui-timeline-axis"></i>
+												    <div class="layui-timeline-content layui-text">
+												      <h3 class="layui-timeline-title">4月28日</h3>
+												      <p>CRM系统是为了帮助企业更好的管理客户资源。根据功能划分有以下角色：</p>
+												      <ul>
+												        <li>管理员</li>
+												        <li>业务经理</li>
+												        <li>咨询师</li>
+												        <li>网络咨询师</li>
+												        <li>教导主任</li>
+												        <li>辅导员</li>
+												      </ul>
+												    </div>
+												  </li>
+
+												 
+											</ul>  
+      							  		</div>
+      							  </div>
+      							   <div class="layui-row">
+      							   		<div class="layui-col-xs12 layui-col-sm12 layui-col-md12">	
+	      							   		<table class="layui-table">
+												<thead>
+													<tr>
+														<th colspan="2" scope="col">项目信息</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<th width="30%">项目名</th>
+														<td><span id="lbServerName">CRM</span></td>
+													</tr>
+													<tr>
+														<td>项目默认访问路径</td>
+														<td>http://localhost:8080/CRM/login</td>
+													</tr>
+													<tr>
+														<td>服务器端口 </td>
+														<td>8080</td>
+													</tr>
+													<tr>
+														<td>项目创建时间 </td>
+														<td id="firstTime">2019-04-28 13:14:00</td>
+													</tr>
+													<tr>
+														<td>上次更新时间 </td>
+														<td id="lastTime">1分钟</td>
+													</tr>
+												</tbody>
+											</table>
+	      							   	</div>
+      							   </div>
+      							  
+   							</div>
+   							
+						</div>
+						
 					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -413,7 +490,15 @@
 		</div>
 		<script type="text/javascript" th:inline="javascript">
 		
-		  	
+
+  		layui.use('laydate',function(){
+  			var laydate = layui.laydate;
+	  		  laydate.render({
+	  		    elem: '#test-n1',
+	  		    position: 'static',
+	  		    btns: []
+	  		  });
+  		})
 		
 			layui.use('layim', function(layim){
 				
@@ -449,8 +534,7 @@
 		            };  
 		            //获得消息事件  
 		            socket.onmessage = function(res) {  
-		            	console.log(res.data);
-		            
+		               console.log(res.data);
 		            	
 		               if(res.data !='连接成功'){
 		            	   console.log(res.data);

@@ -49,15 +49,18 @@ public class UsersController {
 			  model.addAttribute("msg", "验证码错误");
 			  return "WeAdmin/lo_gin";
 		  }
-		  else if("在线".equals(result.getUsers().getUsers_Exit2()) ) {
-			  model.addAttribute("msg", "用户已在线");
-			  return "WeAdmin/lo_gin";
-		  }
+		 
 		 else if (result.getSuccess()) {  //判断是信息正常  //判断是验证码没有输入
 //			 if(result.getIsLockout()==null) {
 //				 model.addAttribute("msg", "该账户已在线");
 //				 return "WeAdmin/lo_gin";
 //			 }
+			
+			 if("在线".equals(result.getUsers().getUsers_Exit2()) ) {
+				  model.addAttribute("msg", "用户已在线");
+				  return "WeAdmin/lo_gin";
+			 }
+			 
 			if (result.getIsLockout() == 1) {
 					if(miandenglu!=null) {
 						request.getSession().getServletContext().setAttribute("sessionId", request.getSession().getId());
@@ -80,7 +83,6 @@ public class UsersController {
 						model.addAttribute("users", result.getUsers());
 						return "WeAdmin/main";
 					}
-					
 				
 				
 			} else {

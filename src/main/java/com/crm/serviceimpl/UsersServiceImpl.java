@@ -61,8 +61,126 @@ public class UsersServiceImpl implements UsersService {
 		Result result = new Result();
 		
 		if(users.getUsers_LoginName()!=null) {
+			Users userPhone = usersMapper.selectUsersByTel(users.getUsers_LoginName());
+			Users userEmail = usersMapper.selectUsersByEmail(users.getUsers_LoginName());
 			Users user2 = usersMapper.selectUsersByUsersName(users);
 			// 如果user2不为空代表用户名实际存在,进入下一级别判断
+			if(userPhone!=null) {
+				String password = users.getUsers_Password();
+				String jieGuo = PasswordEncrypt.encodeByMd5(password);
+				users.setUsers_Password(jieGuo);
+				users.setUsers_LoginName(userPhone.getUsers_LoginName());
+				Users user = usersMapper.selectUsers(users);
+				if (user != null) {
+					result.setSuccess(true);
+					//String status = user.getUsers_Exit2(); && !"在线".equals(status)
+					if (user.getUsers_LsLockout() == 1 ) {
+								//如果 不为空 但是又能登录上
+							  	Date date = new Date();
+						        //设置要获取到什么样的时间
+						        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						        //获取String类型的时间
+						        String createdate = sdf.format(date);
+								user.setUsers_LastLoginTime(createdate);
+								usersMapper.updateUserPsdWrongTimeSucessByZero(user);
+								//context.setAttribute("token", "登录");
+								result.setMsg("登录成功");
+								result.setIsLockout(1);
+								result.setUsers(user);
+								return result;
+				      
+					} 
+					else {
+						result.setMsg("目前该用户已经被锁定");
+						result.setIsLockout(2);
+						return result;
+					}
+
+				}
+				// 那就是用户名正确,密码不对
+				else {
+					// 如果错误次数到5次,改变状态
+					if (user2.getUsers_PsdWrongTime() == 5) {
+						int num = 5;
+						user2.setUsers_PsdWrongTime(num);
+						user2.setUsers_LsLockout(2);
+						usersMapper.updateUsersLockout(user2);
+						result.setSuccess(true);
+						result.setMsg("该账户已经被锁定");
+						result.setIsLockout(2);
+						return result;
+					}
+					// 如果错误次数不到5次,提示密码错误
+					else {
+						int num = user2.getUsers_PsdWrongTime() + 1;
+						user2.setUsers_PsdWrongTime(num);
+						user2.setUsers_LsLockout(1);
+						usersMapper.updateUsersLockout(user2);
+						result.setSuccess(false);
+						result.setMsg("<a href='javascript:void(0);' onclick='tiJiao()'>密码错误,点击文本进行重置密码操作 </a>");
+						result.setIsLockout(1);
+						return result;
+					}
+				}
+			}
+			if(userEmail!=null) {
+				String password = users.getUsers_Password();
+				String jieGuo = PasswordEncrypt.encodeByMd5(password);
+				users.setUsers_Password(jieGuo);
+				users.setUsers_LoginName(userEmail.getUsers_LoginName());
+				Users user = usersMapper.selectUsers(users);
+				if (user != null) {
+					result.setSuccess(true);
+					//String status = user.getUsers_Exit2(); && !"在线".equals(status)
+					if (user.getUsers_LsLockout() == 1 ) {
+								//如果 不为空 但是又能登录上
+							  	Date date = new Date();
+						        //设置要获取到什么样的时间
+						        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						        //获取String类型的时间
+						        String createdate = sdf.format(date);
+								user.setUsers_LastLoginTime(createdate);
+								usersMapper.updateUserPsdWrongTimeSucessByZero(user);
+								//context.setAttribute("token", "登录");
+								result.setMsg("登录成功");
+								result.setIsLockout(1);
+								result.setUsers(user);
+								return result;
+				      
+					} 
+					else {
+						result.setMsg("目前该用户已经被锁定");
+						result.setIsLockout(2);
+						return result;
+					}
+
+				}
+				// 那就是用户名正确,密码不对
+				else {
+					// 如果错误次数到5次,改变状态
+					if (user2.getUsers_PsdWrongTime() == 5) {
+						int num = 5;
+						user2.setUsers_PsdWrongTime(num);
+						user2.setUsers_LsLockout(2);
+						usersMapper.updateUsersLockout(user2);
+						result.setSuccess(true);
+						result.setMsg("该账户已经被锁定");
+						result.setIsLockout(2);
+						return result;
+					}
+					// 如果错误次数不到5次,提示密码错误
+					else {
+						int num = user2.getUsers_PsdWrongTime() + 1;
+						user2.setUsers_PsdWrongTime(num);
+						user2.setUsers_LsLockout(1);
+						usersMapper.updateUsersLockout(user2);
+						result.setSuccess(false);
+						result.setMsg("<a href='javascript:void(0);' onclick='tiJiao()'>密码错误,点击文本进行重置密码操作 </a>");
+						result.setIsLockout(1);
+						return result;
+					}
+				}
+			}
 			if (user2 != null) {
 				// 进行MD5加密
 				String password = users.getUsers_Password();
